@@ -142,14 +142,6 @@
     [self.navigationController pushViewController:[LoginViewController new] animated:YES];
 }
 
-- (void)shareBtnAction{
-    NSLog(@"分享");
-}
-
-- (void)likeBtnAction{
-    NSLog(@"喜欢");
-}
-
 /*
 #pragma mark - Navigation
 

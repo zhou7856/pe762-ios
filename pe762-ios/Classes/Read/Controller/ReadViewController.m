@@ -11,6 +11,8 @@
 #import "InformationDetailViewController.h"//资讯详情
 #import "LoginViewController.h"//登录
 #import "CommonProblemViewController.h"//常见问题
+#import "FeedbackViewController.h"//意见反馈
+#import "ContactServiceViewController.h"//联系客服
 
 @interface ReadViewController ()<UITableViewDelegate,UITableViewDataSource>
 {
@@ -154,7 +156,7 @@
 - (void) searchBtnAction{
     NSLog(@"搜索");
     [self showTabBarView:NO];
-    [self.navigationController pushViewController:[CommonProblemViewController new] animated:YES];
+    [self.navigationController pushViewController:[ContactServiceViewController new] animated:YES];
 }
 
 /*
