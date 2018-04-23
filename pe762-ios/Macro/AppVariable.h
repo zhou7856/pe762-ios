@@ -32,6 +32,9 @@
 //　底部标签栏高度
 #define kTabBarHeight   self.tabBarController.tabBar.frame.size.height
 
+// 底部导航返回页面高度
+#define kEndBackViewHeight (kScreenHeight == 812 ? 40 * kScreenWidthProportion + 34: 40 * kScreenWidthProportion)
+
 
 /**
  *	@brief 设置字体
@@ -89,7 +92,12 @@
 #define kBorderLineColor RGB(247, 247, 247) //（灰色）弹窗线的颜色
 
 #define kBackgroundWhiteColor RGB(245,245,245) //烟灰白 #F5F5F5
+
 #define kLightGreyColor RGB(211,211,211) //浅灰色 #D3D3D3
+
+
+#define kGoldenColor RGB(221,200,165) //金黄色
+
 
 #endif /* AppVariable_h */
 
