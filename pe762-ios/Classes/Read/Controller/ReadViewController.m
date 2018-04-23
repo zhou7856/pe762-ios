@@ -7,7 +7,8 @@
 //
 
 #import "ReadViewController.h"
-#import "informationTableViewCell.h"
+#import "informationTableViewCell.h"//资讯cell
+#import "InformationDetailViewController.h"//资讯详情
 
 @interface ReadViewController ()<UITableViewDelegate,UITableViewDataSource>
 {
@@ -117,6 +118,12 @@
 
     NSLog(@"你点击了第%ld行", indexPath.row);
 
+    // 跳转到资讯详情页面
+    [self showTabBarView:NO];
+    InformationDetailViewController *pushVC = [[InformationDetailViewController alloc] init];
+    pushVC.idStr = [NSString stringWithFormat:@"%ld", indexPath.row];
+    [self.navigationController pushViewController:pushVC animated:YES];
+    
 }
 
 #pragma mark - 搜索

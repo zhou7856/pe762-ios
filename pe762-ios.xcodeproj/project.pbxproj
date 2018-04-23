@@ -98,6 +98,7 @@
 		34FB779E208D6FCF008E53AA /* UIViewController+Navigation.m in Sources */ = {isa = PBXBuildFile; fileRef = 34FB779D208D6FCF008E53AA /* UIViewController+Navigation.m */; };
 		34FB77A1208DB890008E53AA /* PersonalInformationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34FB77A0208DB890008E53AA /* PersonalInformationViewController.m */; };
 		D8D61C9C208D813200663054 /* informationTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D61C9B208D813200663054 /* informationTableViewCell.m */; };
+		D8D61C9F208DBDCE00663054 /* InformationDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D61C9E208DBDCE00663054 /* InformationDetailViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -261,6 +262,8 @@
 		8564135A71ED42991B9B9A54 /* Pods-pe762-ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-pe762-ios.debug.xcconfig"; path = "Pods/Target Support Files/Pods-pe762-ios/Pods-pe762-ios.debug.xcconfig"; sourceTree = "<group>"; };
 		D8D61C9A208D813200663054 /* informationTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = informationTableViewCell.h; sourceTree = "<group>"; };
 		D8D61C9B208D813200663054 /* informationTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = informationTableViewCell.m; sourceTree = "<group>"; };
+		D8D61C9D208DBDCE00663054 /* InformationDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InformationDetailViewController.h; sourceTree = "<group>"; };
+		D8D61C9E208DBDCE00663054 /* InformationDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InformationDetailViewController.m; sourceTree = "<group>"; };
 		F1C1CD50920F591E08B8475E /* libPods-pe762-ios.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-pe762-ios.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -700,6 +703,8 @@
 			children = (
 				34076DD62089EC07005324AB /* ReadViewController.h */,
 				34076DD72089EC07005324AB /* ReadViewController.m */,
+				D8D61C9D208DBDCE00663054 /* InformationDetailViewController.h */,
+				D8D61C9E208DBDCE00663054 /* InformationDetailViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -937,6 +942,7 @@
 				34076D552089E855005324AB /* ShowStarView.m in Sources */,
 				34076DBA2089E88D005324AB /* NSString+Hash.m in Sources */,
 				34076DC42089E88D005324AB /* UIView+Common.m in Sources */,
+				D8D61C9F208DBDCE00663054 /* InformationDetailViewController.m in Sources */,
 				34076D612089E855005324AB /* MSSBrowseLocalViewController.m in Sources */,
 				34076D8E2089E855005324AB /* ZHScanView.m in Sources */,
 				34076D5D2089E855005324AB /* MSSBrowseActionSheetCell.m in Sources */,
