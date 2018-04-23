@@ -7,6 +7,7 @@
 //  设置页面
 
 #import "SettingViewController.h"
+#import "AudioPlayViewController.h"
 
 @interface SettingViewController ()
 {
@@ -137,7 +138,16 @@
 
 #pragma mark - 推出登录
 - (void)quitBtnAction {
-    
+    [self.navigationController pushViewController:[AudioPlayViewController new] animated:YES];
+}
+
+
+- (void)shareBtnAction{
+    NSLog(@"分享");
+}
+
+- (void)likeBtnAction{
+    NSLog(@"喜欢");
 }
 
 - (void)didReceiveMemoryWarning {

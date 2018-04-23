@@ -1,5 +1,5 @@
 //
-//  AudioPlayViewController.h
+//  MyRecordingViewController.h
 //  pe762-ios
 //
 //  Created by wsy on 2018/4/23.
@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface AudioPlayViewController : UIViewController
-
-@property (nonatomic, strong) NSString *titleStr;
+@interface MyRecordingViewController : UIViewController
 
 @end
