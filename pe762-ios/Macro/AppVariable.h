@@ -79,7 +79,7 @@
 #define kDefaultBackgroundColor RGB(230, 230, 230)
 #define kBlackLabelColor RGB(57,57,57) //文本深黑色
 #define kShallowBlackLabelColor RGB(105,105,105) //文本浅黑色
-#define kLineGrayColor RGB(240.0, 240.0, 240.0) //分割线灰色
+#define kLineGrayColor RGB(238, 234, 234) //分割线灰色
 
 #define kGrayLabelColor RGB(145,145,145) //文本灰色
 

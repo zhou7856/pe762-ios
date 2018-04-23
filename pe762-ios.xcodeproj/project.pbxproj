@@ -97,6 +97,9 @@
 		34BA90F0208D68ED0035262B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 34BA90EF208D68ED0035262B /* Assets.xcassets */; };
 		34FB779E208D6FCF008E53AA /* UIViewController+Navigation.m in Sources */ = {isa = PBXBuildFile; fileRef = 34FB779D208D6FCF008E53AA /* UIViewController+Navigation.m */; };
 		34FB77A1208DB890008E53AA /* PersonalInformationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34FB77A0208DB890008E53AA /* PersonalInformationViewController.m */; };
+		34FB77A4208DBF88008E53AA /* ChangeInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34FB77A3208DBF88008E53AA /* ChangeInfoViewController.m */; };
+		34FB77A7208DC384008E53AA /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34FB77A6208DC384008E53AA /* SettingViewController.m */; };
+		34FB77AA208DC84E008E53AA /* AudioPlayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34FB77A9208DC84E008E53AA /* AudioPlayViewController.m */; };
 		D8D61C9C208D813200663054 /* informationTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D61C9B208D813200663054 /* informationTableViewCell.m */; };
 		D8D61C9F208DBDCE00663054 /* InformationDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D61C9E208DBDCE00663054 /* InformationDetailViewController.m */; };
 /* End PBXBuildFile section */
@@ -259,6 +262,12 @@
 		34FB779D208D6FCF008E53AA /* UIViewController+Navigation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Navigation.m"; sourceTree = "<group>"; };
 		34FB779F208DB890008E53AA /* PersonalInformationViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PersonalInformationViewController.h; sourceTree = "<group>"; };
 		34FB77A0208DB890008E53AA /* PersonalInformationViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PersonalInformationViewController.m; sourceTree = "<group>"; };
+		34FB77A2208DBF88008E53AA /* ChangeInfoViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChangeInfoViewController.h; sourceTree = "<group>"; };
+		34FB77A3208DBF88008E53AA /* ChangeInfoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChangeInfoViewController.m; sourceTree = "<group>"; };
+		34FB77A5208DC384008E53AA /* SettingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SettingViewController.h; sourceTree = "<group>"; };
+		34FB77A6208DC384008E53AA /* SettingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SettingViewController.m; sourceTree = "<group>"; };
+		34FB77A8208DC84E008E53AA /* AudioPlayViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AudioPlayViewController.h; sourceTree = "<group>"; };
+		34FB77A9208DC84E008E53AA /* AudioPlayViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AudioPlayViewController.m; sourceTree = "<group>"; };
 		8564135A71ED42991B9B9A54 /* Pods-pe762-ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-pe762-ios.debug.xcconfig"; path = "Pods/Target Support Files/Pods-pe762-ios/Pods-pe762-ios.debug.xcconfig"; sourceTree = "<group>"; };
 		D8D61C9A208D813200663054 /* informationTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = informationTableViewCell.h; sourceTree = "<group>"; };
 		D8D61C9B208D813200663054 /* informationTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = informationTableViewCell.m; sourceTree = "<group>"; };
@@ -676,6 +685,10 @@
 				34076DCC2089EBA4005324AB /* PersonCenterViewController.m */,
 				34FB779F208DB890008E53AA /* PersonalInformationViewController.h */,
 				34FB77A0208DB890008E53AA /* PersonalInformationViewController.m */,
+				34FB77A2208DBF88008E53AA /* ChangeInfoViewController.h */,
+				34FB77A3208DBF88008E53AA /* ChangeInfoViewController.m */,
+				34FB77A5208DC384008E53AA /* SettingViewController.h */,
+				34FB77A6208DC384008E53AA /* SettingViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -685,6 +698,8 @@
 			children = (
 				34076DD12089EBEF005324AB /* ListenViewController.h */,
 				34076DD22089EBEF005324AB /* ListenViewController.m */,
+				34FB77A8208DC84E008E53AA /* AudioPlayViewController.h */,
+				34FB77A9208DC84E008E53AA /* AudioPlayViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -888,11 +903,13 @@
 				34076D662089E855005324AB /* MSSCollectionViewCell.m in Sources */,
 				34076D582089E855005324AB /* ConditionFilterTableViewCell.m in Sources */,
 				34076DC32089E88D005324AB /* UITextField+Placeholder.m in Sources */,
+				34FB77A4208DBF88008E53AA /* ChangeInfoViewController.m in Sources */,
 				34076D622089E855005324AB /* MSSBrowseModel.m in Sources */,
 				34076D652089E855005324AB /* MSSBrowseZoomScrollView.m in Sources */,
 				34076D692089E855005324AB /* Identify.m in Sources */,
 				34076DB62089E88D005324AB /* NSDate+Formatter.m in Sources */,
 				34FB77A1208DB890008E53AA /* PersonalInformationViewController.m in Sources */,
+				34FB77AA208DC84E008E53AA /* AudioPlayViewController.m in Sources */,
 				34076D822089E855005324AB /* TZAssetModel.m in Sources */,
 				34076DD32089EBEF005324AB /* ListenViewController.m in Sources */,
 				34076D6C2089E855005324AB /* M13OrderedDictionary.m in Sources */,
@@ -934,6 +951,7 @@
 				34076D862089E855005324AB /* TZPhotoPreviewCell.m in Sources */,
 				34076D5E2089E855005324AB /* MSSBrowseBaseViewController.m in Sources */,
 				34076CD82089E606005324AB /* main.m in Sources */,
+				34FB77A7208DC384008E53AA /* SettingViewController.m in Sources */,
 				34076D812089E855005324AB /* TZAssetCell.m in Sources */,
 				34076D882089E855005324AB /* TZVideoPlayerController.m in Sources */,
 				34076D5F2089E855005324AB /* MSSBrowseCollectionViewCell.m in Sources */,
