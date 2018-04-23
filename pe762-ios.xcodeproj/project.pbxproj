@@ -95,6 +95,7 @@
 		34076DD82089EC07005324AB /* ReadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34076DD72089EC07005324AB /* ReadViewController.m */; };
 		34076DDC2089EC18005324AB /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34076DDB2089EC18005324AB /* LoginViewController.m */; };
 		34BA90F0208D68ED0035262B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 34BA90EF208D68ED0035262B /* Assets.xcassets */; };
+		34FB779E208D6FCF008E53AA /* UIViewController+Navigation.m in Sources */ = {isa = PBXBuildFile; fileRef = 34FB779D208D6FCF008E53AA /* UIViewController+Navigation.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -251,6 +252,8 @@
 		34076DDA2089EC18005324AB /* LoginViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		34076DDB2089EC18005324AB /* LoginViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		34BA90EF208D68ED0035262B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = "pe762-ios/Assets.xcassets"; sourceTree = "<group>"; };
+		34FB779C208D6FCF008E53AA /* UIViewController+Navigation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Navigation.h"; sourceTree = "<group>"; };
+		34FB779D208D6FCF008E53AA /* UIViewController+Navigation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Navigation.m"; sourceTree = "<group>"; };
 		8564135A71ED42991B9B9A54 /* Pods-pe762-ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-pe762-ios.debug.xcconfig"; path = "Pods/Target Support Files/Pods-pe762-ios/Pods-pe762-ios.debug.xcconfig"; sourceTree = "<group>"; };
 		F1C1CD50920F591E08B8475E /* libPods-pe762-ios.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-pe762-ios.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -303,13 +306,13 @@
 		34076CDF2089E77C005324AB /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				34076CDE2089E744005324AB /* PrefixHeader.pch */,
 				34076CCB2089E606005324AB /* ViewController.h */,
 				34076CCC2089E606005324AB /* ViewController.m */,
 				34076CCE2089E606005324AB /* Main.storyboard */,
 				34076CD32089E606005324AB /* LaunchScreen.storyboard */,
 				34076CD62089E606005324AB /* Info.plist */,
 				34076CD72089E606005324AB /* main.m */,
-				34076CDE2089E744005324AB /* PrefixHeader.pch */,
 			);
 			path = "Supporting Files";
 			sourceTree = "<group>";
@@ -635,6 +638,8 @@
 				34076DB32089E88D005324AB /* UIView+Layout.m */,
 				34076DB42089E88D005324AB /* UIViewController+Common.h */,
 				34076DB52089E88D005324AB /* UIViewController+Common.m */,
+				34FB779C208D6FCF008E53AA /* UIViewController+Navigation.h */,
+				34FB779D208D6FCF008E53AA /* UIViewController+Navigation.m */,
 			);
 			path = UIView;
 			sourceTree = "<group>";
@@ -898,6 +903,7 @@
 				34076DBF2089E88D005324AB /* UIImageView+Common.m in Sources */,
 				34076DBE2089E88D005324AB /* UIImage+Common.m in Sources */,
 				34076D592089E855005324AB /* SZTextView.m in Sources */,
+				34FB779E208D6FCF008E53AA /* UIViewController+Navigation.m in Sources */,
 				34076DDC2089EC18005324AB /* LoginViewController.m in Sources */,
 				34076D602089E855005324AB /* MSSBrowseLoadingImageView.m in Sources */,
 				34076D862089E855005324AB /* TZPhotoPreviewCell.m in Sources */,
@@ -1052,6 +1058,7 @@
 				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/$(PRODUCT_NAME)/Supporting Files/PrefixHeader.pch";
 				INFOPLIST_FILE = "pe762-ios/Supporting Files/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "zmit.pe762-ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1068,6 +1075,7 @@
 				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/$(PRODUCT_NAME)/Supporting Files/PrefixHeader.pch";
 				INFOPLIST_FILE = "pe762-ios/Supporting Files/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "zmit.pe762-ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";

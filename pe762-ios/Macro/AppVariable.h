@@ -32,6 +32,9 @@
 //　底部标签栏高度
 #define kTabBarHeight   self.tabBarController.tabBar.frame.size.height
 
+// 底部导航返回页面高度
+#define kEndBackViewHeight (kScreenHeight == 812 ? 40 * kScreenWidthProportion + 34: 40 * kScreenWidthProportion)
+
 
 /**
  *	@brief 设置字体
