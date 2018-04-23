@@ -7,7 +7,6 @@
 //  常见问题页面
 
 #import "CommonProblemViewController.h"
-#import "ProblemTableViewCell.h"//常见问题cell
 
 @interface CommonProblemViewController ()
 

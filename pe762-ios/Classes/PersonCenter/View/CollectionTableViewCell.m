@@ -1,14 +1,14 @@
 //
-//  ProblemTableViewCell.m
+//  CollectionTableViewCell.m
 //  pe762-ios
 //
-//  Created by Future on 2018/4/23.
+//  Created by wsy on 2018/4/23.
 //  Copyright © 2018年 zmit. All rights reserved.
-//  常见问题cell页面
+//  我的收藏夹cell
 
-#import "ProblemTableViewCell.h"
+#import "CollectionTableViewCell.h"
 
-@implementation ProblemTableViewCell
+@implementation CollectionTableViewCell
 
 - (void)awakeFromNib {
     [super awakeFromNib];
