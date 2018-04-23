@@ -9,6 +9,7 @@
 #import "ReadViewController.h"
 #import "informationTableViewCell.h"//资讯cell
 #import "InformationDetailViewController.h"//资讯详情
+#import "LoginViewController.h"//登录
 
 @interface ReadViewController ()<UITableViewDelegate,UITableViewDataSource>
 {
@@ -151,6 +152,8 @@
 #pragma mark - 搜索
 - (void) searchBtnAction{
     NSLog(@"搜索");
+    [self showTabBarView:NO];
+    [self.navigationController pushViewController:[LoginViewController new] animated:YES];
 }
 
 /*
