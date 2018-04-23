@@ -12,6 +12,7 @@
 @interface ReadViewController ()<UITableViewDelegate,UITableViewDataSource>
 {
     UITableView *informationTabelView;
+    UIButton *searchBtn;
 }
 @end
 
@@ -42,6 +43,20 @@
 - (void) initUI{
 #pragma mark - 头部
     self.navigationController.navigationBarHidden = YES;
+    
+    self.view.backgroundColor = kWhiteColor;
+    
+    // 标题
+    [self createNavigationTitle:@"读资讯"];
+    
+    // 搜索按钮
+    searchBtn = [[UIButton alloc] initWithFrame:CGRectMake(285 * kScreenWidthProportion, kStatusHeight, 30, 44)];
+    [searchBtn addTarget:self action:@selector(searchBtnAction) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:searchBtn];
+    
+    UIImageView *searchImageView = [[UIImageView alloc] initWithFrame:CGRectMake(298 * kScreenWidthProportion, kStatusHeight + 16, 12, 12)];
+    searchImageView.image = [UIImage imageNamed:@"Layer_-1"];
+    [self.view addSubview:searchImageView];
     
 #pragma mark - 内容
     informationTabelView = [[UITableView alloc] initWithFrame:CGRectMake(0, kHeaderHeight, kScreenWidth, kScreenHeight - kHeaderHeight - kTabBarHeight) style:UITableViewStylePlain];
@@ -102,6 +117,11 @@
 
     NSLog(@"你点击了第%ld行", indexPath.row);
 
+}
+
+#pragma mark - 搜索
+- (void) searchBtnAction{
+    NSLog(@"搜索");
 }
 
 /*
