@@ -93,6 +93,7 @@
 
 #define kBackgroundWhiteColor RGB(245,245,245) //烟灰白 #F5F5F5
 
+#define kGoldenColor RGB(221,200,165) //金黄色
 
 #endif /* AppVariable_h */
 
