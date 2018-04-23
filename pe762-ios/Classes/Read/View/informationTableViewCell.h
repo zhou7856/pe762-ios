@@ -24,5 +24,7 @@
 @property (nonatomic, strong) UILabel *zanNumberLabel;
 //头像
 @property (nonatomic, strong) UIImageView *headImageView;
+//作者
+@property (nonatomic, strong) UILabel *authorLabel;
 
 @end

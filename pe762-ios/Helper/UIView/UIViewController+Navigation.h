@@ -18,7 +18,14 @@
  */
 - (void)createNavigationTitle:(NSString *)title;
 
-
+/**
+ 创建导航基于文本和功能
+ 
+ @param title 标题
+ @param leftBtn 左边按钮（触发点击）
+ @param typeLabel 选中的状态文本
+ */
+- (void)createNavigationFeatureAndTitle:(NSString *)title withLeftBtn:(UIButton *)leftBtn andTypeTitle:(UILabel *)typeLabel;
 
 /**
  创建导航基于文本和功能
@@ -29,6 +36,8 @@
  @param typeLabel 选中的状态文本
  */
 - (void)createNavigationFeatureAndTitle:(NSString *)title withLeftBtn:(UIButton *)leftBtn andRightBtn:(UIButton *)rightBtn andTypeTitle:(UILabel *)typeLabel;
+
+
 
 
 /**

@@ -50,6 +50,123 @@
     }
 }
 
+
+- (void)createNavigationFeatureAndTitle:(NSString *)title withLeftBtn:(UIButton *)leftBtn andTypeTitle:(UILabel *)typeLabel{
+    if (kScreenHeight == 812) {
+        NSLog(@"this is iPhone X");
+        self.navigationController.navigationBarHidden = YES;
+        UIView *statusView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 44)];
+        statusView.backgroundColor = kWhiteColor;
+        [self.view addSubview:statusView];
+        
+        UIView *view = [UIView viewWithFrame:CGRectMake(0, 44, kScreenWidth, 44) backgroundColor:kWhiteColor];
+        [self.view addSubview:view];
+        
+        UILabel *label = [UILabel labelWithFrame:CGRectMake(0, -12, 200, 56) text:title textAlignment:NSTextAlignmentCenter font:FONT(16)];
+        label.centerX = kScreenWidth/2.0;
+        label.textColor = kBlackLabelColor;
+        [view addSubview:label];
+        
+        leftBtn.frame = CGRectMake(0, 0, 100 * kScreenWidthProportion, view.height);
+        [view addSubview:leftBtn];
+        
+        //        typeLabel = [[UILabel alloc] init];
+        [typeLabel setLabelWithTextColor:kBlackLabelColor textAlignment:NSTextAlignmentRight font:13];
+        [view addSubview:typeLabel];
+        
+        UIImageView *iconImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Group 60"]];
+        iconImageView.tag = kTagStart + 10001;
+        iconImageView.userInteractionEnabled = YES;
+        [view addSubview:iconImageView];
+        
+        UIView *typeView = [[UIView alloc] init];
+        //        typeView.backgroundColor = kRedColor;
+        [view addSubview:typeView];
+        
+        [typeView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.bottom.mas_equalTo(leftBtn);
+            make.centerX.mas_equalTo(leftBtn);
+            make.left.mas_equalTo(typeLabel);
+            make.right.mas_equalTo(iconImageView);
+            make.width.mas_lessThanOrEqualTo(leftBtn.mas_width);
+        }];
+        
+        [typeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerY.mas_equalTo(typeView);
+            make.right.mas_equalTo(iconImageView.mas_left).offset(-10);
+            make.height.mas_equalTo(20);
+        }];
+        
+        [iconImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerY.mas_equalTo(typeView);
+            make.left.mas_equalTo(typeLabel.mas_right).offset(10);
+            make.size.mas_equalTo(CGSizeMake(8 * kScreenWidthProportion, 7 * kScreenWidthProportion));
+        }];
+        
+        [view bringSubviewToFront:leftBtn];
+        
+        UIView *lineView = [UIView viewWithFrame:CGRectMake(0, 43, kScreenWidth, 1) backgroundColor:RGB(223, 223, 223)];
+        [view addSubview:lineView];
+    } else {
+        self.navigationController.navigationBarHidden = YES;
+        
+        UIView *statusView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 20)];
+        statusView.backgroundColor = kWhiteColor;
+        [self.view addSubview:statusView];
+        
+        UIView *view = [UIView viewWithFrame:CGRectMake(0, 20, kScreenWidth, 44) backgroundColor:[UIColor whiteColor]];
+        [self.view addSubview:view];
+        
+        UILabel *label = [UILabel labelWithFrame:CGRectMake(0, 0, 200 * kScreenWidthProportion, 44) text:title textAlignment:NSTextAlignmentCenter font:FONT(16)];
+        label.centerX = kScreenWidth/2.0;
+        label.textColor = kBlackLabelColor;
+        [view addSubview:label];
+        
+        leftBtn.frame = CGRectMake(0, 0, 100 * kScreenWidthProportion, view.height);
+        [view addSubview:leftBtn];
+        
+        //        typeLabel = [[UILabel alloc] init];
+        [typeLabel setLabelWithTextColor:kBlackLabelColor textAlignment:NSTextAlignmentRight font:13];
+        [view addSubview:typeLabel];
+        
+        UIImageView *iconImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Group 60"]];
+        iconImageView.tag = kTagStart + 10001;
+        iconImageView.userInteractionEnabled = YES;
+        [view addSubview:iconImageView];
+        
+        UIView *typeView = [[UIView alloc] init];
+        //        typeView.backgroundColor = kRedColor;
+        [view addSubview:typeView];
+        
+        [typeView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.bottom.mas_equalTo(leftBtn);
+            make.centerX.mas_equalTo(leftBtn);
+            make.left.mas_equalTo(typeLabel);
+            make.right.mas_equalTo(iconImageView);
+            make.width.mas_lessThanOrEqualTo(leftBtn.mas_width);
+        }];
+        
+        [typeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerY.mas_equalTo(typeView);
+            make.right.mas_equalTo(iconImageView.mas_left).offset(-10);
+            make.height.mas_equalTo(20);
+        }];
+        
+        [iconImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerY.mas_equalTo(typeView);
+            make.left.mas_equalTo(typeLabel.mas_right).offset(10);
+            make.size.mas_equalTo(CGSizeMake(8 * kScreenWidthProportion, 7 * kScreenWidthProportion));
+        }];
+        
+        [view bringSubviewToFront:leftBtn];
+        
+        UIView *lineView = [UIView viewWithFrame:CGRectMake(0, 43, kScreenWidth, 1) backgroundColor:RGB(223, 223, 223)];
+        [view addSubview:lineView];
+        
+    }
+}
+
+
 //文本和功能的导航
 - (void)createNavigationFeatureAndTitle:(NSString *)title withLeftBtn:(UIButton *)leftBtn andRightBtn:(UIButton *)rightBtn andTypeTitle:(UILabel *)typeLabel{
     if (kScreenHeight == 812) {
