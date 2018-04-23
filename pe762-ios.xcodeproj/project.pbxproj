@@ -107,6 +107,8 @@
 		D8D61CA2208E09D200663054 /* CommonProblemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D61CA1208E09D200663054 /* CommonProblemViewController.m */; };
 		D8D61CB0208E36C600663054 /* ProblemTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D61CAF208E36C600663054 /* ProblemTableViewCell.m */; };
 		D8D61CB3208E42C600663054 /* ProblemDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D61CB2208E42C600663054 /* ProblemDetailViewController.m */; };
+		D8D61CB6208E488700663054 /* FeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D61CB5208E488700663054 /* FeedbackViewController.m */; };
+		D8D61CB9208E490500663054 /* ContactServiceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D61CB8208E490500663054 /* ContactServiceViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -288,6 +290,10 @@
 		D8D61CAF208E36C600663054 /* ProblemTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProblemTableViewCell.m; sourceTree = "<group>"; };
 		D8D61CB1208E42C600663054 /* ProblemDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProblemDetailViewController.h; sourceTree = "<group>"; };
 		D8D61CB2208E42C600663054 /* ProblemDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProblemDetailViewController.m; sourceTree = "<group>"; };
+		D8D61CB4208E488700663054 /* FeedbackViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FeedbackViewController.h; sourceTree = "<group>"; };
+		D8D61CB5208E488700663054 /* FeedbackViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FeedbackViewController.m; sourceTree = "<group>"; };
+		D8D61CB7208E490500663054 /* ContactServiceViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ContactServiceViewController.h; sourceTree = "<group>"; };
+		D8D61CB8208E490500663054 /* ContactServiceViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ContactServiceViewController.m; sourceTree = "<group>"; };
 		F1C1CD50920F591E08B8475E /* libPods-pe762-ios.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-pe762-ios.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -711,6 +717,10 @@
 				D8D61CA1208E09D200663054 /* CommonProblemViewController.m */,
 				D8D61CB1208E42C600663054 /* ProblemDetailViewController.h */,
 				D8D61CB2208E42C600663054 /* ProblemDetailViewController.m */,
+				D8D61CB4208E488700663054 /* FeedbackViewController.h */,
+				D8D61CB5208E488700663054 /* FeedbackViewController.m */,
+				D8D61CB7208E490500663054 /* ContactServiceViewController.h */,
+				D8D61CB8208E490500663054 /* ContactServiceViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -933,6 +943,7 @@
 				34076D842089E855005324AB /* TZImagePickerController.m in Sources */,
 				34076D672089E855005324AB /* UIImage+MSSScale.m in Sources */,
 				34076D8F2089E855005324AB /* XCallSystemCameraAlertView.m in Sources */,
+				D8D61CB9208E490500663054 /* ContactServiceViewController.m in Sources */,
 				34076D662089E855005324AB /* MSSCollectionViewCell.m in Sources */,
 				34076D582089E855005324AB /* ConditionFilterTableViewCell.m in Sources */,
 				34076DC32089E88D005324AB /* UITextField+Placeholder.m in Sources */,
@@ -961,6 +972,7 @@
 				34076DC12089E88D005324AB /* UILabel+Text.m in Sources */,
 				34076DD82089EC07005324AB /* ReadViewController.m in Sources */,
 				34076DC92089EB44005324AB /* TabBarController.m in Sources */,
+				D8D61CB6208E488700663054 /* FeedbackViewController.m in Sources */,
 				34076D572089E855005324AB /* ConditionFilterPopView.m in Sources */,
 				34076D6A2089E855005324AB /* AFAppDotNetAPIClient.m in Sources */,
 				34076D852089E855005324AB /* TZPhotoPickerController.m in Sources */,

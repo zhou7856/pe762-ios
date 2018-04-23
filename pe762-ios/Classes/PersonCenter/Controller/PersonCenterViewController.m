@@ -9,6 +9,8 @@
 #import "PersonCenterViewController.h"
 #import "PersonalInformationViewController.h" //个人信息
 #import "CommonProblemViewController.h"//常见问题
+#import "FeedbackViewController.h"//意见反馈
+#import "ContactServiceViewController.h"//联系客服
 
 @interface PersonCenterViewController ()
 {
