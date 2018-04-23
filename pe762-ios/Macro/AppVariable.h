@@ -87,6 +87,10 @@
 
 #define kbuttonOrangeColor RGB(236, 108, 51) //button的背景色 （橙色）实名认证页面
 #define kBorderLineColor RGB(247, 247, 247) //（灰色）弹窗线的颜色
+
+#define kBackgroundWhiteColor RGB(245,245,245) //烟灰白 #F5F5F5
+
+
 #endif /* AppVariable_h */
 
 
