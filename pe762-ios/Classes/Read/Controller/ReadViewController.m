@@ -84,6 +84,16 @@
     if (!cell) {
         cell = [[informationTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
     }
+    // 取消点击cell的效果
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
+    cell.mainTitleLabel.text = @"如何让你了解孩子的大学生活？";
+    cell.subTitleLabel.text = @"愿我们岁月安稳，细水长流";
+    cell.contentImageView.backgroundColor = kRedColor;
+    cell.sourceAndTimeLabel.text = @"知识超市 10:00";
+    cell.messageNumberLabel.text = @"4";
+    cell.zanNumberLabel.text = @"188";
+    cell.headImageView.backgroundColor = kRedColor;
 
     return cell;
 }

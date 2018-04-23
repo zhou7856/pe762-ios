@@ -89,7 +89,7 @@
 #define kBorderLineColor RGB(247, 247, 247) //（灰色）弹窗线的颜色
 
 #define kBackgroundWhiteColor RGB(245,245,245) //烟灰白 #F5F5F5
-
+#define kLightGreyColor RGB(211,211,211) //浅灰色 #D3D3D3
 
 #endif /* AppVariable_h */
 
