@@ -8,6 +8,7 @@
 
 #import "PersonCenterViewController.h"
 #import "PersonalInformationViewController.h" //个人信息
+#import "CommonProblemViewController.h"//常见问题
 
 @interface PersonCenterViewController ()
 {

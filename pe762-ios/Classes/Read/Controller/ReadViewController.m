@@ -10,6 +10,7 @@
 #import "informationTableViewCell.h"//资讯cell
 #import "InformationDetailViewController.h"//资讯详情
 #import "LoginViewController.h"//登录
+#import "CommonProblemViewController.h"//常见问题
 
 @interface ReadViewController ()<UITableViewDelegate,UITableViewDataSource>
 {
@@ -153,7 +154,7 @@
 - (void) searchBtnAction{
     NSLog(@"搜索");
     [self showTabBarView:NO];
-    [self.navigationController pushViewController:[LoginViewController new] animated:YES];
+    [self.navigationController pushViewController:[CommonProblemViewController new] animated:YES];
 }
 
 /*

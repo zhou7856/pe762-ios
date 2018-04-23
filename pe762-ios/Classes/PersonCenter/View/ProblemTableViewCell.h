@@ -10,4 +10,7 @@
 
 @interface ProblemTableViewCell : UITableViewCell
 
+// 内容
+@property (nonatomic, strong) UILabel *contentLabel;
+
 @end
