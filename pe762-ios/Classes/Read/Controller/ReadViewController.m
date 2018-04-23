@@ -107,10 +107,32 @@
     cell.subTitleLabel.text = @"愿我们岁月安稳，细水长流";
     cell.contentImageView.backgroundColor = kRedColor;
     cell.sourceAndTimeLabel.text = @"知识超市 10:00";
-    cell.messageNumberLabel.text = @"4";
-    cell.zanNumberLabel.text = @"188";
-    cell.headImageView.backgroundColor = kRedColor;
+    cell.zanNumberLabel.text = @"999999999999";
+    cell.authorLabel.text = @"作者:如何让你了解孩子的大学生活";
 
+    // 作者
+    CGFloat authorLabelWidth = [cell.authorLabel getTitleTextWidth:cell.authorLabel.text font:FONT(9 * kFontProportion)];
+    [cell.authorLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        if (authorLabelWidth >= 110 * kScreenWidthProportion) {
+            make.size.mas_equalTo(CGSizeMake(100 * kScreenWidthProportion, 11 * kScreenHeightProportion));
+        } else {
+            make.size.mas_equalTo(CGSizeMake(authorLabelWidth, 11 * kScreenHeightProportion));
+        }
+        
+    }];
+    
+    // 点赞
+    CGFloat zanNumberLabelWidth = [cell.zanNumberLabel getTitleTextWidth:cell.zanNumberLabel.text font:FONT(9 * kFontProportion)];
+    [cell.zanNumberLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        if (zanNumberLabelWidth >= 24 * kScreenWidthProportion) {
+            make.size.mas_equalTo(CGSizeMake(24 * kScreenWidthProportion, 11 * kScreenHeightProportion));
+            cell.zanNumberLabel.text = @"999+";
+        } else {
+            make.size.mas_equalTo(CGSizeMake(zanNumberLabelWidth, 11 * kScreenHeightProportion));
+        }
+        
+    }];
+    
     return cell;
 }
 
