@@ -105,7 +105,7 @@
 		D8D61C9C208D813200663054 /* informationTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D61C9B208D813200663054 /* informationTableViewCell.m */; };
 		D8D61C9F208DBDCE00663054 /* InformationDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D61C9E208DBDCE00663054 /* InformationDetailViewController.m */; };
 		D8D61CA2208E09D200663054 /* CommonProblemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D61CA1208E09D200663054 /* CommonProblemViewController.m */; };
-		D8D61CA6208E0A1200663054 /* ProblemTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D61CA5208E0A1200663054 /* ProblemTableViewCell.m */; };
+		D8D61CB0208E36C600663054 /* ProblemTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D61CAF208E36C600663054 /* ProblemTableViewCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -283,7 +283,8 @@
 		D8D61C9E208DBDCE00663054 /* InformationDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InformationDetailViewController.m; sourceTree = "<group>"; };
 		D8D61CA0208E09D200663054 /* CommonProblemViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CommonProblemViewController.h; sourceTree = "<group>"; };
 		D8D61CA1208E09D200663054 /* CommonProblemViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CommonProblemViewController.m; sourceTree = "<group>"; };
-		D8D61CA5208E0A1200663054 /* ProblemTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProblemTableViewCell.m; sourceTree = "<group>"; };
+		D8D61CAE208E36C600663054 /* ProblemTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProblemTableViewCell.h; sourceTree = "<group>"; };
+		D8D61CAF208E36C600663054 /* ProblemTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProblemTableViewCell.m; sourceTree = "<group>"; };
 		F1C1CD50920F591E08B8475E /* libPods-pe762-ios.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-pe762-ios.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -307,7 +308,6 @@
 				34076CC62089E606005324AB /* Products */,
 				5109356EAE0C716A3AF77714 /* Pods */,
 				FDE7D76FD08041BBC3A73C2C /* Frameworks */,
-				D8D61CA7208E0AD000663054 /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -755,6 +755,8 @@
 			children = (
 				34FB77AF208E095F008E53AA /* CollectionTableViewCell.h */,
 				34FB77B0208E095F008E53AA /* CollectionTableViewCell.m */,
+				D8D61CAE208E36C600663054 /* ProblemTableViewCell.h */,
+				D8D61CAF208E36C600663054 /* ProblemTableViewCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -775,14 +777,6 @@
 				D8D61C9B208D813200663054 /* informationTableViewCell.m */,
 			);
 			path = View;
-			sourceTree = "<group>";
-		};
-		D8D61CA7208E0AD000663054 /* Recovered References */ = {
-			isa = PBXGroup;
-			children = (
-				D8D61CA5208E0A1200663054 /* ProblemTableViewCell.m */,
-			);
-			name = "Recovered References";
 			sourceTree = "<group>";
 		};
 		FDE7D76FD08041BBC3A73C2C /* Frameworks */ = {
@@ -948,7 +942,6 @@
 				34076DD32089EBEF005324AB /* ListenViewController.m in Sources */,
 				34076D6C2089E855005324AB /* M13OrderedDictionary.m in Sources */,
 				D8D61CA2208E09D200663054 /* CommonProblemViewController.m in Sources */,
-				D8D61CA6208E0A1200663054 /* ProblemTableViewCell.m in Sources */,
 				34076DBB2089E88D005324AB /* NullSafe.m in Sources */,
 				34076D632089E855005324AB /* MSSBrowseNetworkViewController.m in Sources */,
 				34076DC52089E88D005324AB /* UIView+Layout.m in Sources */,
@@ -997,6 +990,7 @@
 				34076D892089E855005324AB /* UIView+Layout.m in Sources */,
 				34076D552089E855005324AB /* ShowStarView.m in Sources */,
 				34076DBA2089E88D005324AB /* NSString+Hash.m in Sources */,
+				D8D61CB0208E36C600663054 /* ProblemTableViewCell.m in Sources */,
 				34076DC42089E88D005324AB /* UIView+Common.m in Sources */,
 				D8D61C9F208DBDCE00663054 /* InformationDetailViewController.m in Sources */,
 				34076D612089E855005324AB /* MSSBrowseLocalViewController.m in Sources */,
