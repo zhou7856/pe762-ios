@@ -96,6 +96,7 @@
 		34076DDC2089EC18005324AB /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34076DDB2089EC18005324AB /* LoginViewController.m */; };
 		34BA90F0208D68ED0035262B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 34BA90EF208D68ED0035262B /* Assets.xcassets */; };
 		34FB779E208D6FCF008E53AA /* UIViewController+Navigation.m in Sources */ = {isa = PBXBuildFile; fileRef = 34FB779D208D6FCF008E53AA /* UIViewController+Navigation.m */; };
+		D8D61C9C208D813200663054 /* informationTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D61C9B208D813200663054 /* informationTableViewCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -255,6 +256,8 @@
 		34FB779C208D6FCF008E53AA /* UIViewController+Navigation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Navigation.h"; sourceTree = "<group>"; };
 		34FB779D208D6FCF008E53AA /* UIViewController+Navigation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Navigation.m"; sourceTree = "<group>"; };
 		8564135A71ED42991B9B9A54 /* Pods-pe762-ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-pe762-ios.debug.xcconfig"; path = "Pods/Target Support Files/Pods-pe762-ios/Pods-pe762-ios.debug.xcconfig"; sourceTree = "<group>"; };
+		D8D61C9A208D813200663054 /* informationTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = informationTableViewCell.h; sourceTree = "<group>"; };
+		D8D61C9B208D813200663054 /* informationTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = informationTableViewCell.m; sourceTree = "<group>"; };
 		F1C1CD50920F591E08B8475E /* libPods-pe762-ios.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-pe762-ios.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -682,6 +685,7 @@
 			isa = PBXGroup;
 			children = (
 				34076DD52089EBFC005324AB /* Controller */,
+				D8D61C99208D7B8E00663054 /* View */,
 			);
 			path = Read;
 			sourceTree = "<group>";
@@ -711,6 +715,15 @@
 				24DA2C2571DEB657CF2F2C4C /* Pods-pe762-ios.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		D8D61C99208D7B8E00663054 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				D8D61C9A208D813200663054 /* informationTableViewCell.h */,
+				D8D61C9B208D813200663054 /* informationTableViewCell.m */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		FDE7D76FD08041BBC3A73C2C /* Frameworks */ = {
@@ -878,6 +891,7 @@
 				34076DB82089E88D005324AB /* NSNull+JSON.m in Sources */,
 				34076DBC2089E88D005324AB /* UIButton+Common.m in Sources */,
 				34076DC22089E88D005324AB /* UITextField+Common.m in Sources */,
+				D8D61C9C208D813200663054 /* informationTableViewCell.m in Sources */,
 				34076D642089E855005324AB /* MSSBrowseRemindView.m in Sources */,
 				34076D6D2089E855005324AB /* LDImagePicker.m in Sources */,
 				34076DC12089E88D005324AB /* UILabel+Text.m in Sources */,
