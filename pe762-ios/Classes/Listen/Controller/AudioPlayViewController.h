@@ -10,4 +10,6 @@
 
 @interface AudioPlayViewController : UIViewController
 
+@property (nonatomic, strong) NSString *titleStr;
+
 @end
