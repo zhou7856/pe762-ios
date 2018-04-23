@@ -141,6 +141,15 @@
     [self.navigationController pushViewController:[AudioPlayViewController new] animated:YES];
 }
 
+
+- (void)shareBtnAction{
+    NSLog(@"分享");
+}
+
+- (void)likeBtnAction{
+    NSLog(@"喜欢");
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

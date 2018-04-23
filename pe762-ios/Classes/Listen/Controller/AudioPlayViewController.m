@@ -13,6 +13,9 @@
     UIScrollView *scrollView;
     UIView *mainView;
     
+    UIButton *shareBtn;//分享
+    UIButton *likeBtn; //喜欢
+    
     UIView *vipView;
     UIView *playBackView; //播放页面的图文背景
     UILabel *nowPlayTime; //当前播放时间
@@ -56,6 +59,24 @@
     [self createNavigationTitle:_titleStr];
     
     [self createEndBackView];
+    
+    //分享
+    shareBtn = [[UIButton alloc] initWithFrame:CGRectMake(228 * kScreenWidthProportion, kScreenHeight - kEndBackViewHeight, 51 * kScreenWidthProportion * 0.8, kEndBackViewHeight)];
+    [shareBtn addTarget:self action:@selector(shareBtnAction) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:shareBtn];
+    
+    UIImageView *shareImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, (kEndBackViewHeight - 37 * kScreenWidthProportion * 0.8)/2.0 + 3 * kScreenWidthProportion, shareBtn.width, 37 * kScreenHeightProportion * 0.8)];
+    shareImageView.image = [UIImage imageNamed:@"Group 131"];
+    [shareBtn addSubview:shareImageView];
+    
+    //喜欢
+    likeBtn = [[UIButton alloc] initWithFrame:CGRectMake(272 * kScreenWidthProportion, kScreenHeight - kEndBackViewHeight, 51 * kScreenWidthProportion * 0.8, kEndBackViewHeight)];
+    [likeBtn addTarget:self action:@selector(likeBtnAction) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:likeBtn];
+    
+    UIImageView *zanImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, (kEndBackViewHeight - 37 * kScreenWidthProportion * 0.8)/2.0 + 3 * kScreenWidthProportion, likeBtn.width, 37 * kScreenWidthProportion * 0.8)];
+    zanImageView.image = [UIImage imageNamed:@"Group 132"];
+    [likeBtn addSubview:zanImageView];
     
     scrollView = [UIScrollView new];
     [self.view addSubview:scrollView];

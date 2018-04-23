@@ -100,6 +100,7 @@
 		34FB77A4208DBF88008E53AA /* ChangeInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34FB77A3208DBF88008E53AA /* ChangeInfoViewController.m */; };
 		34FB77A7208DC384008E53AA /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34FB77A6208DC384008E53AA /* SettingViewController.m */; };
 		34FB77AA208DC84E008E53AA /* AudioPlayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34FB77A9208DC84E008E53AA /* AudioPlayViewController.m */; };
+		34FB77AD208E007E008E53AA /* MyRecordingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34FB77AC208E007E008E53AA /* MyRecordingViewController.m */; };
 		D8D61C9C208D813200663054 /* informationTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D61C9B208D813200663054 /* informationTableViewCell.m */; };
 		D8D61C9F208DBDCE00663054 /* InformationDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D61C9E208DBDCE00663054 /* InformationDetailViewController.m */; };
 /* End PBXBuildFile section */
@@ -268,6 +269,8 @@
 		34FB77A6208DC384008E53AA /* SettingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SettingViewController.m; sourceTree = "<group>"; };
 		34FB77A8208DC84E008E53AA /* AudioPlayViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AudioPlayViewController.h; sourceTree = "<group>"; };
 		34FB77A9208DC84E008E53AA /* AudioPlayViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AudioPlayViewController.m; sourceTree = "<group>"; };
+		34FB77AB208E007E008E53AA /* MyRecordingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyRecordingViewController.h; sourceTree = "<group>"; };
+		34FB77AC208E007E008E53AA /* MyRecordingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyRecordingViewController.m; sourceTree = "<group>"; };
 		8564135A71ED42991B9B9A54 /* Pods-pe762-ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-pe762-ios.debug.xcconfig"; path = "Pods/Target Support Files/Pods-pe762-ios/Pods-pe762-ios.debug.xcconfig"; sourceTree = "<group>"; };
 		D8D61C9A208D813200663054 /* informationTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = informationTableViewCell.h; sourceTree = "<group>"; };
 		D8D61C9B208D813200663054 /* informationTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = informationTableViewCell.m; sourceTree = "<group>"; };
@@ -689,6 +692,8 @@
 				34FB77A3208DBF88008E53AA /* ChangeInfoViewController.m */,
 				34FB77A5208DC384008E53AA /* SettingViewController.h */,
 				34FB77A6208DC384008E53AA /* SettingViewController.m */,
+				34FB77AB208E007E008E53AA /* MyRecordingViewController.h */,
+				34FB77AC208E007E008E53AA /* MyRecordingViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -921,6 +926,7 @@
 				34076DC22089E88D005324AB /* UITextField+Common.m in Sources */,
 				D8D61C9C208D813200663054 /* informationTableViewCell.m in Sources */,
 				34076D642089E855005324AB /* MSSBrowseRemindView.m in Sources */,
+				34FB77AD208E007E008E53AA /* MyRecordingViewController.m in Sources */,
 				34076D6D2089E855005324AB /* LDImagePicker.m in Sources */,
 				34076DC12089E88D005324AB /* UILabel+Text.m in Sources */,
 				34076DD82089EC07005324AB /* ReadViewController.m in Sources */,
