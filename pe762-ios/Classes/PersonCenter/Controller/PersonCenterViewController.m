@@ -7,7 +7,7 @@
 //  个人中心
 
 #import "PersonCenterViewController.h"
-#import "ListenViewController.h"
+#import "PersonalInformationViewController.h" //个人信息
 
 @interface PersonCenterViewController ()
 {
@@ -100,6 +100,14 @@
         make.centerX.mas_equalTo(centerView);
     }];
     [headImageVIew setCornerRadius:41 * kScreenWidthProportion];
+    
+    headImageVIew.userInteractionEnabled = YES;
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] init];
+    [[tap rac_gestureSignal] subscribeNext:^(id x) {
+        //跳转我的信息
+        [self.navigationController pushViewController:[PersonalInformationViewController new] animated:YES];
+    }];
+    [self.view addGestureRecognizer:tap];
     
     nameLabel = [[UILabel alloc] init];
     [nameLabel setLabelWithTextColor:kBlackLabelColor textAlignment:NSTextAlignmentCenter font:18];

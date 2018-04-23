@@ -28,7 +28,7 @@
         //        label.backgroundColor = [UIColor redColor];
         [view addSubview:label];
         
-        UIView *lineView = [UIView viewWithFrame:CGRectMake(0, 43, kScreenWidth, 1) backgroundColor:kLineGrayColor];
+        UIView *lineView = [UIView viewWithFrame:CGRectMake(0, 43, kScreenWidth, 1) backgroundColor:RGB(223, 223, 223)];
         [view addSubview:lineView];
     } else {
         self.navigationController.navigationBarHidden = YES;
@@ -45,7 +45,7 @@
         label.textColor = kBlackLabelColor;
         [view addSubview:label];
         
-        UIView *lineView = [UIView viewWithFrame:CGRectMake(0, 43, kScreenWidth, 1) backgroundColor:kLineGrayColor];
+        UIView *lineView = [UIView viewWithFrame:CGRectMake(0, 43, kScreenWidth, 1) backgroundColor:RGB(223, 223, 223)];
         [view addSubview:lineView];
     }
 }
@@ -113,7 +113,7 @@
         rightBtn.frame = CGRectMake(270 * kScreenWidthProportion, leftBtn.minY, 50 * kScreenWidthProportion, leftBtn.height);
         [view addSubview:rightBtn];
         
-        UIView *lineView = [UIView viewWithFrame:CGRectMake(0, 43, kScreenWidth, 1) backgroundColor:kLineGrayColor];
+        UIView *lineView = [UIView viewWithFrame:CGRectMake(0, 43, kScreenWidth, 1) backgroundColor:RGB(223, 223, 223)];
         [view addSubview:lineView];
     } else {
         self.navigationController.navigationBarHidden = YES;
@@ -176,7 +176,7 @@
         rightBtn.frame = CGRectMake(270 * kScreenWidthProportion, leftBtn.minY, 50 * kScreenWidthProportion, leftBtn.height);
         [view addSubview:rightBtn];
         
-        UIView *lineView = [UIView viewWithFrame:CGRectMake(0, 43, kScreenWidth, 1) backgroundColor:kLineGrayColor];
+        UIView *lineView = [UIView viewWithFrame:CGRectMake(0, 43, kScreenWidth, 1) backgroundColor:RGB(223, 223, 223)];
         [view addSubview:lineView];
 
     }
@@ -198,6 +198,9 @@
         UIButton *backBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 50 * kScreenWidthProportion, 40 * kScreenWidthProportion)];
         [backView addSubview:backBtn];
         [backBtn addTarget:self action:@selector(backBtnAction) forControlEvents:UIControlEventTouchUpInside];
+        
+        UIView *lineView = [UIView viewWithFrame:CGRectMake(0, 0, kScreenWidth, 1) backgroundColor:RGB(223, 223, 223)];
+        [backView addSubview:lineView];
     } else {
         UIView *backView = [[UIView alloc] initWithFrame:CGRectMake(0, kScreenHeight - kEndBackViewHeight, kScreenWidth, kEndBackViewHeight)];
         backView.backgroundColor = RGB(239, 239, 239);
@@ -210,6 +213,9 @@
         UIButton *backBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 50 * kScreenWidthProportion, 40 * kScreenWidthProportion)];
         [backView addSubview:backBtn];
         [backBtn addTarget:self action:@selector(backBtnAction) forControlEvents:UIControlEventTouchUpInside];
+        
+        UIView *lineView = [UIView viewWithFrame:CGRectMake(0, 0, kScreenWidth, 1) backgroundColor:RGB(223, 223, 223)];
+        [backView addSubview:lineView];
     }
 }
 
