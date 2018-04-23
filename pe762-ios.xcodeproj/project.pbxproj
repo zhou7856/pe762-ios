@@ -103,6 +103,8 @@
 		34FB77AD208E007E008E53AA /* MyRecordingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34FB77AC208E007E008E53AA /* MyRecordingViewController.m */; };
 		D8D61C9C208D813200663054 /* informationTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D61C9B208D813200663054 /* informationTableViewCell.m */; };
 		D8D61C9F208DBDCE00663054 /* InformationDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D61C9E208DBDCE00663054 /* InformationDetailViewController.m */; };
+		D8D61CA2208E09D200663054 /* CommonProblemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D61CA1208E09D200663054 /* CommonProblemViewController.m */; };
+		D8D61CA6208E0A1200663054 /* ProblemTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D61CA5208E0A1200663054 /* ProblemTableViewCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -276,6 +278,10 @@
 		D8D61C9B208D813200663054 /* informationTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = informationTableViewCell.m; sourceTree = "<group>"; };
 		D8D61C9D208DBDCE00663054 /* InformationDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InformationDetailViewController.h; sourceTree = "<group>"; };
 		D8D61C9E208DBDCE00663054 /* InformationDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InformationDetailViewController.m; sourceTree = "<group>"; };
+		D8D61CA0208E09D200663054 /* CommonProblemViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CommonProblemViewController.h; sourceTree = "<group>"; };
+		D8D61CA1208E09D200663054 /* CommonProblemViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CommonProblemViewController.m; sourceTree = "<group>"; };
+		D8D61CA4208E0A1200663054 /* ProblemTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProblemTableViewCell.h; sourceTree = "<group>"; };
+		D8D61CA5208E0A1200663054 /* ProblemTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProblemTableViewCell.m; sourceTree = "<group>"; };
 		F1C1CD50920F591E08B8475E /* libPods-pe762-ios.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-pe762-ios.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -669,6 +675,7 @@
 			isa = PBXGroup;
 			children = (
 				34076DCF2089EBD2005324AB /* Controller */,
+				D8D61CA3208E09DF00663054 /* View */,
 			);
 			path = PersonCenter;
 			sourceTree = "<group>";
@@ -694,6 +701,8 @@
 				34FB77A6208DC384008E53AA /* SettingViewController.m */,
 				34FB77AB208E007E008E53AA /* MyRecordingViewController.h */,
 				34FB77AC208E007E008E53AA /* MyRecordingViewController.m */,
+				D8D61CA0208E09D200663054 /* CommonProblemViewController.h */,
+				D8D61CA1208E09D200663054 /* CommonProblemViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -752,6 +761,15 @@
 			children = (
 				D8D61C9A208D813200663054 /* informationTableViewCell.h */,
 				D8D61C9B208D813200663054 /* informationTableViewCell.m */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		D8D61CA3208E09DF00663054 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				D8D61CA4208E0A1200663054 /* ProblemTableViewCell.h */,
+				D8D61CA5208E0A1200663054 /* ProblemTableViewCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -918,6 +936,8 @@
 				34076D822089E855005324AB /* TZAssetModel.m in Sources */,
 				34076DD32089EBEF005324AB /* ListenViewController.m in Sources */,
 				34076D6C2089E855005324AB /* M13OrderedDictionary.m in Sources */,
+				D8D61CA2208E09D200663054 /* CommonProblemViewController.m in Sources */,
+				D8D61CA6208E0A1200663054 /* ProblemTableViewCell.m in Sources */,
 				34076DBB2089E88D005324AB /* NullSafe.m in Sources */,
 				34076D632089E855005324AB /* MSSBrowseNetworkViewController.m in Sources */,
 				34076DC52089E88D005324AB /* UIView+Layout.m in Sources */,
