@@ -81,6 +81,7 @@
 #import "AppDelegate.h"
 #import "TabBarController.h"
 #import "LoginViewController.h"
+#import "SettingViewController.h" //设置
 //#import "UniversalNoTitleHtmlViewController.h" //  通用无标题h5跳转页面
 //#import "BannerH5ViewController.h" //banner图跳转的H5页面
 //#import "ChooseListView.h" //条件选择页面

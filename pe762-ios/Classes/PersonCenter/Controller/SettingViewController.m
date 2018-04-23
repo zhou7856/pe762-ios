@@ -1,36 +1,26 @@
 //
-//  PersonalInformationViewController.m
+//  SettingViewController.m
 //  pe762-ios
 //
 //  Created by wsy on 2018/4/23.
 //  Copyright © 2018年 zmit. All rights reserved.
-//  个人信息页面
+//  设置页面
 
-#import "PersonalInformationViewController.h"
-#import "ChangeInfoViewController.h" //修改信息
+#import "SettingViewController.h"
 
-@interface PersonalInformationViewController ()
+@interface SettingViewController ()
 {
-//    UIButton *setingBtn; //设置按钮
 //    UIButton *messageBtn; //消息按钮
-    
-    UIImageView *headImageView;
-    UILabel *nicknameLabel;
-    UILabel *emainLabel;
 }
 @end
 
-@implementation PersonalInformationViewController
+@implementation SettingViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    
     [self initNav];
     [self initUI];
-}
-
-- (void)dealloc {
-    NSLog(@"页面销毁");
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -39,18 +29,14 @@
     [self showTabBarView:NO];
 }
 
+- (void)dealloc {
+    NSLog(@"页面销毁了");
+}
+
 - (void)initNav {
     self.view.backgroundColor = RGB(243, 243, 243);
-    [self createNavigationTitle:@"个人信息"];
+    [self createNavigationTitle:@"设置"];
     
-//    UIImageView *setImageView = [[UIImageView alloc] initWithFrame:CGRectMake(235 * kScreenWidthProportion, kStatusHeight + 12, 20, 20)];
-//    setImageView.image = [UIImage imageNamed:@"Layer_-2"];
-//    [self.view addSubview:setImageView];
-//
-//    setingBtn = [[UIButton alloc] initWithFrame:CGRectMake(230 * kScreenWidthProportion, kStatusHeight, 30, 44)];
-//    [setingBtn addTarget:self action:@selector(setingBtnAction) forControlEvents:UIControlEventTouchUpInside];
-//    [self.view addSubview:setingBtn];
-//
 //    UIImageView *messageImageView = [[UIImageView alloc] initWithFrame:CGRectMake(275 * kScreenWidthProportion, kStatusHeight + 12, 18, 20)];
 //    messageImageView.image = [UIImage imageNamed:@"Layer_1_1_"];
 //    [self.view addSubview:messageImageView];
@@ -64,32 +50,49 @@
 
 - (void)initUI {
     {
-        UIView *contentView = [[UIView alloc] initWithFrame:CGRectMake(0, 20 * kScreenWidthProportion + kHeaderHeight, kScreenWidth, 80 * kScreenWidthProportion)];
+        UIView *contentView = [[UIView alloc] initWithFrame:CGRectMake(0, 20 * kScreenWidthProportion + kHeaderHeight, kScreenWidth, 40 * kScreenWidthProportion)];
         [self.view addSubview:contentView];
         
-        UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(22 * kScreenWidthProportion, 20 * kScreenWidthProportion, 100 * kScreenWidthProportion, 40 * kScreenWidthProportion)];
+        UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(22 * kScreenWidthProportion, 0 * kScreenWidthProportion, 100 * kScreenWidthProportion, 40 * kScreenWidthProportion)];
         [titleLabel setLabelWithTextColor:kGrayLabelColor textAlignment:NSTextAlignmentLeft font:13];
-        titleLabel.text = @"头像";
+        titleLabel.text = @"清空下载缓存";
         [contentView addSubview:titleLabel];
-        
-        headImageView = [[UIImageView alloc] initWithFrame:CGRectMake(230 * kScreenWidthProportion, 15 * kScreenWidthProportion, 50 * kScreenWidthProportion, 50 * kScreenWidthProportion)];
-        headImageView.backgroundColor = [UIColor greenColor];
-        [headImageView setCornerRadius:25 * kScreenWidthProportion];
-        [contentView addSubview:headImageView];
         
         UIImageView *iconImageView = [[UIImageView alloc] initWithFrame:CGRectMake(295 * kScreenWidthProportion, 0, 6 * kScreenWidthProportion, 9 * kScreenWidthProportion)];
         iconImageView.image = [UIImage imageNamed:@"Path 185"];
         iconImageView.centerY = titleLabel.centerY;
         [contentView addSubview:iconImageView];
         
-        UIView *endLineView  = [[UIView alloc] initWithFrame:CGRectMake(15 * kScreenWidthProportion, contentView.height - 10, 290 * kScreenWidthProportion, 1)];
-        endLineView.backgroundColor = kLineGrayColor;
-//        UIView *endLineView = [UIView viewWithFrame:CGRectMake(15 * kScreenWidthProportion, contentView.maxY - 10, 290 * kScreenWidthProportion, 10) backgroundColor:RGB(238, 234, 234)];
+        UIView *endLineView = [UIView viewWithFrame:CGRectMake(15 * kScreenWidthProportion, contentView.height - 1, 290 * kScreenWidthProportion, 1) backgroundColor:kLineGrayColor];
         [contentView addSubview:endLineView];
         
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] init];
         [[tap rac_gestureSignal] subscribeNext:^(id x) {
-            NSLog(@"头像切换");
+            NSLog(@"清空下载缓存");
+        }];
+        [contentView addGestureRecognizer:tap];
+    }
+    
+    {
+        UIView *contentView = [[UIView alloc] initWithFrame:CGRectMake(0, 60 * kScreenWidthProportion + kHeaderHeight, kScreenWidth, 40 * kScreenWidthProportion)];
+        [self.view addSubview:contentView];
+        
+        UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(22 * kScreenWidthProportion, 0 * kScreenWidthProportion, 100 * kScreenWidthProportion, 40 * kScreenWidthProportion)];
+        [titleLabel setLabelWithTextColor:kGrayLabelColor textAlignment:NSTextAlignmentLeft font:13];
+        titleLabel.text = @"关于知趣";
+        [contentView addSubview:titleLabel];
+        
+        UIImageView *iconImageView = [[UIImageView alloc] initWithFrame:CGRectMake(295 * kScreenWidthProportion, 0, 6 * kScreenWidthProportion, 9 * kScreenWidthProportion)];
+        iconImageView.image = [UIImage imageNamed:@"Path 185"];
+        iconImageView.centerY = titleLabel.centerY;
+        [contentView addSubview:iconImageView];
+        
+        UIView *endLineView = [UIView viewWithFrame:CGRectMake(15 * kScreenWidthProportion, contentView.height - 1, 290 * kScreenWidthProportion, 1) backgroundColor:kLineGrayColor];
+        [contentView addSubview:endLineView];
+        
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] init];
+        [[tap rac_gestureSignal] subscribeNext:^(id x) {
+            NSLog(@"关于知趣");
         }];
         [contentView addGestureRecognizer:tap];
     }
@@ -97,72 +100,45 @@
     {
         UIView *contentView = [[UIView alloc] initWithFrame:CGRectMake(0, 100 * kScreenWidthProportion + kHeaderHeight, kScreenWidth, 40 * kScreenWidthProportion)];
         [self.view addSubview:contentView];
-
-        UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(22 * kScreenWidthProportion, 0, 100 * kScreenWidthProportion, 40 * kScreenWidthProportion)];
+        
+        UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(22 * kScreenWidthProportion, 0 * kScreenWidthProportion, 100 * kScreenWidthProportion, 40 * kScreenWidthProportion)];
         [titleLabel setLabelWithTextColor:kGrayLabelColor textAlignment:NSTextAlignmentLeft font:13];
-        titleLabel.text = @"昵称";
+        titleLabel.text = @"版本信息";
         [contentView addSubview:titleLabel];
-
-        nicknameLabel = [[UILabel alloc] initWithFrame:CGRectMake(150 * kScreenWidthProportion, 0, 135 * kScreenWidthProportion, titleLabel.height)];
-        [nicknameLabel setLabelWithTextColor:kGrayLabelColor textAlignment:NSTextAlignmentRight font:13];
-        [contentView addSubview:nicknameLabel];
-        nicknameLabel.text = @"User name";
-
-
+        
         UIImageView *iconImageView = [[UIImageView alloc] initWithFrame:CGRectMake(295 * kScreenWidthProportion, 0, 6 * kScreenWidthProportion, 9 * kScreenWidthProportion)];
         iconImageView.image = [UIImage imageNamed:@"Path 185"];
         iconImageView.centerY = titleLabel.centerY;
         [contentView addSubview:iconImageView];
-
+        
         UIView *endLineView = [UIView viewWithFrame:CGRectMake(15 * kScreenWidthProportion, contentView.height - 1, 290 * kScreenWidthProportion, 1) backgroundColor:kLineGrayColor];
         [contentView addSubview:endLineView];
-
+        
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] init];
         [[tap rac_gestureSignal] subscribeNext:^(id x) {
-            NSLog(@"昵称修改");
-            [self.navigationController pushViewController:[ChangeInfoViewController new] animated:YES];
+            NSLog(@"版本信息");
         }];
         [contentView addGestureRecognizer:tap];
     }
     
-    {
-        UIView *contentView = [[UIView alloc] initWithFrame:CGRectMake(0, 140 * kScreenWidthProportion + kHeaderHeight, kScreenWidth, 40 * kScreenWidthProportion)];
-        [self.view addSubview:contentView];
-        
-        UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(22 * kScreenWidthProportion, 0 * kScreenWidthProportion, 100 * kScreenWidthProportion, 40 * kScreenWidthProportion)];
-        [titleLabel setLabelWithTextColor:kGrayLabelColor textAlignment:NSTextAlignmentLeft font:13];
-        titleLabel.text = @"邮箱";
-        [contentView addSubview:titleLabel];
-        
-        emainLabel = [[UILabel alloc] initWithFrame:CGRectMake(150 * kScreenWidthProportion, 0, 135 * kScreenWidthProportion, titleLabel.height)];
-        [emainLabel setLabelWithTextColor:kGrayLabelColor textAlignment:NSTextAlignmentRight font:13];
-        [contentView addSubview:emainLabel];
-        
-        UIImageView *iconImageView = [[UIImageView alloc] initWithFrame:CGRectMake(295 * kScreenWidthProportion, 0, 6 * kScreenWidthProportion, 9 * kScreenWidthProportion)];
-        iconImageView.image = [UIImage imageNamed:@"Path 185"];
-        iconImageView.centerY = titleLabel.centerY;
-        [contentView addSubview:iconImageView];
-        
-        UIView *endLineView = [UIView viewWithFrame:CGRectMake(15 * kScreenWidthProportion, contentView.height - 1, 290 * kScreenWidthProportion, 1) backgroundColor:kLineGrayColor];
-        [contentView addSubview:endLineView];
-        
-        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] init];
-        [[tap rac_gestureSignal] subscribeNext:^(id x) {
-            NSLog(@"邮箱修改");
-        }];
-        [contentView addGestureRecognizer:tap];
-    }
+    UIButton *quitBtn = [[UIButton alloc] initWithFrame:CGRectMake(20 * kScreenWidthProportion, 160 * kScreenWidthProportion + kHeaderHeight, 280 * kScreenWidthProportion, 40 * kScreenWidthProportion)];
+    [quitBtn setTitle:@"退出登录" forState:0];
+    [quitBtn setTitleColor:kWhiteColor forState:0];
+    quitBtn.titleLabel.font = FONT(13 * kFontProportion);
+    quitBtn.backgroundColor = kRedColor;
+    [self.view addSubview:quitBtn];
+    [quitBtn addTarget:self action:@selector(quitBtnAction) forControlEvents:UIControlEventTouchUpInside];
 }
 
-//#pragma makr - 设置点击
-//- (void)setingBtnAction {
-//    [self.navigationController pushViewController:[SettingViewController new] animated:YES];
-//}
-//
 //#pragma makr - 消息点击
 //- (void)messageBtnAction {
-//    
+//
 //}
+
+#pragma mark - 推出登录
+- (void)quitBtnAction {
+    
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

@@ -10,4 +10,7 @@
 
 @interface ChangeInfoViewController : UIViewController
 
+//1 修改昵称 2修改邮箱
+@property (nonatomic, strong) NSString *typeStr;
+
 @end

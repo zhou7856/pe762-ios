@@ -40,7 +40,7 @@
 
 - (void)initNav {
     self.view.backgroundColor = RGB(243, 243, 243);
-    [self createNavigationTitle:@"个人信息"];
+    [self createNavigationTitle:@"用户中心"];
     
     UIImageView *setImageView = [[UIImageView alloc] initWithFrame:CGRectMake(235 * kScreenWidthProportion, kStatusHeight + 12, 20, 20)];
     setImageView.image = [UIImage imageNamed:@"Layer_-2"];
@@ -216,7 +216,7 @@
 
 #pragma makr - 设置点击
 - (void)setingBtnAction {
-    
+    [self.navigationController pushViewController:[SettingViewController new] animated:YES];
 }
 
 #pragma makr - 消息点击

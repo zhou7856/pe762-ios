@@ -31,7 +31,11 @@
 
 - (void)initNav {
     self.view.backgroundColor = RGB(243, 243, 243);
-    [self createNavigationTitle:@"个人信息"];
+    if ([_typeStr isEqualToString:@"1"]) {
+        [self createNavigationTitle:@"修改昵称"];
+    } else {
+        [self createNavigationTitle:@"修改邮箱"];
+    }
     
     UIButton *saveBtn = [[UIButton alloc] initWithFrame:CGRectMake(250 * kScreenWidthProportion, kStatusHeight, 60 * kScreenWidthProportion, 44)];
     [saveBtn setTitle:@"保存" forState:0];
