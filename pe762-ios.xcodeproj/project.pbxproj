@@ -677,6 +677,7 @@
 			isa = PBXGroup;
 			children = (
 				34076DD52089EBFC005324AB /* Controller */,
+				D8D61C99208D7B8E00663054 /* View */,
 			);
 			path = Read;
 			sourceTree = "<group>";
@@ -706,6 +707,13 @@
 				24DA2C2571DEB657CF2F2C4C /* Pods-pe762-ios.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		D8D61C99208D7B8E00663054 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		FDE7D76FD08041BBC3A73C2C /* Frameworks */ = {
