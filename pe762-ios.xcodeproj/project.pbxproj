@@ -106,6 +106,7 @@
 		D8D61C9F208DBDCE00663054 /* InformationDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D61C9E208DBDCE00663054 /* InformationDetailViewController.m */; };
 		D8D61CA2208E09D200663054 /* CommonProblemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D61CA1208E09D200663054 /* CommonProblemViewController.m */; };
 		D8D61CB0208E36C600663054 /* ProblemTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D61CAF208E36C600663054 /* ProblemTableViewCell.m */; };
+		D8D61CB3208E42C600663054 /* ProblemDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D61CB2208E42C600663054 /* ProblemDetailViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -285,6 +286,8 @@
 		D8D61CA1208E09D200663054 /* CommonProblemViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CommonProblemViewController.m; sourceTree = "<group>"; };
 		D8D61CAE208E36C600663054 /* ProblemTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProblemTableViewCell.h; sourceTree = "<group>"; };
 		D8D61CAF208E36C600663054 /* ProblemTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProblemTableViewCell.m; sourceTree = "<group>"; };
+		D8D61CB1208E42C600663054 /* ProblemDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProblemDetailViewController.h; sourceTree = "<group>"; };
+		D8D61CB2208E42C600663054 /* ProblemDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProblemDetailViewController.m; sourceTree = "<group>"; };
 		F1C1CD50920F591E08B8475E /* libPods-pe762-ios.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-pe762-ios.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -706,6 +709,8 @@
 				34FB77AC208E007E008E53AA /* MyRecordingViewController.m */,
 				D8D61CA0208E09D200663054 /* CommonProblemViewController.h */,
 				D8D61CA1208E09D200663054 /* CommonProblemViewController.m */,
+				D8D61CB1208E42C600663054 /* ProblemDetailViewController.h */,
+				D8D61CB2208E42C600663054 /* ProblemDetailViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -976,6 +981,7 @@
 				34076DBF2089E88D005324AB /* UIImageView+Common.m in Sources */,
 				34076DBE2089E88D005324AB /* UIImage+Common.m in Sources */,
 				34076D592089E855005324AB /* SZTextView.m in Sources */,
+				D8D61CB3208E42C600663054 /* ProblemDetailViewController.m in Sources */,
 				34FB779E208D6FCF008E53AA /* UIViewController+Navigation.m in Sources */,
 				34076DDC2089EC18005324AB /* LoginViewController.m in Sources */,
 				34076D602089E855005324AB /* MSSBrowseLoadingImageView.m in Sources */,

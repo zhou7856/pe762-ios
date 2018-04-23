@@ -7,7 +7,8 @@
 //  常见问题页面
 
 #import "CommonProblemViewController.h"
-#import "ProblemTableViewCell.h"
+#import "ProblemTableViewCell.h"//常见问题cell
+#import "ProblemDetailViewController.h"//常见问题详情
 
 @interface CommonProblemViewController ()<UITableViewDelegate,UITableViewDataSource>
 {
@@ -113,10 +114,9 @@
     NSLog(@"你点击了第%ld行", indexPath.row);
     
     // 跳转到详情页面
-//    [self showTabBarView:NO];
-//    InformationDetailViewController *pushVC = [[InformationDetailViewController alloc] init];
-//    pushVC.idStr = [NSString stringWithFormat:@"%ld", indexPath.row];
-//    [self.navigationController pushViewController:pushVC animated:YES];
+    ProblemDetailViewController *pushVC = [[ProblemDetailViewController alloc] init];
+    pushVC.idStr = [NSString stringWithFormat:@"%ld", indexPath.row];
+    [self.navigationController pushViewController:pushVC animated:YES];
     
 }
 
