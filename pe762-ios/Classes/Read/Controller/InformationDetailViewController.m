@@ -11,7 +11,6 @@
 @interface InformationDetailViewController ()
 {
     UIButton *leftBtn;
-    UIButton *rightBtn;
     UILabel *typeLabel;
     
     UIButton *shareBtn;
@@ -43,15 +42,13 @@
 - (void)initUI{
 #pragma mark - 头部
     self.navigationController.navigationBarHidden = YES;
-    self.view.backgroundColor = kWhiteColor;
+    self.view.backgroundColor = kBackgroundWhiteColor;
     
     leftBtn = [[UIButton alloc] init];
-    rightBtn = [[UIButton alloc] init];
     typeLabel = [[UILabel alloc] init];
-    [self createNavigationFeatureAndTitle:@"读资讯" withLeftBtn:leftBtn andRightBtn:rightBtn andTypeTitle:typeLabel];
+    [self createNavigationFeatureAndTitle:@"读资讯" withLeftBtn:leftBtn andTypeTitle:typeLabel];
     
     [leftBtn addTarget:self action:@selector(leftBtnAction) forControlEvents:UIControlEventTouchUpInside];
-    [rightBtn addTarget:self action:@selector(rightBtnAction) forControlEvents:UIControlEventTouchUpInside];
     typeLabel.text = @"专业";
     
 #pragma mark - 底部返回、分享、喜欢
@@ -75,15 +72,14 @@
     UIImageView *zanImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, (kEndBackViewHeight - 37 * kScreenWidthProportion * 0.8)/2.0 + 3 * kScreenWidthProportion, likeBtn.width, 37 * kScreenWidthProportion * 0.8)];
     zanImageView.image = [UIImage imageNamed:@"Group 132"];
     [likeBtn addSubview:zanImageView];
+    
+#pragma mark - 标题、作者、发布时间、热度
+    
 }
 
 #pragma mark - 点击事件
 - (void)leftBtnAction{
     NSLog(@"专业");
-}
-
-- (void)rightBtnAction{
-    NSLog(@"闹铃");
 }
 
 - (void)shareBtnAction{
