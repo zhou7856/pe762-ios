@@ -1,0 +1,90 @@
+//
+//  PrefixHeader.pch
+//  pe762-ios
+//
+//  Created by wsy on 2018/4/20.
+//  Copyright © 2018年 zmit. All rights reserved.
+//
+
+#ifdef __OBJC__
+#ifndef PrefixHeader_h
+#define PrefixHeader_h
+
+//pod
+#ifndef KeyboardManager_h
+#define KeyboardManager_h
+#import "IQBarButtonItem.h"
+#import "IQKeyboardManager.h"
+#import "IQKeyboardManagerConstants.h"
+#import "IQKeyboardReturnKeyHandler.h"
+#import "IQTextView.h"
+#import "IQTitleBarButtonItem.h"
+#import "IQToolbar.h"
+#import "IQUIView+Hierarchy.h"
+#import "IQUIView+IQKeyboardToolbar.h"
+#import "IQUIWindow+Hierarchy.h"
+#endif
+
+#import "Masonry.h"
+#import <AFNetworking/AFNetworking.h>
+#import "UIKit+AFNetworking.h"
+#import "SDCycleScrollView.h"
+#import <SDWebImageManager.h>
+#import <ReactiveCocoa/ReactiveCocoa.h>
+#import "MJRefresh.h"
+
+//分类
+#import "NSDate+Formatter.h"
+#import "NSNull+JSON.h"
+#import "NSObject+Common.h"
+#import "NSString+Hash.h"
+#import "NSDictionary+Sorting.h"
+
+#import "UIButton+Common.h"
+#import "UIColor+Common.h"
+#import "UIImage+Common.h"
+#import "UIImageView+Common.h"
+#import "UILabel+Common.h"
+#import "UILabel+Text.h"
+#import "UITextField+Common.h"
+#import "UIView+Common.h"
+#import "UIView+Layout.h"
+#import "UIViewController+Common.h"
+#import "UITextField+Placeholder.h"
+
+//系统
+#import <objc/runtime.h>
+#import <WebKit/WebKit.h>
+
+//第三方头文件
+#import "XCallSystemCameraAlertView.h" //相机
+#import "ConditionFilterPopView.h" //条件筛选弹窗
+#import "M13OrderedDictionary.h" //字典排序处理
+#import "TZImagePickerController.h" //相册图片选择
+#import "ShowStarView.h" //评分星星选择
+//图片放大
+#import "MSSBrowseModel.h"
+#import "MSSCollectionViewCell.h"
+#import "MSSBrowseNetworkViewController.h" //网络加载
+#import "MSSBrowseLocalViewController.h" //本地加载
+#import "MSSBrowseBaseViewController.h"
+//
+#import "Reachability.h" //网络判断
+#import "GYChangeTextView.h" //文本滚动
+#import "SZTextView.h" //带提示语的textView
+#import "Identify.h" //条件判断
+#import "ZHScanView.h" //扫码
+
+//自定义头文件
+#import "AppConstants.h"
+#import "AppDelegate.h"
+#import "TabBarController.h"
+#import "LoginViewController.h"
+//#import "UniversalNoTitleHtmlViewController.h" //  通用无标题h5跳转页面
+//#import "BannerH5ViewController.h" //banner图跳转的H5页面
+//#import "ChooseListView.h" //条件选择页面
+//#import "PromptPopView.h" //提示弹窗
+
+
+#endif /* PrefixHeader_h */
+#endif
