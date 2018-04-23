@@ -95,6 +95,7 @@
 		34076DD82089EC07005324AB /* ReadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34076DD72089EC07005324AB /* ReadViewController.m */; };
 		34076DDC2089EC18005324AB /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34076DDB2089EC18005324AB /* LoginViewController.m */; };
 		34BA90F0208D68ED0035262B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 34BA90EF208D68ED0035262B /* Assets.xcassets */; };
+		D8D61C9C208D813200663054 /* informationTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D61C9B208D813200663054 /* informationTableViewCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -252,6 +253,8 @@
 		34076DDB2089EC18005324AB /* LoginViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		34BA90EF208D68ED0035262B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = "pe762-ios/Assets.xcassets"; sourceTree = "<group>"; };
 		8564135A71ED42991B9B9A54 /* Pods-pe762-ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-pe762-ios.debug.xcconfig"; path = "Pods/Target Support Files/Pods-pe762-ios/Pods-pe762-ios.debug.xcconfig"; sourceTree = "<group>"; };
+		D8D61C9A208D813200663054 /* informationTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = informationTableViewCell.h; sourceTree = "<group>"; };
+		D8D61C9B208D813200663054 /* informationTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = informationTableViewCell.m; sourceTree = "<group>"; };
 		F1C1CD50920F591E08B8475E /* libPods-pe762-ios.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-pe762-ios.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -712,6 +715,8 @@
 		D8D61C99208D7B8E00663054 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				D8D61C9A208D813200663054 /* informationTableViewCell.h */,
+				D8D61C9B208D813200663054 /* informationTableViewCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -881,6 +886,7 @@
 				34076DB82089E88D005324AB /* NSNull+JSON.m in Sources */,
 				34076DBC2089E88D005324AB /* UIButton+Common.m in Sources */,
 				34076DC22089E88D005324AB /* UITextField+Common.m in Sources */,
+				D8D61C9C208D813200663054 /* informationTableViewCell.m in Sources */,
 				34076D642089E855005324AB /* MSSBrowseRemindView.m in Sources */,
 				34076D6D2089E855005324AB /* LDImagePicker.m in Sources */,
 				34076DC12089E88D005324AB /* UILabel+Text.m in Sources */,

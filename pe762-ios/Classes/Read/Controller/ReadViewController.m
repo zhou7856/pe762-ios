@@ -7,6 +7,7 @@
 //
 
 #import "ReadViewController.h"
+#import "informationTableViewCell.h"
 
 @interface ReadViewController ()<UITableViewDelegate,UITableViewDataSource>
 {
@@ -46,7 +47,7 @@
     informationTabelView = [[UITableView alloc] initWithFrame:CGRectMake(0, kHeaderHeight, kScreenWidth, kScreenHeight - kHeaderHeight - kTabBarHeight) style:UITableViewStylePlain];
     informationTabelView.backgroundColor = kBackgroundWhiteColor;
     informationTabelView.delegate = self;
-//    informationTabelView.dataSource = self;
+    informationTabelView.dataSource = self;
     informationTabelView.separatorStyle = UITableViewCellSeparatorStyleNone;
     informationTabelView.estimatedRowHeight = 0;
     informationTabelView.estimatedSectionHeaderHeight = 0;
@@ -77,21 +78,21 @@
     return 192 * kScreenHeightProportion;
 }
 
-//- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-//    static NSString *cellID = @"DiaryTableViewCell";
-//    DiaryTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
-//    if (!cell) {
-//        cell = [[DiaryTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
-//    }
-//
-//    return cell;
-//}
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    static NSString *cellID = @"informationTableViewCell";
+    informationTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
+    if (!cell) {
+        cell = [[informationTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
+    }
 
-//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-//
-//    NSLog(@"你点击了第%ld行", indexPath.row);
-//
-//}
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+
+    NSLog(@"你点击了第%ld行", indexPath.row);
+
+}
 
 /*
 #pragma mark - Navigation
