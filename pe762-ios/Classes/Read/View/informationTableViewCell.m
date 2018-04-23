@@ -118,9 +118,9 @@
         self.messageNumberLabel.textAlignment = NSTextAlignmentLeft;
         [baseView addSubview:self.messageNumberLabel];
         [self.messageNumberLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.right.mas_equalTo(zanImageView.mas_left).offset(-5 * kScreenWidthProportion);
+            make.right.mas_equalTo(zanImageView.mas_left).offset(-2 * kScreenWidthProportion);
             make.top.mas_equalTo(self.sourceAndTimeLabel.mas_top);
-            make.size.mas_equalTo(CGSizeMake(20 * kScreenWidthProportion, 11 * kScreenHeightProportion));
+            make.size.mas_equalTo(CGSizeMake(10 * kScreenWidthProportion, 11 * kScreenHeightProportion));
         }];
         
         // 消息图片
