@@ -107,6 +107,7 @@
 		D82DAF10208EC3C4004A7EFE /* RegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D82DAF0F208EC3C4004A7EFE /* RegisterViewController.m */; };
 		D82DAF13208ED0DF004A7EFE /* MessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D82DAF12208ED0DF004A7EFE /* MessageViewController.m */; };
 		D82DAF16208ED28A004A7EFE /* MessageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D82DAF15208ED28A004A7EFE /* MessageTableViewCell.m */; };
+		D82DAF19208EE595004A7EFE /* AgentApplyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D82DAF18208EE595004A7EFE /* AgentApplyViewController.m */; };
 		D8D61C9C208D813200663054 /* informationTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D61C9B208D813200663054 /* informationTableViewCell.m */; };
 		D8D61C9F208DBDCE00663054 /* InformationDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D61C9E208DBDCE00663054 /* InformationDetailViewController.m */; };
 		D8D61CA2208E09D200663054 /* CommonProblemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D61CA1208E09D200663054 /* CommonProblemViewController.m */; };
@@ -295,6 +296,8 @@
 		D82DAF12208ED0DF004A7EFE /* MessageViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MessageViewController.m; sourceTree = "<group>"; };
 		D82DAF14208ED28A004A7EFE /* MessageTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MessageTableViewCell.h; sourceTree = "<group>"; };
 		D82DAF15208ED28A004A7EFE /* MessageTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MessageTableViewCell.m; sourceTree = "<group>"; };
+		D82DAF17208EE595004A7EFE /* AgentApplyViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AgentApplyViewController.h; sourceTree = "<group>"; };
+		D82DAF18208EE595004A7EFE /* AgentApplyViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AgentApplyViewController.m; sourceTree = "<group>"; };
 		D8D61C9A208D813200663054 /* informationTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = informationTableViewCell.h; sourceTree = "<group>"; };
 		D8D61C9B208D813200663054 /* informationTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = informationTableViewCell.m; sourceTree = "<group>"; };
 		D8D61C9D208DBDCE00663054 /* InformationDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InformationDetailViewController.h; sourceTree = "<group>"; };
@@ -740,6 +743,8 @@
 				D82DAF12208ED0DF004A7EFE /* MessageViewController.m */,
 				342E35A3208EE1D300819855 /* AgentsViewController.h */,
 				342E35A4208EE1D300819855 /* AgentsViewController.m */,
+				D82DAF17208EE595004A7EFE /* AgentApplyViewController.h */,
+				D82DAF18208EE595004A7EFE /* AgentApplyViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1006,6 +1011,7 @@
 				34076D852089E855005324AB /* TZPhotoPickerController.m in Sources */,
 				34076D832089E855005324AB /* TZImageManager.m in Sources */,
 				34076D6B2089E855005324AB /* Reachability.m in Sources */,
+				D82DAF19208EE595004A7EFE /* AgentApplyViewController.m in Sources */,
 				34076D562089E855005324AB /* GYChangeTextView.m in Sources */,
 				34076D682089E855005324AB /* UIView+MSSLayout.m in Sources */,
 				D82DAF10208EC3C4004A7EFE /* RegisterViewController.m in Sources */,
