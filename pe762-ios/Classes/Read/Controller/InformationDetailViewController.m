@@ -126,7 +126,7 @@
     hotLabel.textColor = kLightGreyColor;
     hotLabel.font = FONT(10 * kFontProportion);
 //    hotLabel.backgroundColor = kRedColor;
-    hotLabel.textAlignment = NSTextAlignmentRight;
+    hotLabel.textAlignment = NSTextAlignmentLeft;
     hotLabel.text = @"热度:208次";
     [self.view addSubview:hotLabel];
     [hotLabel mas_makeConstraints:^(MASConstraintMaker *make) {

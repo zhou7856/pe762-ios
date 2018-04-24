@@ -19,7 +19,7 @@
 - (void)createNavigationTitle:(NSString *)title;
 
 /**
- 创建导航基于文本和功能
+ 创建导航基于标题和左边按钮
  
  @param title 标题
  @param leftBtn 左边按钮（触发点击）

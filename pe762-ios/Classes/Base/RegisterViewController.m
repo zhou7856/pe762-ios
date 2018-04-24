@@ -1,15 +1,14 @@
 //
-//  LoginViewController.m
+//  RegisterViewController.m
 //  pe762-ios
 //
-//  Created by wsy on 2018/4/20.
+//  Created by Future on 2018/4/24.
 //  Copyright © 2018年 zmit. All rights reserved.
-//
+//  注册页面
 
-#import "LoginViewController.h"
-#import "RegisterViewController.h"//注册
+#import "RegisterViewController.h"
 
-@interface LoginViewController ()
+@interface RegisterViewController ()
 {
     UIButton *leftBtn;//专业
     UILabel *typeLabel;//页面标题
@@ -23,7 +22,7 @@
 }
 @end
 
-@implementation LoginViewController
+@implementation RegisterViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -51,7 +50,7 @@
     
     leftBtn = [[UIButton alloc] init];
     typeLabel = [[UILabel alloc] init];
-    [self createNavigationFeatureAndTitle:@"注册" withLeftBtn:leftBtn andTypeTitle:typeLabel];
+    [self createNavigationFeatureAndTitle:@"登录" withLeftBtn:leftBtn andTypeTitle:typeLabel];
     
     [leftBtn addTarget:self action:@selector(leftBtnAction) forControlEvents:UIControlEventTouchUpInside];
     typeLabel.text = @"专业";
@@ -161,6 +160,7 @@
         make.top.mas_equalTo(imageCodeTextField.mas_bottom).offset(6 * kScreenHeightProportion);
         make.height.mas_equalTo(1);
     }];
+    
 #pragma mark - 输入手机验证码
     verifyTextField = [[UITextField alloc] init];
     verifyTextField.placeholder = @"输入手机验证码";
@@ -186,44 +186,44 @@
         make.height.mas_equalTo(1);
     }];
     
-#pragma mark - 登录
-    UIButton *loginBtn = [[UIButton alloc] init];
-    [loginBtn setBackgroundImage:[UIImage imageNamed:@"Rectangle 61"] forState:UIControlStateNormal];
-    //loginBtn.backgroundColor = kRedColor;
-    [loginBtn setTitle:@"登录" forState:UIControlStateNormal];
-    [loginBtn setTitleColor:kWhiteColor forState:UIControlStateNormal];
-    loginBtn.titleLabel.font = FONT(14 * kFontProportion);
-    [loginBtn addTarget:self action:@selector(loginBtnAction) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:loginBtn];
-    [loginBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+#pragma mark - 注册
+    UIButton *registerBtn = [[UIButton alloc] init];
+    [registerBtn setBackgroundImage:[UIImage imageNamed:@"Rectangle 61"] forState:UIControlStateNormal];
+    //registerBtn.backgroundColor = kRedColor;
+    [registerBtn setTitle:@"注册" forState:UIControlStateNormal];
+    [registerBtn setTitleColor:kWhiteColor forState:UIControlStateNormal];
+    registerBtn.titleLabel.font = FONT(14 * kFontProportion);
+    [registerBtn addTarget:self action:@selector(registerBtnAction) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:registerBtn];
+    [registerBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(firstLineView.mas_left);
         make.top.mas_equalTo(twoLineView.mas_bottom).offset(23 * kScreenHeightProportion);
         make.size.mas_equalTo(CGSizeMake(339 * kScreenWidthProportion * 0.885, 41 * kScreenHeightProportion * 0.885));
     }];
     
-#pragma mark - 注册
+#pragma mark - 登录
     UILabel *tipLabel = [[UILabel alloc] init];
     tipLabel.textColor = kBlackLabelColor;
     tipLabel.font = FONT(12 * kFontProportion);
     tipLabel.textAlignment = NSTextAlignmentLeft;
     //tipLabel.backgroundColor = kRedColor;
-    tipLabel.text = @"您还没有账号，请";
+    tipLabel.text = @"您已有账号，请";
     [self.view addSubview:tipLabel];
     CGFloat tipLabelWidth = [tipLabel getTitleTextWidth:tipLabel.text font:FONT(12 * kFontProportion)];
     [tipLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(shadowImageView.mas_centerX).offset(-16 * kScreenWidthProportion - (tipLabelWidth / 2.0));
-        make.top.mas_equalTo(loginBtn.mas_bottom).offset(10 * kScreenHeightProportion);
+        make.top.mas_equalTo(registerBtn.mas_bottom).offset(10 * kScreenHeightProportion);
         make.size.mas_equalTo(CGSizeMake(tipLabelWidth, 14 * kScreenHeightProportion));
     }];
     
-    UIButton *registerBtn = [[UIButton alloc] init];
-    //registerBtn.backgroundColor = kRedColor;
-    [registerBtn setTitle:@"注册" forState:UIControlStateNormal];
-    [registerBtn setTitleColor:RGB(124, 38, 191) forState:UIControlStateNormal];
-    registerBtn.titleLabel.font = FONT(12 * kFontProportion);
-    [registerBtn addTarget:self action:@selector(registerBtnAction) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:registerBtn];
-    [registerBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+    UIButton *loginBtn = [[UIButton alloc] init];
+    //loginBtn.backgroundColor = kRedColor;
+    [loginBtn setTitle:@"登录" forState:UIControlStateNormal];
+    [loginBtn setTitleColor:RGB(124, 38, 191) forState:UIControlStateNormal];
+    loginBtn.titleLabel.font = FONT(12 * kFontProportion);
+    [loginBtn addTarget:self action:@selector(loginBtnAction) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:loginBtn];
+    [loginBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(tipLabel.mas_right).offset(1 * kScreenWidthProportion);
         make.top.mas_equalTo(tipLabel.mas_top);
         make.size.mas_equalTo(CGSizeMake(30 * kScreenWidthProportion, 14 * kScreenHeightProportion));
@@ -237,7 +237,7 @@
     [self.view addSubview:logoImageView];
     [logoImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(self.view.mas_centerX).offset(-25 * kScreenWidthProportion);
-        make.top.mas_equalTo(tipLabel.mas_bottom).offset(66 * kScreenHeightProportion);
+        make.top.mas_equalTo(tipLabel.mas_bottom).offset(76 * kScreenHeightProportion);
         make.size.mas_equalTo(CGSizeMake(50 * kScreenWidthProportion, 30 * kScreenHeightProportion));
     }];
 }
@@ -254,7 +254,7 @@
 
 - (void)registerBtnAction{
     NSLog(@"注册");
-    [self.navigationController pushViewController:[RegisterViewController new] animated:YES];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 /*

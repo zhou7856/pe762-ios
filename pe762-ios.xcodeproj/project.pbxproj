@@ -102,8 +102,16 @@
 		34FB77AA208DC84E008E53AA /* AudioPlayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34FB77A9208DC84E008E53AA /* AudioPlayViewController.m */; };
 		34FB77AD208E007E008E53AA /* MyRecordingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34FB77AC208E007E008E53AA /* MyRecordingViewController.m */; };
 		34FB77B1208E095F008E53AA /* CollectionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 34FB77B0208E095F008E53AA /* CollectionTableViewCell.m */; };
+		D82DAF10208EC3C4004A7EFE /* RegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D82DAF0F208EC3C4004A7EFE /* RegisterViewController.m */; };
+		D82DAF13208ED0DF004A7EFE /* MessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D82DAF12208ED0DF004A7EFE /* MessageViewController.m */; };
+		D82DAF16208ED28A004A7EFE /* MessageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D82DAF15208ED28A004A7EFE /* MessageTableViewCell.m */; };
 		D8D61C9C208D813200663054 /* informationTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D61C9B208D813200663054 /* informationTableViewCell.m */; };
 		D8D61C9F208DBDCE00663054 /* InformationDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D61C9E208DBDCE00663054 /* InformationDetailViewController.m */; };
+		D8D61CA2208E09D200663054 /* CommonProblemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D61CA1208E09D200663054 /* CommonProblemViewController.m */; };
+		D8D61CB0208E36C600663054 /* ProblemTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D61CAF208E36C600663054 /* ProblemTableViewCell.m */; };
+		D8D61CB3208E42C600663054 /* ProblemDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D61CB2208E42C600663054 /* ProblemDetailViewController.m */; };
+		D8D61CB6208E488700663054 /* FeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D61CB5208E488700663054 /* FeedbackViewController.m */; };
+		D8D61CB9208E490500663054 /* ContactServiceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D61CB8208E490500663054 /* ContactServiceViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -275,10 +283,26 @@
 		34FB77AF208E095F008E53AA /* CollectionTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CollectionTableViewCell.h; sourceTree = "<group>"; };
 		34FB77B0208E095F008E53AA /* CollectionTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CollectionTableViewCell.m; sourceTree = "<group>"; };
 		8564135A71ED42991B9B9A54 /* Pods-pe762-ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-pe762-ios.debug.xcconfig"; path = "Pods/Target Support Files/Pods-pe762-ios/Pods-pe762-ios.debug.xcconfig"; sourceTree = "<group>"; };
+		D82DAF0E208EC3C4004A7EFE /* RegisterViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RegisterViewController.h; sourceTree = "<group>"; };
+		D82DAF0F208EC3C4004A7EFE /* RegisterViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RegisterViewController.m; sourceTree = "<group>"; };
+		D82DAF11208ED0DF004A7EFE /* MessageViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MessageViewController.h; sourceTree = "<group>"; };
+		D82DAF12208ED0DF004A7EFE /* MessageViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MessageViewController.m; sourceTree = "<group>"; };
+		D82DAF14208ED28A004A7EFE /* MessageTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MessageTableViewCell.h; sourceTree = "<group>"; };
+		D82DAF15208ED28A004A7EFE /* MessageTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MessageTableViewCell.m; sourceTree = "<group>"; };
 		D8D61C9A208D813200663054 /* informationTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = informationTableViewCell.h; sourceTree = "<group>"; };
 		D8D61C9B208D813200663054 /* informationTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = informationTableViewCell.m; sourceTree = "<group>"; };
 		D8D61C9D208DBDCE00663054 /* InformationDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InformationDetailViewController.h; sourceTree = "<group>"; };
 		D8D61C9E208DBDCE00663054 /* InformationDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InformationDetailViewController.m; sourceTree = "<group>"; };
+		D8D61CA0208E09D200663054 /* CommonProblemViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CommonProblemViewController.h; sourceTree = "<group>"; };
+		D8D61CA1208E09D200663054 /* CommonProblemViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CommonProblemViewController.m; sourceTree = "<group>"; };
+		D8D61CAE208E36C600663054 /* ProblemTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProblemTableViewCell.h; sourceTree = "<group>"; };
+		D8D61CAF208E36C600663054 /* ProblemTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProblemTableViewCell.m; sourceTree = "<group>"; };
+		D8D61CB1208E42C600663054 /* ProblemDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProblemDetailViewController.h; sourceTree = "<group>"; };
+		D8D61CB2208E42C600663054 /* ProblemDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProblemDetailViewController.m; sourceTree = "<group>"; };
+		D8D61CB4208E488700663054 /* FeedbackViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FeedbackViewController.h; sourceTree = "<group>"; };
+		D8D61CB5208E488700663054 /* FeedbackViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FeedbackViewController.m; sourceTree = "<group>"; };
+		D8D61CB7208E490500663054 /* ContactServiceViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ContactServiceViewController.h; sourceTree = "<group>"; };
+		D8D61CB8208E490500663054 /* ContactServiceViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ContactServiceViewController.m; sourceTree = "<group>"; };
 		F1C1CD50920F591E08B8475E /* libPods-pe762-ios.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-pe762-ios.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -698,6 +722,16 @@
 				34FB77A6208DC384008E53AA /* SettingViewController.m */,
 				34FB77AB208E007E008E53AA /* MyRecordingViewController.h */,
 				34FB77AC208E007E008E53AA /* MyRecordingViewController.m */,
+				D8D61CA0208E09D200663054 /* CommonProblemViewController.h */,
+				D8D61CA1208E09D200663054 /* CommonProblemViewController.m */,
+				D8D61CB1208E42C600663054 /* ProblemDetailViewController.h */,
+				D8D61CB2208E42C600663054 /* ProblemDetailViewController.m */,
+				D8D61CB4208E488700663054 /* FeedbackViewController.h */,
+				D8D61CB5208E488700663054 /* FeedbackViewController.m */,
+				D8D61CB7208E490500663054 /* ContactServiceViewController.h */,
+				D8D61CB8208E490500663054 /* ContactServiceViewController.m */,
+				D82DAF11208ED0DF004A7EFE /* MessageViewController.h */,
+				D82DAF12208ED0DF004A7EFE /* MessageViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -738,6 +772,8 @@
 			children = (
 				34076DDA2089EC18005324AB /* LoginViewController.h */,
 				34076DDB2089EC18005324AB /* LoginViewController.m */,
+				D82DAF0E208EC3C4004A7EFE /* RegisterViewController.h */,
+				D82DAF0F208EC3C4004A7EFE /* RegisterViewController.m */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -747,6 +783,10 @@
 			children = (
 				34FB77AF208E095F008E53AA /* CollectionTableViewCell.h */,
 				34FB77B0208E095F008E53AA /* CollectionTableViewCell.m */,
+				D8D61CAE208E36C600663054 /* ProblemTableViewCell.h */,
+				D8D61CAF208E36C600663054 /* ProblemTableViewCell.m */,
+				D82DAF14208ED28A004A7EFE /* MessageTableViewCell.h */,
+				D82DAF15208ED28A004A7EFE /* MessageTableViewCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -918,12 +958,14 @@
 				34076D842089E855005324AB /* TZImagePickerController.m in Sources */,
 				34076D672089E855005324AB /* UIImage+MSSScale.m in Sources */,
 				34076D8F2089E855005324AB /* XCallSystemCameraAlertView.m in Sources */,
+				D8D61CB9208E490500663054 /* ContactServiceViewController.m in Sources */,
 				34076D662089E855005324AB /* MSSCollectionViewCell.m in Sources */,
 				34076D582089E855005324AB /* ConditionFilterTableViewCell.m in Sources */,
 				34076DC32089E88D005324AB /* UITextField+Placeholder.m in Sources */,
 				34FB77A4208DBF88008E53AA /* ChangeInfoViewController.m in Sources */,
 				34076D622089E855005324AB /* MSSBrowseModel.m in Sources */,
 				34076D652089E855005324AB /* MSSBrowseZoomScrollView.m in Sources */,
+				D82DAF13208ED0DF004A7EFE /* MessageViewController.m in Sources */,
 				34076D692089E855005324AB /* Identify.m in Sources */,
 				34076DB62089E88D005324AB /* NSDate+Formatter.m in Sources */,
 				34FB77A1208DB890008E53AA /* PersonalInformationViewController.m in Sources */,
@@ -931,10 +973,12 @@
 				34076D822089E855005324AB /* TZAssetModel.m in Sources */,
 				34076DD32089EBEF005324AB /* ListenViewController.m in Sources */,
 				34076D6C2089E855005324AB /* M13OrderedDictionary.m in Sources */,
+				D8D61CA2208E09D200663054 /* CommonProblemViewController.m in Sources */,
 				34076DBB2089E88D005324AB /* NullSafe.m in Sources */,
 				34076D632089E855005324AB /* MSSBrowseNetworkViewController.m in Sources */,
 				34076DC52089E88D005324AB /* UIView+Layout.m in Sources */,
 				34076DB82089E88D005324AB /* NSNull+JSON.m in Sources */,
+				D82DAF16208ED28A004A7EFE /* MessageTableViewCell.m in Sources */,
 				34076DBC2089E88D005324AB /* UIButton+Common.m in Sources */,
 				34076DC22089E88D005324AB /* UITextField+Common.m in Sources */,
 				34FB77B1208E095F008E53AA /* CollectionTableViewCell.m in Sources */,
@@ -945,6 +989,7 @@
 				34076DC12089E88D005324AB /* UILabel+Text.m in Sources */,
 				34076DD82089EC07005324AB /* ReadViewController.m in Sources */,
 				34076DC92089EB44005324AB /* TabBarController.m in Sources */,
+				D8D61CB6208E488700663054 /* FeedbackViewController.m in Sources */,
 				34076D572089E855005324AB /* ConditionFilterPopView.m in Sources */,
 				34076D6A2089E855005324AB /* AFAppDotNetAPIClient.m in Sources */,
 				34076D852089E855005324AB /* TZPhotoPickerController.m in Sources */,
@@ -952,6 +997,7 @@
 				34076D6B2089E855005324AB /* Reachability.m in Sources */,
 				34076D562089E855005324AB /* GYChangeTextView.m in Sources */,
 				34076D682089E855005324AB /* UIView+MSSLayout.m in Sources */,
+				D82DAF10208EC3C4004A7EFE /* RegisterViewController.m in Sources */,
 				34076DB92089E88D005324AB /* NSObject+Common.m in Sources */,
 				34076CCD2089E606005324AB /* ViewController.m in Sources */,
 				34076DBD2089E88D005324AB /* UIColor+Common.m in Sources */,
@@ -965,6 +1011,7 @@
 				34076DBF2089E88D005324AB /* UIImageView+Common.m in Sources */,
 				34076DBE2089E88D005324AB /* UIImage+Common.m in Sources */,
 				34076D592089E855005324AB /* SZTextView.m in Sources */,
+				D8D61CB3208E42C600663054 /* ProblemDetailViewController.m in Sources */,
 				34FB779E208D6FCF008E53AA /* UIViewController+Navigation.m in Sources */,
 				34076DDC2089EC18005324AB /* LoginViewController.m in Sources */,
 				34076D602089E855005324AB /* MSSBrowseLoadingImageView.m in Sources */,
@@ -979,6 +1026,7 @@
 				34076D892089E855005324AB /* UIView+Layout.m in Sources */,
 				34076D552089E855005324AB /* ShowStarView.m in Sources */,
 				34076DBA2089E88D005324AB /* NSString+Hash.m in Sources */,
+				D8D61CB0208E36C600663054 /* ProblemTableViewCell.m in Sources */,
 				34076DC42089E88D005324AB /* UIView+Common.m in Sources */,
 				D8D61C9F208DBDCE00663054 /* InformationDetailViewController.m in Sources */,
 				34076D612089E855005324AB /* MSSBrowseLocalViewController.m in Sources */,
@@ -1119,6 +1167,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = B9TUUSC9F7;
 				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/$(PRODUCT_NAME)/Supporting Files/PrefixHeader.pch";
 				INFOPLIST_FILE = "pe762-ios/Supporting Files/Info.plist";
@@ -1136,6 +1185,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = B9TUUSC9F7;
 				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/$(PRODUCT_NAME)/Supporting Files/PrefixHeader.pch";
 				INFOPLIST_FILE = "pe762-ios/Supporting Files/Info.plist";

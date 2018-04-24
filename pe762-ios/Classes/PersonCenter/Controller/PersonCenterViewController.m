@@ -9,6 +9,9 @@
 #import "PersonCenterViewController.h"
 #import "PersonalInformationViewController.h" //个人信息
 #import "MyRecordingViewController.h" //  我的收藏夹 （播放记录、下载）
+#import "CommonProblemViewController.h"//常见问题
+#import "FeedbackViewController.h"//意见反馈
+#import "ContactServiceViewController.h"//联系客服
 
 @interface PersonCenterViewController ()
 {
