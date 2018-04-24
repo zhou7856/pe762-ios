@@ -9,6 +9,7 @@
 #import "AgentsViewController.h"
 #import "RegisteredUserTableViewCell.h" //注册用户cell
 #import "ClearingTableViewCell.h" //结算cell
+#import "ClearingDetailsViewController.h" //结算详情
 
 @interface AgentsViewController () <UITableViewDelegate, UITableViewDataSource>
 {
@@ -238,7 +239,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    
+    [self.navigationController pushViewController:[ClearingDetailsViewController new] animated:YES];
 }
 
 #pragma mark - 按钮点击

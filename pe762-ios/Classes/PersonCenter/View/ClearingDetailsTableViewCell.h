@@ -10,4 +10,12 @@
 
 @interface ClearingDetailsTableViewCell : UITableViewCell
 
+@property (nonatomic, strong) UIImageView *headImgeView;
+
+@property (nonatomic, strong) UILabel *nameLabel;
+
+@property (nonatomic, strong) UILabel *phoneLabel;
+
+@property (nonatomic, strong) UILabel *timeLabel;
+
 @end
