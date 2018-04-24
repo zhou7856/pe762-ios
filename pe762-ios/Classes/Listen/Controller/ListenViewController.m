@@ -8,6 +8,7 @@
 
 #import "ListenViewController.h"
 #import "CourseTableViewCell.h"//课程-列表
+#import "NewestTableViewCell.h"//上新-列表
 
 @interface ListenViewController ()<UITableViewDelegate,UITableViewDataSource>
 {
@@ -78,7 +79,7 @@
     }
     
     mainView = [[UIView alloc] init];
-    mainView.backgroundColor = kRedColor;
+    //mainView.backgroundColor = kRedColor;
     [mainScrollView addSubview:mainView];
     [mainView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(mainScrollView);
@@ -160,7 +161,7 @@
     
 #pragma mark - 免费试听、热门课程
     courseTableView = [[UITableView alloc] init];
-    courseTableView.backgroundColor = kBackgroundWhiteColor;
+    courseTableView.backgroundColor = kWhiteColor;
     courseTableView.delegate = self;
     courseTableView.dataSource = self;
     courseTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -189,7 +190,7 @@
     }];
     
     freshTableView = [[UITableView alloc] init];
-    freshTableView.backgroundColor = kBackgroundWhiteColor;
+    freshTableView.backgroundColor = kWhiteColor;
     freshTableView.delegate = self;
     freshTableView.dataSource = self;
     freshTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -199,13 +200,13 @@
     freshTableView.estimatedSectionFooterHeight = 0;
     [mainView addSubview:freshTableView];
     [freshTableView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(titleLabel).offset(-10 * kScreenWidthProportion);
+        make.left.right.mas_equalTo(mainView);
         make.top.mas_equalTo(titleLabel.mas_bottom);
-        make.height.mas_equalTo(2 * 242 * kScreenHeightProportion);
+        make.height.mas_equalTo(3 * 120 * kScreenHeightProportion);
     }];
     
     [mainView mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.bottom.mas_equalTo(freshTableView.mas_bottom).offset(30 * kScreenWidthProportion);
+        make.bottom.mas_equalTo(freshTableView.mas_bottom);
     }];
 }
 
@@ -215,7 +216,11 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 2;
+    if (tableView == courseTableView) {
+        return 2;
+    } else {
+        return 3;
+    }
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
@@ -229,21 +234,55 @@
 // cell 的高度
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    return 242 * kScreenHeightProportion;
+    if (tableView == courseTableView) {
+        return 242 * kScreenHeightProportion;
+    } else {
+        return 120 * kScreenHeightProportion;
+    }
+    
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    static NSString *cellID = @"CourseTableViewCell";
-    CourseTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
-    if (!cell) {
-        cell = [[CourseTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
+    
+    if (tableView == courseTableView) {
+        static NSString *cellID = @"CourseTableViewCell";
+        CourseTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
+        if (!cell) {
+            cell = [[CourseTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
+        }
+        // 取消点击cell的效果
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+        cell.titleLabel.text = @"热门课程";
+        
+        return cell;
+        
+    } else {
+        static NSString *cellID = @"NewestTableViewCell";
+        NewestTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
+        if (!cell) {
+            cell = [[NewestTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
+        }
+        // 取消点击cell的效果
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+        cell.iconImageView.backgroundColor = kRedColor;
+        cell.classLabel.text = @"学习工作";
+        cell.nameLabel.text = @"《直面就业问题》";
+        cell.detailLabel.text = @"面对就业我们为你提供最专业的客观分析";
+        cell.hotLabel.text = @"75万";
+        cell.dateLabel.text = @"2018.02.17 上新";
+        
+        CGFloat height = [cell.detailLabel getTitleHeight:cell.detailLabel.text withWidth:146 * kScreenWidthProportion andFont:11];
+        cell.detailLabel.numberOfLines = 0;
+        [cell.detailLabel mas_updateConstraints:^(MASConstraintMaker *make) {
+            
+            make.height.mas_equalTo(height);
+        }];
+        
+        return cell;
     }
-    // 取消点击cell的效果
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    
-    cell.titleLabel.text = @"热门课程";
-    
-    return cell;
+
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
