@@ -8,6 +8,7 @@
 
 #import "PersonCenterViewController.h"
 #import "PersonalInformationViewController.h" //个人信息
+#import "MyRecordingViewController.h" //  我的收藏夹 （播放记录、下载）
 
 @interface PersonCenterViewController ()
 {
@@ -226,7 +227,44 @@
 
 #pragma mark - 功能点击
 - (void)typeClickAction:(NSInteger)typeNumber {
-    
+    switch (typeNumber) {
+        case 0: {
+            //我的收藏
+            MyRecordingViewController *pushVC = [[MyRecordingViewController alloc] init];
+            pushVC.typeNumber = typeNumber;
+            [self.navigationController pushViewController:pushVC animated:YES];
+        }
+            break;
+        case 1: {
+            //播放记录
+            MyRecordingViewController *pushVC = [[MyRecordingViewController alloc] init];
+            pushVC.typeNumber = typeNumber;
+            [self.navigationController pushViewController:pushVC animated:YES];
+        }
+            break;
+        case 2: {
+            //已下载
+            MyRecordingViewController *pushVC = [[MyRecordingViewController alloc] init];
+            pushVC.typeNumber = typeNumber;
+            [self.navigationController pushViewController:pushVC animated:YES];
+        }
+            break;
+        case 3: {
+            //常见问题
+        }
+            break;
+        case 4: {
+            //意见反馈
+        }
+            break;
+        case 5: {
+            //联系客服
+        }
+            break;
+            
+        default:
+            break;
+    }
 }
 
 - (void)didReceiveMemoryWarning {
