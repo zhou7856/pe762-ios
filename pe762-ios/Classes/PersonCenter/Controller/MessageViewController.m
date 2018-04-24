@@ -60,7 +60,7 @@
     
 #pragma mark - 内容
     messageTabelView = [[UITableView alloc] initWithFrame:CGRectMake(0, kHeaderHeight, kScreenWidth, kScreenHeight - kHeaderHeight - kEndBackViewHeight) style:UITableViewStylePlain];
-    messageTabelView.backgroundColor = kWhiteColor;
+    messageTabelView.backgroundColor = kBackgroundWhiteColor;
     messageTabelView.delegate = self;
     messageTabelView.dataSource = self;
     messageTabelView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -90,19 +90,23 @@
 // cell 的高度
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    return 37 * kScreenHeightProportion;
+    return 71 * kScreenWidthProportion;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    static NSString *cellID = @"ProblemTableViewCell";
-    ProblemTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
+    static NSString *cellID = @"MessageTableViewCell";
+    MessageTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
     if (!cell) {
-        cell = [[ProblemTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
+        cell = [[MessageTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
     }
     // 取消点击cell的效果
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
-    cell.contentLabel.text = @"取消点击cell的效果取消点击cell的效果取消点击cell的效果";
+    cell.headImageView.backgroundColor = kBackgroundWhiteColor;
+    cell.sourceLabel.text = @"知趣大学专业说";
+    cell.dateLabel.text = @"2018-03-20";
+    cell.mainTitleLabel.text = @"取消点击cell的效果取消点击cell的效果";
+    cell.subtitleLabel.text = @"取消点击cell的效果取消点击cell的效果取消点击cell的效果";
     
     return cell;
 }
