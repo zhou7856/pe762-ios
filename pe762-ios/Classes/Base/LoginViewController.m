@@ -7,6 +7,7 @@
 //
 
 #import "LoginViewController.h"
+#import "RegisterViewController.h"//注册
 
 @interface LoginViewController ()
 {
@@ -17,6 +18,8 @@
     UITextField *phoneTextField;//手机号
     UIButton *getVerifyCodeBtn;//获取验证码
     UITextField *verifyTextField;//验证码
+    UITextField *imageCodeTextField;//图像验证码
+    UIImageView *verifyImageView;//图像验证码
 }
 @end
 
@@ -48,7 +51,7 @@
     
     leftBtn = [[UIButton alloc] init];
     typeLabel = [[UILabel alloc] init];
-    [self createNavigationFeatureAndTitle:@"登录" withLeftBtn:leftBtn andTypeTitle:typeLabel];
+    [self createNavigationFeatureAndTitle:@"注册" withLeftBtn:leftBtn andTypeTitle:typeLabel];
     
     [leftBtn addTarget:self action:@selector(leftBtnAction) forControlEvents:UIControlEventTouchUpInside];
     typeLabel.text = @"专业";
@@ -125,17 +128,50 @@
         make.height.mas_equalTo(1);
     }];
     
-#pragma mark - 输入验证码
+#pragma mark - 输入图形验证码
+    imageCodeTextField = [[UITextField alloc] init];
+    imageCodeTextField.placeholder = @"输入图形验证码";
+    imageCodeTextField.textColor = kBlackLabelColor;
+    //imageCodeTextField.backgroundColor = kRedColor;
+    imageCodeTextField.font = FONT(12 * kFontProportion);
+    [self.view addSubview:imageCodeTextField];
+    [imageCodeTextField mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(firstLineView.mas_left);
+        make.top.mas_equalTo(firstLineView.mas_bottom).offset(10 * kScreenHeightProportion);
+        make.size.mas_equalTo(CGSizeMake(200 * kScreenWidthProportion, 25 * kScreenHeightProportion));
+    }];
+    
+    //图形验证码-图片
+    verifyImageView = [[UIImageView alloc] init];
+    verifyImageView.backgroundColor = kRedColor;
+    [self.view addSubview:verifyImageView];
+    [verifyImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.mas_equalTo(shadowImageView.mas_right).offset(-12 * kScreenWidthProportion);
+        make.bottom.mas_equalTo(imageCodeTextField.mas_bottom).offset(2 * kScreenHeightProportion);
+        make.size.mas_equalTo(CGSizeMake(86 * kScreenWidthProportion * 0.9, 37 * kScreenHeightProportion * 0.9));
+    }];
+    
+    // 下划线
+    UIView *threeLineView = [[UIView alloc] init];
+    threeLineView.backgroundColor = kLineGrayColor;
+    [self.view addSubview:threeLineView];
+    [threeLineView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(firstLineView.mas_left);
+        make.right.mas_equalTo(firstLineView.mas_right);
+        make.top.mas_equalTo(imageCodeTextField.mas_bottom).offset(6 * kScreenHeightProportion);
+        make.height.mas_equalTo(1);
+    }];
+#pragma mark - 输入手机验证码
     verifyTextField = [[UITextField alloc] init];
-    verifyTextField.placeholder = @"验证码";
+    verifyTextField.placeholder = @"输入手机验证码";
     verifyTextField.textColor = kBlackLabelColor;
     //verifyTextField.backgroundColor = kRedColor;
     verifyTextField.font = FONT(12 * kFontProportion);
     [self.view addSubview:verifyTextField];
     [verifyTextField mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(firstLineView.mas_left);
-        make.right.mas_equalTo(firstLineView.mas_right);
-        make.top.mas_equalTo(firstLineView.mas_bottom).offset(20 * kScreenHeightProportion);
+        make.left.mas_equalTo(threeLineView.mas_left);
+        make.right.mas_equalTo(threeLineView.mas_right);
+        make.top.mas_equalTo(threeLineView.mas_bottom).offset(10 * kScreenHeightProportion);
         make.height.mas_equalTo(phoneTextField.mas_height);
     }];
     
@@ -157,6 +193,7 @@
     [loginBtn setTitle:@"登录" forState:UIControlStateNormal];
     [loginBtn setTitleColor:kWhiteColor forState:UIControlStateNormal];
     loginBtn.titleLabel.font = FONT(14 * kFontProportion);
+    [loginBtn addTarget:self action:@selector(loginBtnAction) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:loginBtn];
     [loginBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(firstLineView.mas_left);
@@ -184,6 +221,7 @@
     [registerBtn setTitle:@"注册" forState:UIControlStateNormal];
     [registerBtn setTitleColor:RGB(124, 38, 191) forState:UIControlStateNormal];
     registerBtn.titleLabel.font = FONT(12 * kFontProportion);
+    [registerBtn addTarget:self action:@selector(registerBtnAction) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:registerBtn];
     [registerBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(tipLabel.mas_right).offset(1 * kScreenWidthProportion);
@@ -199,7 +237,7 @@
     [self.view addSubview:logoImageView];
     [logoImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(self.view.mas_centerX).offset(-25 * kScreenWidthProportion);
-        make.top.mas_equalTo(tipLabel.mas_bottom).offset(76 * kScreenHeightProportion);
+        make.top.mas_equalTo(tipLabel.mas_bottom).offset(66 * kScreenHeightProportion);
         make.size.mas_equalTo(CGSizeMake(50 * kScreenWidthProportion, 30 * kScreenHeightProportion));
     }];
 }
@@ -209,12 +247,14 @@
     NSLog(@"专业");
 }
 
-- (void)shareBtnAction{
-    NSLog(@"分享");
+- (void)loginBtnAction{
+    NSLog(@"登录");
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
-- (void)likeBtnAction{
-    NSLog(@"喜欢");
+- (void)registerBtnAction{
+    NSLog(@"注册");
+    [self.navigationController pushViewController:[RegisterViewController new] animated:YES];
 }
 
 /*
