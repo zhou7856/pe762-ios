@@ -12,6 +12,7 @@
 #import "CommonProblemViewController.h"//常见问题
 #import "FeedbackViewController.h"//意见反馈
 #import "ContactServiceViewController.h"//联系客服
+#import "AgentsViewController.h" //代理商
 
 @interface PersonCenterViewController ()
 {
@@ -254,6 +255,7 @@
             break;
         case 3: {
             //常见问题
+            [self.navigationController pushViewController:[AgentsViewController new] animated:YES];
         }
             break;
         case 4: {
