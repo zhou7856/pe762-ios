@@ -114,6 +114,7 @@
 		D82DAF1D208F17E8004A7EFE /* CourseCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D82DAF1C208F17E8004A7EFE /* CourseCollectionViewCell.m */; };
 		D82DAF20208F1827004A7EFE /* CourseTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D82DAF1F208F1827004A7EFE /* CourseTableViewCell.m */; };
 		D82DAF23208F442C004A7EFE /* NewestTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D82DAF22208F442C004A7EFE /* NewestTableViewCell.m */; };
+		D82DAF26208F5A52004A7EFE /* ListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D82DAF25208F5A52004A7EFE /* ListViewController.m */; };
 		D8D61C9C208D813200663054 /* informationTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D61C9B208D813200663054 /* informationTableViewCell.m */; };
 		D8D61C9F208DBDCE00663054 /* InformationDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D61C9E208DBDCE00663054 /* InformationDetailViewController.m */; };
 		D8D61CA2208E09D200663054 /* CommonProblemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D61CA1208E09D200663054 /* CommonProblemViewController.m */; };
@@ -316,6 +317,8 @@
 		D82DAF1F208F1827004A7EFE /* CourseTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CourseTableViewCell.m; sourceTree = "<group>"; };
 		D82DAF21208F442C004A7EFE /* NewestTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NewestTableViewCell.h; sourceTree = "<group>"; };
 		D82DAF22208F442C004A7EFE /* NewestTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NewestTableViewCell.m; sourceTree = "<group>"; };
+		D82DAF24208F5A52004A7EFE /* ListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ListViewController.h; sourceTree = "<group>"; };
+		D82DAF25208F5A52004A7EFE /* ListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ListViewController.m; sourceTree = "<group>"; };
 		D8D61C9A208D813200663054 /* informationTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = informationTableViewCell.h; sourceTree = "<group>"; };
 		D8D61C9B208D813200663054 /* informationTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = informationTableViewCell.m; sourceTree = "<group>"; };
 		D8D61C9D208DBDCE00663054 /* InformationDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InformationDetailViewController.h; sourceTree = "<group>"; };
@@ -777,6 +780,8 @@
 				34076DD22089EBEF005324AB /* ListenViewController.m */,
 				34FB77A8208DC84E008E53AA /* AudioPlayViewController.h */,
 				34FB77A9208DC84E008E53AA /* AudioPlayViewController.m */,
+				D82DAF24208F5A52004A7EFE /* ListViewController.h */,
+				D82DAF25208F5A52004A7EFE /* ListViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1019,6 +1024,7 @@
 				34FB77A4208DBF88008E53AA /* ChangeInfoViewController.m in Sources */,
 				34076D622089E855005324AB /* MSSBrowseModel.m in Sources */,
 				34076D652089E855005324AB /* MSSBrowseZoomScrollView.m in Sources */,
+				D82DAF26208F5A52004A7EFE /* ListViewController.m in Sources */,
 				D82DAF13208ED0DF004A7EFE /* MessageViewController.m in Sources */,
 				34076D692089E855005324AB /* Identify.m in Sources */,
 				34076DB62089E88D005324AB /* NSDate+Formatter.m in Sources */,

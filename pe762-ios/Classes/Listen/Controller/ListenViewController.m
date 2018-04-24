@@ -9,6 +9,7 @@
 #import "ListenViewController.h"
 #import "CourseTableViewCell.h"//课程-列表
 #import "NewestTableViewCell.h"//上新-列表
+#import "ListViewController.h"//列表页面
 
 @interface ListenViewController ()<UITableViewDelegate,UITableViewDataSource>
 {
@@ -308,7 +309,8 @@
 // 消息通知
 - (void) noticeBtnAction{
     NSLog(@"消息通知");
-    //[self showTabBarView:NO];
+    [self showTabBarView:NO];
+    [self.navigationController pushViewController:[ListViewController new] animated:YES];
 }
 
 /*
