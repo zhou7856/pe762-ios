@@ -98,6 +98,7 @@
         }
         
         [[titleButton rac_signalForControlEvents:UIControlEventTouchUpInside] subscribeNext:^(id x) {
+            type = i;
             [self typeChangeAPI:i];
         }];
     }
