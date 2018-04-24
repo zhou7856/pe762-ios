@@ -156,7 +156,7 @@
 - (void) searchBtnAction{
     NSLog(@"搜索");
     [self showTabBarView:NO];
-    [self.navigationController pushViewController:[LoginViewController new] animated:YES];
+    [self.navigationController pushViewController:[ContactServiceViewController new] animated:YES];
 }
 
 /*

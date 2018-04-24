@@ -12,6 +12,8 @@
 {
     UIButton *majorBtn;//专业
     UILabel *typeLabel;//页面标题
+    UIButton *noticeBtn;//消息通知
+    
     SZTextView *contentTextView;//内容
 }
 @end
@@ -43,10 +45,12 @@
     self.view.backgroundColor = kBackgroundWhiteColor;
     
     majorBtn = [[UIButton alloc] init];
+    noticeBtn = [[UIButton alloc] init];
     typeLabel = [[UILabel alloc] init];
-    [self createNavigationFeatureAndTitle:@"意见反馈" withLeftBtn:majorBtn andTypeTitle:typeLabel];
+    [self createNavigationFeatureAndTitle:@"意见反馈" withLeftBtn:majorBtn andRightBtn:noticeBtn andTypeTitle:typeLabel];
     
     [majorBtn addTarget:self action:@selector(majorBtnAction) forControlEvents:UIControlEventTouchUpInside];
+    [noticeBtn addTarget:self action:@selector(noticeBtnAction) forControlEvents:UIControlEventTouchUpInside];
     typeLabel.text = @"专业";
     
     //底部
@@ -78,8 +82,11 @@
 // 专业
 - (void) majorBtnAction{
     NSLog(@"专业");
-    [self showTabBarView:NO];
-    [self.navigationController pushViewController:[LoginViewController new] animated:YES];
+}
+
+// 消息通知
+- (void) noticeBtnAction{
+    NSLog(@"消息通知");
 }
 
 /*
