@@ -10,4 +10,11 @@
 
 @interface CourseCollectionViewCell : UICollectionViewCell
 
+//课程图片
+@property (nonatomic, strong) UIImageView *iconImageView;
+//课程名称
+@property (nonatomic, strong) UILabel *nameLabel;
+//课程老师
+@property (nonatomic, strong) UILabel *teacherLabel;
+
 @end

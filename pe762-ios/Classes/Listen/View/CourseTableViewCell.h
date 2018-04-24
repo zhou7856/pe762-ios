@@ -10,4 +10,9 @@
 
 @interface CourseTableViewCell : UITableViewCell
 
+// 标题
+@property (nonatomic, strong) UILabel *titleLabel;
+// 内容
+@property (nonatomic, strong) UICollectionView *courseCollectionView;
+
 @end

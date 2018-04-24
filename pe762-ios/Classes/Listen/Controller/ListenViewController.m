@@ -7,8 +7,9 @@
 //
 
 #import "ListenViewController.h"
+#import "CourseTableViewCell.h"//课程-列表
 
-@interface ListenViewController ()
+@interface ListenViewController ()<UITableViewDelegate,UITableViewDataSource>
 {
     UIButton *majorBtn;//专业
     UILabel *typeLabel;//页面标题
@@ -18,8 +19,7 @@
     UIView *mainView;
     SDCycleScrollView *bannerScrollView;//轮播图
     
-    UICollectionView *gratisCollectionView;//免费试听
-    UICollectionView *hotCollectionView;//热门课程
+    UITableView *courseTableView;//免费试听、热门课程
     UITableView *freshTableView;//最新
 }
 @end
@@ -78,6 +78,7 @@
     }
     
     mainView = [[UIView alloc] init];
+    mainView.backgroundColor = kRedColor;
     [mainScrollView addSubview:mainView];
     [mainView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(mainScrollView);
@@ -97,7 +98,7 @@
     [mainView addSubview:bannerScrollView];
     
     [bannerScrollView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.width.mas_equalTo(mainView);
+        make.top.left.right.mas_equalTo(mainView);
         make.height.mas_equalTo(128 * kScreenHeightProportion);
     }];
     
@@ -108,7 +109,7 @@
     [mainView addSubview:searchView];
     [searchView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(bannerScrollView.mas_bottom).offset(10 * kScreenHeightProportion);
-        make.left.mas_equalTo(mainView.mas_left).offset(35 * kScreenWidthProportion);
+        make.left.mas_equalTo(bannerScrollView).offset(35 * kScreenWidthProportion);
         make.size.mas_equalTo(CGSizeMake(kScreenWidth - 70 * kScreenWidthProportion, 20 * kScreenHeightProportion));
     }];
     
@@ -157,18 +158,103 @@
         make.size.mas_equalTo(CGSizeMake(74 * kScreenWidthProportion, 74 * kScreenWidthProportion));
     }];
     
-#pragma mark - 免费试听
-    UILabel *gratisLabel = [[UILabel alloc] init];
-    gratisLabel.textColor = kBlackLabelColor;
-    gratisLabel.text = @"免费试听";
-    gratisLabel.font = FONT(14 * kFontProportion);
-    [mainView addSubview:gratisLabel];
-    [gratisLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(intentImageView.mas_bottom).offset(30 * kScreenHeightProportion);
-        make.left.mas_equalTo(mainView.mas_left).offset(10 * kScreenWidthProportion);
+#pragma mark - 免费试听、热门课程
+    courseTableView = [[UITableView alloc] init];
+    courseTableView.backgroundColor = kBackgroundWhiteColor;
+    courseTableView.delegate = self;
+    courseTableView.dataSource = self;
+    courseTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    courseTableView.scrollEnabled = NO;
+    courseTableView.estimatedRowHeight = 0;
+    courseTableView.estimatedSectionHeaderHeight = 0;
+    courseTableView.estimatedSectionFooterHeight = 0;
+    [mainView addSubview:courseTableView];
+    [courseTableView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.mas_equalTo(mainView);
+        make.top.mas_equalTo(intentImageView.mas_bottom);
+        make.height.mas_equalTo(2 * 242 * kScreenHeightProportion);
+    }];
+    
+#pragma mark - 最新
+    // 标题
+    UILabel *titleLabel = [[UILabel alloc] init];
+    titleLabel.textColor = kBlackLabelColor;
+    titleLabel.font = FONT(14 * kFontProportion);
+    titleLabel.text = @"最新";
+    [mainView addSubview:titleLabel];
+    [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(courseTableView.mas_bottom).offset(30 * kScreenHeightProportion);
+        make.left.mas_equalTo(courseTableView).offset(10 * kScreenWidthProportion);
         make.size.mas_equalTo(CGSizeMake(120 * kScreenWidthProportion, 40 * kScreenWidthProportion));
     }];
     
+    freshTableView = [[UITableView alloc] init];
+    freshTableView.backgroundColor = kBackgroundWhiteColor;
+    freshTableView.delegate = self;
+    freshTableView.dataSource = self;
+    freshTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    freshTableView.scrollEnabled = NO;
+    freshTableView.estimatedRowHeight = 0;
+    freshTableView.estimatedSectionHeaderHeight = 0;
+    freshTableView.estimatedSectionFooterHeight = 0;
+    [mainView addSubview:freshTableView];
+    [freshTableView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(titleLabel).offset(-10 * kScreenWidthProportion);
+        make.top.mas_equalTo(titleLabel.mas_bottom);
+        make.height.mas_equalTo(2 * 242 * kScreenHeightProportion);
+    }];
+    
+    [mainView mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.bottom.mas_equalTo(freshTableView.mas_bottom).offset(30 * kScreenWidthProportion);
+    }];
+}
+
+#pragma mark - tableView代理
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    return 2;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    return nil;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
+    return nil;
+}
+
+// cell 的高度
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    return 242 * kScreenHeightProportion;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    static NSString *cellID = @"CourseTableViewCell";
+    CourseTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
+    if (!cell) {
+        cell = [[CourseTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
+    }
+    // 取消点击cell的效果
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
+    cell.titleLabel.text = @"热门课程";
+    
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    NSLog(@"你点击了第%ld行", indexPath.row);
+    
+    // 跳转到资讯详情页面
+//    [self showTabBarView:NO];
+//    InformationDetailViewController *pushVC = [[InformationDetailViewController alloc] init];
+//    pushVC.idStr = [NSString stringWithFormat:@"%ld", indexPath.row];
+//    [self.navigationController pushViewController:pushVC animated:YES];
     
 }
 
