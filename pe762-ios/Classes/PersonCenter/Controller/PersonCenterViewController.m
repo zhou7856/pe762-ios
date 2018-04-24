@@ -20,9 +20,15 @@
     UIButton *messageBtn; //消息按钮
     UIImageView *backgroundImageView; //背景图片
     UIView *vipView; //vip页面
+    UILabel *vipTimeLabel; //vip剩余天数
+    UIButton *renewalsBtn; //续费按钮
+    
+    UIView *reviewView; //审核页面
+    UIView *proxyFeaturesView; //代理功能页面
+    
     UIImageView *headImageVIew; //头像
     UILabel *nameLabel;
-    UIImageView *isVipView; //vip显示页面
+    UIView *isVipView; //vip显示页面
     UIImageView *editImageView; //编辑图标
     UIView *typeView; //功能按钮页面
 }
@@ -144,14 +150,100 @@
         [editImageView addGestureRecognizer:tap];
     }
     
-    isVipView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Group 129"]];
+    isVipView = [[UIView alloc] init];
     [centerView addSubview:isVipView];
-    
     [isVipView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.size.mas_equalTo(CGSizeMake(33 * kScreenWidthProportion, 12 * kScreenWidthProportion));
+        make.top.mas_equalTo(nameLabel.mas_bottom);
+        make.left.right.mas_equalTo(centerView);
+        make.height.mas_equalTo(16 * kScreenWidthProportion);
+    }];
+
+    UIImageView *vipImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Group 129"]];
+    [isVipView addSubview:vipImageView];
+    
+    [vipImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.size.mas_equalTo(CGSizeMake(33 * kScreenWidthProportion, 12 * kScreenWidthProportion));
         make.top.mas_equalTo(nameLabel.mas_bottom).offset(2 * kScreenWidthProportion);
-        make.centerX.mas_equalTo(centerView);
+        make.centerX.mas_equalTo(isVipView);
     }];
+    
+    vipTimeLabel = [[UILabel alloc] init];
+    [vipTimeLabel setLabelWithTextColor:kBlackLabelColor textAlignment:NSTextAlignmentLeft font:13];
+    vipTimeLabel.text = @"剩余218天";
+    [isVipView addSubview:vipTimeLabel];
+    
+    [vipTimeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.bottom.mas_equalTo(isVipView);
+        make.left.mas_equalTo(vipImageView.mas_right).offset(5 * kScreenWidthProportion);
+    }];
+    
+    renewalsBtn = [[UIButton alloc] init];
+    [renewalsBtn setTitle:@"续费" forState:0];
+    [renewalsBtn setTitleColor:kWhiteColor forState:0];
+    renewalsBtn.backgroundColor = kRedColor;
+    [renewalsBtn setCornerRadius:3.f];
+    renewalsBtn.titleLabel.font = FONT(13 * kFontProportion);
+    [isVipView addSubview:renewalsBtn];
+    
+    [renewalsBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.bottom.mas_equalTo(isVipView);
+        make.left.mas_equalTo(vipTimeLabel.mas_right).offset(5 * kScreenWidthProportion);
+        make.width.mas_equalTo(40 * kScreenWidthProportion);
+    }];
+    
+    reviewView = [[UIView alloc] init];
+    [centerView addSubview:reviewView];
+    reviewView.hidden = YES;
+    
+    [reviewView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.mas_equalTo(isVipView);
+    }];
+    
+    UILabel *reviewTitleLabel = [[UILabel alloc] init];
+    [reviewTitleLabel setLabelWithTextColor:kGrayLabelColor textAlignment:NSTextAlignmentCenter font:13];
+    reviewTitleLabel.text = @"代理商申请审核中";
+    [reviewView addSubview:reviewTitleLabel];
+    
+    [reviewTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.bottom.left.right.mas_equalTo(reviewView);
+//        make.centerX.mas_equalTo(reviewView);
+    }];
+    
+    proxyFeaturesView = [[UIView alloc] initWithFrame:CGRectMake(0, 90 * kScreenWidthProportion, centerView.width, 25 * kScreenWidthProportion)];
+    [centerView addSubview:proxyFeaturesView];
+    
+   {
+       UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10 * kScreenWidthProportion, 0, 120 * kScreenWidthProportion, proxyFeaturesView.height)];
+       [titleLabel setLabelWithTextColor:kGrayLabelColor textAlignment:NSTextAlignmentLeft font:12];
+       titleLabel.text = @"查看我的分享二维码";
+       [proxyFeaturesView addSubview:titleLabel];
+       
+       UIImageView *iconImageView = [[UIImageView alloc] initWithFrame:CGRectMake(titleLabel.maxX + 3 * kScreenWidthProportion, 0, 6 * kScreenWidthProportion, 9 * kScreenWidthProportion)];
+       iconImageView.image = [UIImage imageNamed:@"Path 185"];
+       [proxyFeaturesView addSubview:iconImageView];
+       iconImageView.centerY = titleLabel.centerY;
+       
+       UIButton *shareBtn = [[UIButton alloc] initWithFrame:CGRectMake(titleLabel.minX, 0, iconImageView.maxX, 25 * kScreenWidthProportion)];
+       [proxyFeaturesView addSubview:shareBtn];
+       [shareBtn addTarget:self action:@selector(shareBtnAction) forControlEvents:UIControlEventTouchUpInside];
+   }
+    
+    {
+        UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(190 * kScreenWidthProportion, 0, 85 * kScreenWidthProportion, proxyFeaturesView.height)];
+        [titleLabel setLabelWithTextColor:kGrayLabelColor textAlignment:NSTextAlignmentLeft font:12];
+        titleLabel.text = @"邀请用户管理";
+        [proxyFeaturesView addSubview:titleLabel];
+        
+        UIImageView *iconImageView = [[UIImageView alloc] initWithFrame:CGRectMake(titleLabel.maxX + 3 * kScreenWidthProportion, 0, 6 * kScreenWidthProportion, 9 * kScreenWidthProportion)];
+        iconImageView.image = [UIImage imageNamed:@"Path 185"];
+        [proxyFeaturesView addSubview:iconImageView];
+         iconImageView.centerY = titleLabel.centerY;
+        
+        UIButton *userManagementBtn = [[UIButton alloc] initWithFrame:CGRectMake(titleLabel.minX, 0, iconImageView.maxX, 25 * kScreenWidthProportion)];
+        [proxyFeaturesView addSubview:userManagementBtn];
+        [userManagementBtn addTarget:self action:@selector(userManagementBtnAction) forControlEvents:UIControlEventTouchUpInside];
+    }
     
     UIView *typeView = [[UIView alloc] init];
     [centerView addSubview:typeView];
@@ -255,7 +347,6 @@
             break;
         case 3: {
             //常见问题
-            [self.navigationController pushViewController:[AgentsViewController new] animated:YES];
         }
             break;
         case 4: {
@@ -270,6 +361,16 @@
         default:
             break;
     }
+}
+
+#pragma mark - 查看我的分享二维码
+- (void)shareBtnAction {
+    
+}
+
+#pragma mark - 用户管理
+- (void)userManagementBtnAction {
+    [self.navigationController pushViewController:[AgentsViewController new] animated:YES];
 }
 
 - (void)didReceiveMemoryWarning {

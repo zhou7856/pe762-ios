@@ -8,6 +8,8 @@
 
 #import "AgentsViewController.h"
 #import "RegisteredUserTableViewCell.h" //注册用户cell
+#import "ClearingTableViewCell.h" //结算cell
+#import "ClearingDetailsViewController.h" //结算详情
 
 @interface AgentsViewController () <UITableViewDelegate, UITableViewDataSource>
 {
@@ -193,51 +195,51 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 75 * kScreenWidthProportion;
+    if (type == 0 || type == 1) {
+        return 75 * kScreenWidthProportion;
+    }
+    
+    return 65 * kScreenWidthProportion;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-//    if (type == 0 || type == 1) {
-//        static NSString *cellID = @"RegisteredUserTableViewCell";
-//        RegisteredUserTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
-//        if (!cell) {
-//            cell = [[RegisteredUserTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
-//        }
-//        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-//
-//        cell.backgroundColor = self.view.backgroundColor;
-//
-//        cell.headImageView.backgroundColor = [UIColor greenColor];
-//
-//        cell.nameLabel.text = @"Anny02";
-//        cell.phoneLabel.text = @"1524385897";
-//        cell.timeLabel.text = @"注册时间：2018-03-11";
-//
-//        return cell;
-//    }
-//
-//    return nil;
+    if (type == 0 || type == 1) {
+        static NSString *cellID = @"RegisteredUserTableViewCell";
+        RegisteredUserTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
+        if (!cell) {
+            cell = [[RegisteredUserTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
+        }
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+
+        cell.backgroundColor = self.view.backgroundColor;
+
+        cell.headImageView.backgroundColor = [UIColor greenColor];
+
+        cell.nameLabel.text = @"Anny02";
+        cell.phoneLabel.text = @"1524385897";
+        cell.timeLabel.text = @"注册时间：2018-03-11";
+
+        return cell;
+    }
     
-    static NSString *cellID = @"RegisteredUserTableViewCell";
-    RegisteredUserTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
+    static NSString *cellID = @"ClearingTableViewCell";
+    ClearingTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
     if (!cell) {
-        cell = [[RegisteredUserTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
+        cell = [[ClearingTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     cell.backgroundColor = self.view.backgroundColor;
     
-    cell.headImageView.backgroundColor = [UIColor greenColor];
-    
-    cell.nameLabel.text = @"Anny02";
-    cell.phoneLabel.text = @"1524385897";
-    cell.timeLabel.text = @"注册时间：2018-03-11";
-    
+    cell.priceLabel.text = @"1500";
+    cell.numberLabel.text = @"10";
+    cell.timeLabel.text = @"2018-03-11";
+
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    
+    [self.navigationController pushViewController:[ClearingDetailsViewController new] animated:YES];
 }
 
 #pragma mark - 按钮点击
@@ -264,6 +266,8 @@
             [titleButton setTitleColor:kGrayLabelColor forState:0];
         }
     }
+    
+    [listTableView reloadData];
 }
 
 - (void)didReceiveMemoryWarning {
