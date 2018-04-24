@@ -10,4 +10,12 @@
 
 @interface CollectionTableViewCell : UITableViewCell
 
+@property (nonatomic, strong) UIImageView *headImageView;
+
+@property (nonatomic, strong) UILabel *titleLabel;
+
+@property (nonatomic, strong) UILabel *contentLabel;
+
+@property (nonatomic, strong) UIButton *collectBtn; //收藏按钮
+
 @end

@@ -10,4 +10,6 @@
 
 @interface MyRecordingViewController : UIViewController
 
+@property (nonatomic, assign) NSInteger typeNumber;
+
 @end
