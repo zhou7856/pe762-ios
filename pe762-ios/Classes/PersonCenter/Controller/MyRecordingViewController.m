@@ -105,7 +105,7 @@
     
     [self typeChangeAPI:_typeNumber];
     
-    listTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 75 * kScreenWidthProportion + kHeaderHeight, kScreenWidth, kScreenHeight - 75 * kScreenWidthProportion - kHeaderHeight)];
+    listTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 75 * kScreenWidthProportion + kHeaderHeight, kScreenWidth, kScreenHeight - 75 * kScreenWidthProportion - kHeaderHeight - kEndBackViewHeight)];
     listTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     listTableView.delegate = self;
     listTableView.backgroundColor = self.view.backgroundColor;
