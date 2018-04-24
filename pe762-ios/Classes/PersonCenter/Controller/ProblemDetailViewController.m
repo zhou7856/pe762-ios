@@ -76,7 +76,7 @@
     
     // 发布时间
     dateLabel = [[UILabel alloc] init];
-    dateLabel.textColor = kLightGreyColor;
+    dateLabel.textColor = kTextFieldColor;
     dateLabel.font = FONT(10 * kFontProportion);
     dateLabel.textAlignment = NSTextAlignmentLeft;
     dateLabel.text = @"2018-03-17";
@@ -89,7 +89,7 @@
     
     // 作者
     authorLabel = [[UILabel alloc] init];
-    authorLabel.textColor = kLightGreyColor;
+    authorLabel.textColor = kTextFieldColor;
     authorLabel.font = FONT(10 * kFontProportion);
     authorLabel.textAlignment = NSTextAlignmentLeft;
     authorLabel.text = @"智取大学专业说";
@@ -103,7 +103,7 @@
     
     // 热度
     hotLabel = [[UILabel alloc] init];
-    hotLabel.textColor = kLightGreyColor;
+    hotLabel.textColor = kTextFieldColor;
     hotLabel.font = FONT(10 * kFontProportion);
     hotLabel.textAlignment = NSTextAlignmentLeft;
     hotLabel.text = @"27万次";
@@ -116,7 +116,7 @@
     
     // 内容
     contentLabel = [[UILabel alloc] init];
-    contentLabel.textColor = kLightGreyColor;
+    contentLabel.textColor = kTextFieldColor;
     contentLabel.font = FONT(10 * kFontProportion);
     //    contentLabel.backgroundColor = kRedColor;
     contentLabel.textAlignment = NSTextAlignmentLeft;

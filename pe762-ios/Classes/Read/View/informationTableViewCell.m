@@ -40,7 +40,7 @@
         
         // 副标题
         self.subTitleLabel = [[UILabel alloc] init];
-        self.subTitleLabel.textColor = kLightGreyColor;
+        self.subTitleLabel.textColor = kTextFieldColor;
         self.subTitleLabel.font = FONT(10 * kFontProportion);
         self.subTitleLabel.textAlignment = NSTextAlignmentCenter;
         [baseView addSubview:self.subTitleLabel];
@@ -63,7 +63,7 @@
         
         // 来源与时间
         self.sourceAndTimeLabel = [[UILabel alloc] init];
-        self.sourceAndTimeLabel.textColor = kLightGreyColor;
+        self.sourceAndTimeLabel.textColor = kTextFieldColor;
         self.sourceAndTimeLabel.font = FONT(9 * kFontProportion);
         self.sourceAndTimeLabel.textAlignment = NSTextAlignmentLeft;
         [baseView addSubview:self.sourceAndTimeLabel];
@@ -76,7 +76,7 @@
         
         // 作者
         self.authorLabel = [[UILabel alloc] init];
-        self.authorLabel.textColor = kLightGreyColor;
+        self.authorLabel.textColor = kTextFieldColor;
         self.authorLabel.font = FONT(9 * kFontProportion);
         self.authorLabel.textAlignment = NSTextAlignmentLeft;
         [baseView addSubview:self.authorLabel];
@@ -87,7 +87,7 @@
         
         // 点赞
         self.zanNumberLabel = [[UILabel alloc] init];
-        self.zanNumberLabel.textColor = kLightGreyColor;
+        self.zanNumberLabel.textColor = kTextFieldColor;
         self.zanNumberLabel.font = FONT(9 * kFontProportion);
         self.zanNumberLabel.textAlignment = NSTextAlignmentLeft;
         [baseView addSubview:self.zanNumberLabel];
