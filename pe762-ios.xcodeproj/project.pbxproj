@@ -102,6 +102,7 @@
 		34FB77AA208DC84E008E53AA /* AudioPlayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34FB77A9208DC84E008E53AA /* AudioPlayViewController.m */; };
 		34FB77AD208E007E008E53AA /* MyRecordingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34FB77AC208E007E008E53AA /* MyRecordingViewController.m */; };
 		34FB77B1208E095F008E53AA /* CollectionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 34FB77B0208E095F008E53AA /* CollectionTableViewCell.m */; };
+		D82DAF10208EC3C4004A7EFE /* RegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D82DAF0F208EC3C4004A7EFE /* RegisterViewController.m */; };
 		D8D61C9C208D813200663054 /* informationTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D61C9B208D813200663054 /* informationTableViewCell.m */; };
 		D8D61C9F208DBDCE00663054 /* InformationDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D61C9E208DBDCE00663054 /* InformationDetailViewController.m */; };
 		D8D61CA2208E09D200663054 /* CommonProblemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D61CA1208E09D200663054 /* CommonProblemViewController.m */; };
@@ -280,6 +281,8 @@
 		34FB77AF208E095F008E53AA /* CollectionTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CollectionTableViewCell.h; sourceTree = "<group>"; };
 		34FB77B0208E095F008E53AA /* CollectionTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CollectionTableViewCell.m; sourceTree = "<group>"; };
 		8564135A71ED42991B9B9A54 /* Pods-pe762-ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-pe762-ios.debug.xcconfig"; path = "Pods/Target Support Files/Pods-pe762-ios/Pods-pe762-ios.debug.xcconfig"; sourceTree = "<group>"; };
+		D82DAF0E208EC3C4004A7EFE /* RegisterViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RegisterViewController.h; sourceTree = "<group>"; };
+		D82DAF0F208EC3C4004A7EFE /* RegisterViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RegisterViewController.m; sourceTree = "<group>"; };
 		D8D61C9A208D813200663054 /* informationTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = informationTableViewCell.h; sourceTree = "<group>"; };
 		D8D61C9B208D813200663054 /* informationTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = informationTableViewCell.m; sourceTree = "<group>"; };
 		D8D61C9D208DBDCE00663054 /* InformationDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InformationDetailViewController.h; sourceTree = "<group>"; };
@@ -761,6 +764,8 @@
 			children = (
 				34076DDA2089EC18005324AB /* LoginViewController.h */,
 				34076DDB2089EC18005324AB /* LoginViewController.m */,
+				D82DAF0E208EC3C4004A7EFE /* RegisterViewController.h */,
+				D82DAF0F208EC3C4004A7EFE /* RegisterViewController.m */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -980,6 +985,7 @@
 				34076D6B2089E855005324AB /* Reachability.m in Sources */,
 				34076D562089E855005324AB /* GYChangeTextView.m in Sources */,
 				34076D682089E855005324AB /* UIView+MSSLayout.m in Sources */,
+				D82DAF10208EC3C4004A7EFE /* RegisterViewController.m in Sources */,
 				34076DB92089E88D005324AB /* NSObject+Common.m in Sources */,
 				34076CCD2089E606005324AB /* ViewController.m in Sources */,
 				34076DBD2089E88D005324AB /* UIColor+Common.m in Sources */,
