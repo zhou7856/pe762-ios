@@ -94,6 +94,7 @@
 		34076DD32089EBEF005324AB /* ListenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34076DD22089EBEF005324AB /* ListenViewController.m */; };
 		34076DD82089EC07005324AB /* ReadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34076DD72089EC07005324AB /* ReadViewController.m */; };
 		34076DDC2089EC18005324AB /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34076DDB2089EC18005324AB /* LoginViewController.m */; };
+		342E35A5208EE1D300819855 /* AgentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 342E35A4208EE1D300819855 /* AgentsViewController.m */; };
 		34BA90F0208D68ED0035262B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 34BA90EF208D68ED0035262B /* Assets.xcassets */; };
 		34FB779E208D6FCF008E53AA /* UIViewController+Navigation.m in Sources */ = {isa = PBXBuildFile; fileRef = 34FB779D208D6FCF008E53AA /* UIViewController+Navigation.m */; };
 		34FB77A1208DB890008E53AA /* PersonalInformationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34FB77A0208DB890008E53AA /* PersonalInformationViewController.m */; };
@@ -267,6 +268,8 @@
 		34076DD72089EC07005324AB /* ReadViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ReadViewController.m; sourceTree = "<group>"; };
 		34076DDA2089EC18005324AB /* LoginViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		34076DDB2089EC18005324AB /* LoginViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
+		342E35A3208EE1D300819855 /* AgentsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AgentsViewController.h; sourceTree = "<group>"; };
+		342E35A4208EE1D300819855 /* AgentsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AgentsViewController.m; sourceTree = "<group>"; };
 		34BA90EF208D68ED0035262B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = "pe762-ios/Assets.xcassets"; sourceTree = "<group>"; };
 		34FB779C208D6FCF008E53AA /* UIViewController+Navigation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Navigation.h"; sourceTree = "<group>"; };
 		34FB779D208D6FCF008E53AA /* UIViewController+Navigation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Navigation.m"; sourceTree = "<group>"; };
@@ -732,6 +735,8 @@
 				D8D61CB8208E490500663054 /* ContactServiceViewController.m */,
 				D82DAF11208ED0DF004A7EFE /* MessageViewController.h */,
 				D82DAF12208ED0DF004A7EFE /* MessageViewController.m */,
+				342E35A3208EE1D300819855 /* AgentsViewController.h */,
+				342E35A4208EE1D300819855 /* AgentsViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -983,6 +988,7 @@
 				34076DC22089E88D005324AB /* UITextField+Common.m in Sources */,
 				34FB77B1208E095F008E53AA /* CollectionTableViewCell.m in Sources */,
 				D8D61C9C208D813200663054 /* informationTableViewCell.m in Sources */,
+				342E35A5208EE1D300819855 /* AgentsViewController.m in Sources */,
 				34076D642089E855005324AB /* MSSBrowseRemindView.m in Sources */,
 				34FB77AD208E007E008E53AA /* MyRecordingViewController.m in Sources */,
 				34076D6D2089E855005324AB /* LDImagePicker.m in Sources */,
