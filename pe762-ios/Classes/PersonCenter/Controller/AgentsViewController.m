@@ -9,17 +9,17 @@
 #import "AgentsViewController.h"
 #import "RegisteredUserTableViewCell.h" //注册用户cell
 
-@interface AgentsViewController ()
+@interface AgentsViewController () <UITableViewDelegate, UITableViewDataSource>
 {
     //0 注册用户 1 vip用户 2 已结算
     NSInteger type;
     
-    UIView *userView; //注册用户下方页面
-    UITableView *userListTableView;
-    NSArray *userListArray;
+    UIView *clearingView; //结算页面
+    UILabel *numberLabel;
+    UILabel *priceLabel;
     
-    UIView *vipView; //vip用户下方页面
-    UIView *settledView; //已结算下方页面
+    UITableView *listTableView;
+    NSArray *listDataArray;
     
 }
 @end
@@ -44,6 +44,7 @@
 }
 
 - (void)initNav {
+    self.view.backgroundColor = RGB(243, 243, 243);
     [self createNavigationTitle:@"代理商"];
     
     [self createEndBackView];
@@ -71,12 +72,189 @@
         }];
     }
     
+    clearingView = [[UIView alloc] init];
+    [self.view addSubview:clearingView];
+    
+    [clearingView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.mas_equalTo(self.view);
+        make.top.mas_equalTo(kHeaderHeight + 70 * kScreenWidthProportion);
+        make.height.mas_equalTo(75 * kScreenWidthProportion);
+    }];
+    
+    {
+        UILabel *titleLabel = [[UILabel alloc] init];
+        [titleLabel setLabelWithTextColor:kBlackLabelColor textAlignment:NSTextAlignmentLeft font:12];
+        titleLabel.text = @"注册会员 :";
+        [clearingView addSubview:titleLabel];
+        
+        [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.mas_equalTo(18 * kScreenWidthProportion);
+            make.top.mas_equalTo(5 * kScreenWidthProportion);
+            make.height.mas_equalTo(20 * kScreenWidthProportion);
+        }];
+        
+        numberLabel = [[UILabel alloc] init];
+        [numberLabel setLabelWithTextColor:RGB(130, 34, 194) textAlignment:NSTextAlignmentCenter font:13];
+        [clearingView addSubview:numberLabel];
+        numberLabel.text = @"100";
+        
+        [numberLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.bottom.mas_equalTo(titleLabel);
+            make.left.mas_equalTo(titleLabel.mas_right);
+        }];
+        
+        UILabel *unitLabel = [[UILabel alloc] init];
+        [unitLabel setLabelWithTextColor:kBlackLabelColor textAlignment:NSTextAlignmentRight font:12];
+        unitLabel.text = @" 人";
+        [clearingView addSubview:unitLabel];
+        
+        [unitLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.bottom.mas_equalTo(titleLabel);
+            make.left.mas_equalTo(numberLabel.mas_right);
+        }];
+        
+    }
+    
+    {
+
+        UILabel *unitLabel = [[UILabel alloc] init];
+        [unitLabel setLabelWithTextColor:kBlackLabelColor textAlignment:NSTextAlignmentRight font:12];
+        unitLabel.text = @" 元";
+        [clearingView addSubview:unitLabel];
+
+        [unitLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.right.mas_equalTo(clearingView).offset(-15 * kScreenWidthProportion);
+            make.centerY.mas_equalTo(numberLabel);
+            make.height.mas_equalTo(numberLabel);
+        }];
+
+        priceLabel = [[UILabel alloc] init];
+        [priceLabel setLabelWithTextColor:RGB(130, 34, 194) textAlignment:NSTextAlignmentCenter font:13];
+        [clearingView addSubview:priceLabel];
+        priceLabel.text = @"1500";
+
+        [priceLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.right.mas_equalTo(unitLabel.mas_left);
+            make.centerY.mas_equalTo(numberLabel);
+            make.height.mas_equalTo(numberLabel);
+        }];
+
+        UILabel *titleLabel = [[UILabel alloc] init];
+        [titleLabel setLabelWithTextColor:kBlackLabelColor textAlignment:NSTextAlignmentLeft font:12];
+        titleLabel.text = @"可结算金额 :";
+        [clearingView addSubview:titleLabel];
+
+        [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.right.mas_equalTo(priceLabel.mas_left);
+            make.centerY.mas_equalTo(numberLabel);
+            make.height.mas_equalTo(numberLabel);
+        }];
+    }
+    
+    UIButton *applyBtn = [[UIButton alloc] initWithFrame:CGRectMake(15 * kScreenWidthProportion, 35 * kScreenWidthProportion, 290 * kScreenWidthProportion, 30 * kScreenWidthProportion)];
+    [applyBtn setTitle:@"申请结算" forState:0];
+    [applyBtn setTitleColor:kWhiteColor forState:0];
+    applyBtn.titleLabel.font = FONT(15 * kFontProportion);
+    applyBtn.backgroundColor = RGB(130, 34, 194);
+    [applyBtn setCornerRadius:15 * kScreenWidthProportion];
+    [clearingView addSubview:applyBtn];
+    
+    listTableView = [[UITableView alloc] init];
+    listTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    listTableView.delegate = self;
+    listTableView.dataSource = self;
+//    listTableView.scrollEnabled =NO; //设置tableview 不能滚动
+    [self.view addSubview:listTableView];
+    listTableView.backgroundColor = self.view.backgroundColor;
+    
+    [listTableView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(clearingView.mas_bottom);
+        make.left.right.mas_equalTo(self.view);
+        make.bottom.mas_equalTo(self.view).offset(-kEndBackViewHeight);
+    }];
+    clearingView.hidden = YES;
+    
+    if (@available(iOS 11.0, *)) {
+        listTableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+        listTableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
+        listTableView.scrollIndicatorInsets = listTableView.contentInset;
+        listTableView.estimatedRowHeight =0;
+        listTableView.estimatedSectionHeaderHeight =0;
+        listTableView.estimatedSectionFooterHeight =0;
+    }
+    
     [self typeChangeAPI:0];
+}
+
+#pragma mark - TableViewDataSource
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+//    return listDataArray.count;
+    return 7;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 75 * kScreenWidthProportion;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+//    if (type == 0 || type == 1) {
+//        static NSString *cellID = @"RegisteredUserTableViewCell";
+//        RegisteredUserTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
+//        if (!cell) {
+//            cell = [[RegisteredUserTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
+//        }
+//        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+//
+//        cell.backgroundColor = self.view.backgroundColor;
+//
+//        cell.headImageView.backgroundColor = [UIColor greenColor];
+//
+//        cell.nameLabel.text = @"Anny02";
+//        cell.phoneLabel.text = @"1524385897";
+//        cell.timeLabel.text = @"注册时间：2018-03-11";
+//
+//        return cell;
+//    }
+//
+//    return nil;
+    
+    static NSString *cellID = @"RegisteredUserTableViewCell";
+    RegisteredUserTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
+    if (!cell) {
+        cell = [[RegisteredUserTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
+    }
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
+    cell.backgroundColor = self.view.backgroundColor;
+    
+    cell.headImageView.backgroundColor = [UIColor greenColor];
+    
+    cell.nameLabel.text = @"Anny02";
+    cell.phoneLabel.text = @"1524385897";
+    cell.timeLabel.text = @"注册时间：2018-03-11";
+    
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
 }
 
 #pragma mark - 按钮点击
 - (void)typeChangeAPI:(NSInteger) typeNumber {
     type = typeNumber;
+    if (type == 1) {
+        clearingView.hidden = NO;
+        [clearingView mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.height.mas_equalTo(75 * kScreenWidthProportion);
+        }];
+    } else {
+        clearingView.hidden = YES;
+        [clearingView mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.height.mas_equalTo(0);
+        }];
+    }
+    
     for (int i = 0; i < 3; i++)  {
         NSInteger tagNumber = i + kTagStart + 10000;
         UIButton *titleButton = [self.view viewWithTag:tagNumber];
