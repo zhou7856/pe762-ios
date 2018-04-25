@@ -108,7 +108,7 @@
     [getVerifyCodeBtn setBackgroundImage:[UIImage imageNamed:@"Rectangle 41"] forState:UIControlStateNormal];
     //getVerifyCodeBtn.backgroundColor = kRedColor;
     [getVerifyCodeBtn setTitle:@"获取验证码" forState:UIControlStateNormal];
-    [getVerifyCodeBtn setTitleColor:kLightGreyColor forState:UIControlStateNormal];
+    [getVerifyCodeBtn setTitleColor:kTextFieldColor forState:UIControlStateNormal];
     getVerifyCodeBtn.titleLabel.font = FONT(12 * kFontProportion);
     [self.view addSubview:getVerifyCodeBtn];
     [getVerifyCodeBtn mas_makeConstraints:^(MASConstraintMaker *make) {

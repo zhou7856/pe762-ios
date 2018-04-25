@@ -107,7 +107,7 @@
     [getVerifyCodeBtn setBackgroundImage:[UIImage imageNamed:@"Rectangle 41"] forState:UIControlStateNormal];
     //getVerifyCodeBtn.backgroundColor = kRedColor;
     [getVerifyCodeBtn setTitle:@"获取验证码" forState:UIControlStateNormal];
-    [getVerifyCodeBtn setTitleColor:kLightGreyColor forState:UIControlStateNormal];
+    [getVerifyCodeBtn setTitleColor:kTextFieldColor forState:UIControlStateNormal];
     getVerifyCodeBtn.titleLabel.font = FONT(12 * kFontProportion);
     [self.view addSubview:getVerifyCodeBtn];
     [getVerifyCodeBtn mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -237,7 +237,7 @@
     [self.view addSubview:logoImageView];
     [logoImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(self.view.mas_centerX).offset(-25 * kScreenWidthProportion);
-        make.top.mas_equalTo(tipLabel.mas_bottom).offset(76 * kScreenHeightProportion);
+        make.top.mas_equalTo(tipLabel.mas_bottom).offset(66 * kScreenHeightProportion);
         make.size.mas_equalTo(CGSizeMake(50 * kScreenWidthProportion, 30 * kScreenHeightProportion));
     }];
 }
