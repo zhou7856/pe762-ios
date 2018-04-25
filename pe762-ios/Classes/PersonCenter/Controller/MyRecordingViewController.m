@@ -8,6 +8,7 @@
 
 #import "MyRecordingViewController.h"
 #import "CollectionTableViewCell.h" //我的收藏夹cell
+#import "AudioPlayViewController.h" //音频播放
 
 @interface MyRecordingViewController () <UITableViewDelegate, UITableViewDataSource>
 {
@@ -164,7 +165,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    
+    [self.navigationController pushViewController:[AudioPlayViewController new] animated:YES];
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
