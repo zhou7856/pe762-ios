@@ -7,6 +7,7 @@
 //  音频播放页面
 
 #import "AudioPlayViewController.h"
+#import "FSAudioStream.h"
 
 @interface AudioPlayViewController ()
 {
@@ -31,6 +32,24 @@
     UIImageView *photoImageView; //照片
     UILabel *introductionLabel; //
 }
+
+//@property (nonatomic, strong) FSAudioStream *audioStream;
+//@property (nonatomic, assign) CGFloat playbackTime;
+//@property (nonatomic, strong) NSTimer *playerTimer;
+////@property (nonatomic, strong) UIImageView *revolveImage;
+////@property (nonatomic, strong) UILabel *nowTimeLabel;
+////@property (nonatomic, strong) UILabel *totalTimeLabel;
+//@property (nonatomic, strong) UIProgressView *playerProgress;
+//@property (nonatomic, strong) UISlider *timeSlider;
+//// 进度条滑动过程中 防止因播放器计时器更新进度条的进度导致滑动小球乱动
+//@property (nonatomic, assign) BOOL sliding;
+////@property (nonatomic, strong) UIButton *playButton;
+//@property (nonatomic, assign) BOOL play;
+//@property (nonatomic, assign) CGFloat playheadTime;
+//@property (nonatomic, assign) CGFloat totalTime;
+////@property (nonatomic, strong) UIButton *lastButton;
+////@property (nonatomic, strong) UIButton *nextButton;
+
 @end
 
 @implementation AudioPlayViewController
@@ -40,6 +59,7 @@
     // Do any additional setup after loading the view.
     [self initNav];
     [self initUI];
+//    [self initPlay];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -51,6 +71,7 @@
 
 - (void)dealloc {
     NSLog(@"dealloc");
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)initNav {

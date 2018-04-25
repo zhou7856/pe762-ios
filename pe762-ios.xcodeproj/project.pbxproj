@@ -35,7 +35,6 @@
 		34076D682089E855005324AB /* UIView+MSSLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 34076D112089E854005324AB /* UIView+MSSLayout.m */; };
 		34076D692089E855005324AB /* Identify.m in Sources */ = {isa = PBXBuildFile; fileRef = 34076D142089E854005324AB /* Identify.m */; };
 		34076D6A2089E855005324AB /* AFAppDotNetAPIClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 34076D172089E854005324AB /* AFAppDotNetAPIClient.m */; };
-		34076D6B2089E855005324AB /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 34076D192089E854005324AB /* Reachability.m */; };
 		34076D6C2089E855005324AB /* M13OrderedDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = 34076D1C2089E854005324AB /* M13OrderedDictionary.m */; };
 		34076D6D2089E855005324AB /* LDImagePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 34076D202089E854005324AB /* LDImagePicker.m */; };
 		34076D6E2089E855005324AB /* VPImageCropperViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34076D222089E854005324AB /* VPImageCropperViewController.m */; };
@@ -179,8 +178,6 @@
 		34076D142089E854005324AB /* Identify.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Identify.m; sourceTree = "<group>"; };
 		34076D162089E854005324AB /* AFAppDotNetAPIClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFAppDotNetAPIClient.h; sourceTree = "<group>"; };
 		34076D172089E854005324AB /* AFAppDotNetAPIClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFAppDotNetAPIClient.m; sourceTree = "<group>"; };
-		34076D182089E854005324AB /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
-		34076D192089E854005324AB /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		34076D1B2089E854005324AB /* M13OrderedDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = M13OrderedDictionary.h; sourceTree = "<group>"; };
 		34076D1C2089E854005324AB /* M13OrderedDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = M13OrderedDictionary.m; sourceTree = "<group>"; };
 		34076D1F2089E854005324AB /* LDImagePicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LDImagePicker.h; sourceTree = "<group>"; };
@@ -549,8 +546,6 @@
 			children = (
 				34076D162089E854005324AB /* AFAppDotNetAPIClient.h */,
 				34076D172089E854005324AB /* AFAppDotNetAPIClient.m */,
-				34076D182089E854005324AB /* Reachability.h */,
-				34076D192089E854005324AB /* Reachability.m */,
 			);
 			path = Netwroking;
 			sourceTree = "<group>";
@@ -1062,7 +1057,6 @@
 				34076D6A2089E855005324AB /* AFAppDotNetAPIClient.m in Sources */,
 				34076D852089E855005324AB /* TZPhotoPickerController.m in Sources */,
 				34076D832089E855005324AB /* TZImageManager.m in Sources */,
-				34076D6B2089E855005324AB /* Reachability.m in Sources */,
 				D82DAF19208EE595004A7EFE /* AgentApplyViewController.m in Sources */,
 				34076D562089E855005324AB /* GYChangeTextView.m in Sources */,
 				34076D682089E855005324AB /* UIView+MSSLayout.m in Sources */,

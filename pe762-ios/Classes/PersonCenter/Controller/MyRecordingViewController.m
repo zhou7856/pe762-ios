@@ -9,6 +9,7 @@
 #import "MyRecordingViewController.h"
 #import "CollectionTableViewCell.h" //我的收藏夹cell
 #import "AudioPlayViewController.h" //音频播放
+#import "FSAudioStream.h" 
 
 @interface MyRecordingViewController () <UITableViewDelegate, UITableViewDataSource>
 {
