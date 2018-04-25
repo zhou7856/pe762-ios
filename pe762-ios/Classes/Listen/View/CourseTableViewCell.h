@@ -14,5 +14,7 @@
 @property (nonatomic, strong) UILabel *titleLabel;
 // 内容
 @property (nonatomic, strong) UICollectionView *courseCollectionView;
+// 上层页面
+@property (nonatomic , strong) UIViewController *superVC;
 
 @end
