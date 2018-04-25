@@ -11,6 +11,7 @@
 #import "NewestTableViewCell.h"//上新-列表
 #import "ListViewController.h"//列表页面
 #import "AudioPlayViewController.h"//音频播放
+#import "MessageViewController.h" //消息
 
 @interface ListenViewController ()<UITableViewDelegate,UITableViewDataSource>
 {
@@ -337,6 +338,7 @@
     NSLog(@"消息通知");
     //[self showTabBarView:NO];
     //[self.navigationController pushViewController:[ListViewController new] animated:YES];
+    [self.navigationController pushViewController:[MessageViewController new] animated:YES];
 }
 
 /*

@@ -13,6 +13,7 @@
 #import "FeedbackViewController.h"//意见反馈
 #import "ContactServiceViewController.h"//联系客服
 #import "AgentsViewController.h" //代理商
+#import "MessageViewController.h" //消息
 
 @interface PersonCenterViewController ()
 {
@@ -318,7 +319,7 @@
 
 #pragma makr - 消息点击
 - (void)messageBtnAction {
-    
+     [self.navigationController pushViewController:[MessageViewController new] animated:YES];
 }
 
 #pragma mark - 功能点击

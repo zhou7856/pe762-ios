@@ -34,7 +34,7 @@
     [super viewWillAppear:animated];
     
     // 加在数据
-    
+    [self showTabBarView:NO];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -51,7 +51,7 @@
     
     majorBtn = [[UIButton alloc] init];
     typeLabel = [[UILabel alloc] init];
-    [self createNavigationFeatureAndTitle:@"常见问题" withLeftBtn:majorBtn andTypeTitle:typeLabel];
+    [self createNavigationFeatureAndTitle:@"消息通知" withLeftBtn:majorBtn andTypeTitle:typeLabel];
     
     [majorBtn addTarget:self action:@selector(majorBtnAction) forControlEvents:UIControlEventTouchUpInside];
     typeLabel.text = @"专业";
