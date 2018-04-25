@@ -8,6 +8,7 @@
 
 #import "AudioPlayViewController.h"
 #import "FSAudioStream.h"
+#import "AudioPlayerTool.h"
 
 @interface AudioPlayViewController ()
 {
@@ -21,7 +22,8 @@
     UIView *playBackView; //播放页面的图文背景
     UILabel *nowPlayTime; //当前播放时间
     UILabel *allPlayTime; //总时间
-    UISlider *timeSlider; //时间
+//    UISlider *timeSlider; //时间
+    UIImageView *playImageView; //播放按钮图片
     
     //简介页面
     UIView *contentView;
@@ -33,22 +35,22 @@
     UILabel *introductionLabel; //
 }
 
-//@property (nonatomic, strong) FSAudioStream *audioStream;
-//@property (nonatomic, assign) CGFloat playbackTime;
-//@property (nonatomic, strong) NSTimer *playerTimer;
-////@property (nonatomic, strong) UIImageView *revolveImage;
-////@property (nonatomic, strong) UILabel *nowTimeLabel;
-////@property (nonatomic, strong) UILabel *totalTimeLabel;
-//@property (nonatomic, strong) UIProgressView *playerProgress;
-//@property (nonatomic, strong) UISlider *timeSlider;
-//// 进度条滑动过程中 防止因播放器计时器更新进度条的进度导致滑动小球乱动
-//@property (nonatomic, assign) BOOL sliding;
-////@property (nonatomic, strong) UIButton *playButton;
-//@property (nonatomic, assign) BOOL play;
-//@property (nonatomic, assign) CGFloat playheadTime;
-//@property (nonatomic, assign) CGFloat totalTime;
-////@property (nonatomic, strong) UIButton *lastButton;
-////@property (nonatomic, strong) UIButton *nextButton;
+@property (nonatomic, strong) FSAudioStream *audioStream;
+@property (nonatomic, assign) CGFloat playbackTime;
+@property (nonatomic, strong) NSTimer *playerTimer;
+//@property (nonatomic, strong) UIImageView *revolveImage;
+//@property (nonatomic, strong) UILabel *nowTimeLabel;
+//@property (nonatomic, strong) UILabel *totalTimeLabel;
+@property (nonatomic, strong) UIProgressView *playerProgress;
+@property (nonatomic, strong) UISlider *timeSlider;
+// 进度条滑动过程中 防止因播放器计时器更新进度条的进度导致滑动小球乱动
+@property (nonatomic, assign) BOOL sliding;
+//@property (nonatomic, strong) UIButton *playButton;
+@property (nonatomic, assign) BOOL play;
+@property (nonatomic, assign) CGFloat playheadTime;
+@property (nonatomic, assign) CGFloat totalTime;
+//@property (nonatomic, strong) UIButton *lastButton;
+//@property (nonatomic, strong) UIButton *nextButton;
 
 @end
 
@@ -60,6 +62,7 @@
     [self initNav];
     [self initUI];
 //    [self initPlay];
+    [self playerInit:[NSURL URLWithString:@"http://sc1.111ttt.cn/2016/1/06/25/199251943186.mp3"]];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -162,17 +165,19 @@
     allPlayTime.text = @"50:00";
     [playTypeView addSubview:allPlayTime];
 
-    timeSlider = [[UISlider alloc] initWithFrame:CGRectMake(15 * kScreenWidthProportion, nowPlayTime.maxY + 5 * kScreenWidthProportion, 290 * kScreenWidthProportion, 15)];
-    timeSlider.maximumValue = 1;
-    timeSlider.value = 20.0 / 50.0;
-    timeSlider.minimumTrackTintColor = RGB(197, 197, 197); //滑轮左边颜色，如果设置了左边的图片就不会显示
-    timeSlider.maximumTrackTintColor = RGB(201, 201, 201); //滑轮右边颜色，如果设置了右边的图片就不会显示
-    timeSlider.thumbTintColor = RGB(226, 226, 226);//设置了滑轮的颜色，如果设置了滑轮的样式图片就不会显示
+    self.timeSlider = [[UISlider alloc] initWithFrame:CGRectMake(15 * kScreenWidthProportion, nowPlayTime.maxY + 5 * kScreenWidthProportion, 290 * kScreenWidthProportion, 15)];
+    self.timeSlider.maximumValue = 1;
+    self.timeSlider.value = 20.0 / 50.0;
+    self.timeSlider.minimumTrackTintColor = RGB(197, 197, 197); //滑轮左边颜色，如果设置了左边的图片就不会显示
+    self.timeSlider.maximumTrackTintColor = RGB(201, 201, 201); //滑轮右边颜色，如果设置了右边的图片就不会显示
+    self.timeSlider.thumbTintColor = RGB(226, 226, 226);//设置了滑轮的颜色，如果设置了滑轮的样式图片就不会显示
+    [self.timeSlider addTarget:self action:@selector(durationSliderTouch:) forControlEvents:UIControlEventValueChanged];
+    [self.timeSlider addTarget:self action:@selector(durationSliderTouchEnded:) forControlEvents:UIControlEventTouchUpInside];
 
-    [playTypeView addSubview:timeSlider];
+    [playTypeView addSubview:self.timeSlider];
     
    //播放按钮
-    UIImageView *playImageView = [[UIImageView alloc] initWithFrame:CGRectMake(136 * kScreenWidthProportion, timeSlider.maxY + 15 * kScreenWidthProportion, 48 * kScreenWidthProportion, 48 * kScreenWidthProportion)];
+    playImageView = [[UIImageView alloc] initWithFrame:CGRectMake(136 * kScreenWidthProportion, self.timeSlider.maxY + 15 * kScreenWidthProportion, 48 * kScreenWidthProportion, 48 * kScreenWidthProportion)];
     playImageView.image = [UIImage imageNamed:@"Group 130"];
     [playTypeView addSubview:playImageView];
     
@@ -285,6 +290,143 @@
 - (void)initData {
     contentLabel.text = @"如果说《TED演讲的秘密》和《像TED一样演讲》是开胃菜，那么《演讲的力量》就是期待已久的主菜！TED掌门人克里斯·安德森，这个将TED推向世界的人，亲自传授公开演讲的秘诀！15年TED演讲指导经验总结，比尔·盖茨、丹尼尔·卡尼曼等的演讲教练5大关键演讲技巧，4个一定要避免的陷阱，从1人到1000人的场合都适用，让你从紧张到爆到hold住全场！克里斯·安德森作为TED的掌门人和演讲教练，在15年来参与并指导了上千场TED演讲，与比尔·盖茨、诺奖得主丹尼尔·卡尼曼、超级畅销作家肯·罗宾逊等N多优秀演讲者深入合作，从而总结了第一手公开演讲实战经验。他把自己与TED团队的经验，都写进在了这本书——《演讲的力量》。在书中，克里斯·安德森分享了成功演讲的5大关键技巧——联系、叙述、说明、说服与揭露——教你如何发表一场具有影响力的简短演讲，展现最好的那一...";
     introductionLabel.text = @"克里斯·安德森（ChrisAnderson）TED主席，TED首席教练。毕业于牛津大学，做过记者，创办过100多份成功的杂志刊物和网站。在2001年用非营利组织买下TED，自此开始全身心地经营TED，投身于TED的发展。他提出的TED口号“传播有价值的想法”在全球各地广为传播。目前他居于美国纽约。";
+}
+
+#pragma mark 初始化播放器=====================================================
+- (void)playerInit:(NSURL *)url{
+    if (!_audioStream) {
+        // 创建FSAudioStream对象
+        _audioStream=[[AudioPlayerTool sharePlayerTool] playerInit];
+        // 设置声音
+        [_audioStream setVolume:1];
+    }
+    _audioStream.url = url;
+    [_audioStream play];
+    __weak typeof(self) weakSelf = self;
+    _audioStream.onFailure=^(FSAudioStreamError error,NSString *description){
+        //        NSLog(@"播放出现问题%@",description);
+        if (error == kFsAudioStreamErrorNone) {
+            NSLog(@"播放出现问题");
+        }else if (error == kFsAudioStreamErrorNetwork){
+            NSLog(@"请检查网络连接");
+        }
+        if ([description isEqualToString:@"The stream startup watchdog activated: stream didn't start to play in 30 seconds"]) {
+            NSLog(@"播放出现问题");
+        }
+    };
+    _audioStream.onCompletion=^(){
+        [weakSelf playerItemDealloc];
+        [weakSelf playerInit:[NSURL URLWithString:@"http://sc1.111ttt.cn/2016/1/06/25/199251943186.mp3"]];
+        //        [weakSelf nextButtonAction];
+    };
+    self.play = YES;
+    playImageView.image = [UIImage imageNamed:@"Group 130"];
+    self.playerTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(playProgressAction) userInfo:nil repeats:YES];
+    
+}
+
+- (void)durationSliderTouch:(UISlider *)slider{
+    self.sliding = YES;
+}
+- (void)reloadprogressValue{
+    self.sliding = NO;
+}
+
+#pragma mark 拖动进度条到指定位置播放，重新添加播放进度。
+- (void)durationSliderTouchEnded:(UISlider *)slider{
+    // 添加这个延时是防止滑动小球回弹一下
+    [self performSelector:@selector(reloadprogressValue) withObject:self afterDelay:0.5];
+    [self slidertoPlay:slider.value];
+}
+#pragma mark 滑动进度条跳到指定位置，播放状态
+- (void)slidertoPlay:(CGFloat)time{
+    if (time == 1) {
+//        [self nextButtonAction];
+    }else if (time >= 0) {
+        FSStreamPosition pos = {0};
+        pos.position = time;
+        [self.audioStream seekToPosition:pos];
+    }
+}
+
+#pragma mark 播放暂停按钮
+- (void)playAction{
+    //先将未到时间执行前的任务取消
+    [[self class] cancelPreviousPerformRequestsWithTarget:self selector:@selector(theplayAction)object:nil];
+    [self performSelector:@selector(theplayAction)withObject:nil afterDelay:0.2f]; // 0.2不可改
+}
+- (void)theplayAction{
+    if (self.play == YES) {
+        [self.audioStream pause];
+        [self.playerTimer setFireDate:[NSDate distantFuture]];
+//        [_playButton setImage:[UIImage imageNamed:@"bofang"] forState:UIControlStateNormal];
+    }else{
+        [self.audioStream pause];
+        [self.playerTimer setFireDate:[NSDate distantPast]];
+//        [_playButton setImage:[UIImage imageNamed:@"audioPause"] forState:UIControlStateNormal];
+    }
+    self.play = !self.play;
+}
+
+#pragma mark 解决slider 小范围滑动不能触发的问题
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer{
+    if([gestureRecognizer locationInView:gestureRecognizer.view].y >= _timeSlider.frame.origin.y && !_timeSlider.hidden)
+        return NO;
+    return YES;
+}
+
+#pragma mark 音频缓存和播放进度提示
+- (void)playProgressAction{
+    FSStreamPosition cur = self.audioStream.currentTimePlayed;
+    self.playbackTime = cur.playbackTimeInSeconds/1;
+    double minutesElapsed = floor(fmod(self.playbackTime/ 60.0,60.0));
+    double secondsElapsed = floor(fmod(self.playbackTime,60.0));
+    nowPlayTime.text = [NSString stringWithFormat:@"%02.0f:%02.0f",minutesElapsed, secondsElapsed];
+    if (self.sliding == YES) {
+        
+    }else{
+        self.timeSlider.value = cur.position;//播放进度
+    }
+    // 总时长
+    self.totalTime = self.playbackTime/cur.position;
+    if ([[NSString stringWithFormat:@"%f",self.totalTime] isEqualToString:@"nan"]) {
+        allPlayTime.text = @"00:00";
+    }else{
+        double minutesElapsed1 = floor(fmod(self.totalTime/ 60.0,60.0));
+        double secondsElapsed1 = floor(fmod(self.totalTime,60.0));
+        allPlayTime.text = [NSString stringWithFormat:@"%02.0f:%02.0f",minutesElapsed1, secondsElapsed1];
+    }
+    //
+    float  prebuffer = (float)self.audioStream.prebufferedByteCount;
+    float contentlength = (float)self.audioStream.contentLength;
+    if (contentlength>0) {
+        self.playerProgress.progress = prebuffer /contentlength;//缓存进度
+        
+        NSLog(@"------%f-----%f",prebuffer,contentlength);
+    }
+}
+
+#pragma mark 清除缓存的音频，，
+- (void)playerItemDealloc{
+    NSArray *arr = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:_audioStream.configuration.cacheDirectory error:nil];
+    for (NSString *file in arr) {
+        if ([file hasPrefix:@"FSCache-"]) {
+            NSString *path = [NSString stringWithFormat:@"%@/%@", _audioStream.configuration.cacheDirectory, file];
+            [[NSFileManager defaultManager] removeItemAtPath:path error:nil];
+        }
+    }
+    [[AudioPlayerTool sharePlayerTool] stop];
+    _audioStream = nil;
+}
+
+#pragma mark - 分享
+- (void)shareBtnAction{
+    NSLog(@"分享");
+}
+
+#pragma mark - 喜欢
+- (void)likeBtnAction{
+    NSLog(@"喜欢");
 }
 
 - (void)didReceiveMemoryWarning {

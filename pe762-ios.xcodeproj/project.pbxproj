@@ -98,6 +98,7 @@
 		342E35AB208F0CF900819855 /* ClearingTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 342E35AA208F0CF900819855 /* ClearingTableViewCell.m */; };
 		342E35AE208F1A8700819855 /* ClearingDetailsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 342E35AD208F1A8700819855 /* ClearingDetailsTableViewCell.m */; };
 		342E35B1208F1AA000819855 /* ClearingDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 342E35B0208F1AA000819855 /* ClearingDetailsViewController.m */; };
+		345664C0209084CC00230375 /* AudioPlayerTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 345664BF209084CC00230375 /* AudioPlayerTool.m */; };
 		34BA90F0208D68ED0035262B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 34BA90EF208D68ED0035262B /* Assets.xcassets */; };
 		34FB779E208D6FCF008E53AA /* UIViewController+Navigation.m in Sources */ = {isa = PBXBuildFile; fileRef = 34FB779D208D6FCF008E53AA /* UIViewController+Navigation.m */; };
 		34FB77A1208DB890008E53AA /* PersonalInformationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34FB77A0208DB890008E53AA /* PersonalInformationViewController.m */; };
@@ -284,6 +285,8 @@
 		342E35AD208F1A8700819855 /* ClearingDetailsTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ClearingDetailsTableViewCell.m; sourceTree = "<group>"; };
 		342E35AF208F1AA000819855 /* ClearingDetailsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ClearingDetailsViewController.h; sourceTree = "<group>"; };
 		342E35B0208F1AA000819855 /* ClearingDetailsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ClearingDetailsViewController.m; sourceTree = "<group>"; };
+		345664BE209084CC00230375 /* AudioPlayerTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioPlayerTool.h; sourceTree = "<group>"; };
+		345664BF209084CC00230375 /* AudioPlayerTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AudioPlayerTool.m; sourceTree = "<group>"; };
 		34BA90EF208D68ED0035262B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = "pe762-ios/Assets.xcassets"; sourceTree = "<group>"; };
 		34FB779C208D6FCF008E53AA /* UIViewController+Navigation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Navigation.h"; sourceTree = "<group>"; };
 		34FB779D208D6FCF008E53AA /* UIViewController+Navigation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Navigation.m"; sourceTree = "<group>"; };
@@ -730,6 +733,7 @@
 			isa = PBXGroup;
 			children = (
 				34076DD02089EBE0005324AB /* Controller */,
+				345664BD209084B100230375 /* Model */,
 				D82DAF1A208F1783004A7EFE /* View */,
 			);
 			path = Listen;
@@ -810,6 +814,15 @@
 				D82DAF0F208EC3C4004A7EFE /* RegisterViewController.m */,
 			);
 			path = Base;
+			sourceTree = "<group>";
+		};
+		345664BD209084B100230375 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				345664BE209084CC00230375 /* AudioPlayerTool.h */,
+				345664BF209084CC00230375 /* AudioPlayerTool.m */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		34FB77AE208E0936008E53AA /* View */ = {
@@ -1069,6 +1082,7 @@
 				342E35B1208F1AA000819855 /* ClearingDetailsViewController.m in Sources */,
 				34076DC62089E88D005324AB /* UIViewController+Common.m in Sources */,
 				34076D872089E855005324AB /* TZPhotoPreviewController.m in Sources */,
+				345664C0209084CC00230375 /* AudioPlayerTool.m in Sources */,
 				34076D6E2089E855005324AB /* VPImageCropperViewController.m in Sources */,
 				34076DCD2089EBA4005324AB /* PersonCenterViewController.m in Sources */,
 				34076DB72089E88D005324AB /* NSDictionary+Sorting.m in Sources */,
