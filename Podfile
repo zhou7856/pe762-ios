@@ -32,6 +32,9 @@ pod 'WechatOpenSDK'
 # 布局工具
 pod 'Masonry'
 
+# 音频缓存播放
+pod 'FreeStreamer', '~> 3.7.2'
+
 end
 
 
