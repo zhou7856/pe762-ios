@@ -17,6 +17,7 @@
 {
     UITableView *informationTabelView;
     UIButton *searchBtn;
+    Boolean isLogin;
 }
 @end
 
@@ -28,6 +29,7 @@
     
     // 创建页面
     [self initUI];
+    isLogin = NO;
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -35,7 +37,11 @@
     // 显示底部tabbar
     [self showTabBarView:YES];
     // 加在数据
-    
+    if (isLogin == NO) {
+        [self showTabBarView:NO];
+        [self.navigationController pushViewController:[LoginViewController new] animated:YES];
+        isLogin = YES;
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -115,7 +121,7 @@
 
     // 作者
     CGFloat authorLabelWidth = [cell.authorLabel getTitleTextWidth:cell.authorLabel.text font:FONT(9 * kFontProportion)];
-    [cell.authorLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+    [cell.authorLabel mas_updateConstraints:^(MASConstraintMaker *make) {
         if (authorLabelWidth >= 110 * kScreenWidthProportion) {
             make.size.mas_equalTo(CGSizeMake(100 * kScreenWidthProportion, 11 * kScreenHeightProportion));
         } else {
@@ -126,7 +132,7 @@
     
     // 点赞
     CGFloat zanNumberLabelWidth = [cell.zanNumberLabel getTitleTextWidth:cell.zanNumberLabel.text font:FONT(9 * kFontProportion)];
-    [cell.zanNumberLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+    [cell.zanNumberLabel mas_updateConstraints:^(MASConstraintMaker *make) {
         if (zanNumberLabelWidth >= 24 * kScreenWidthProportion) {
             make.size.mas_equalTo(CGSizeMake(24 * kScreenWidthProportion, 11 * kScreenHeightProportion));
             cell.zanNumberLabel.text = @"999+";
@@ -154,8 +160,8 @@
 #pragma mark - 搜索
 - (void) searchBtnAction{
     NSLog(@"搜索");
-    [self showTabBarView:NO];
-    [self.navigationController pushViewController:[MessageViewController new] animated:YES];
+    //[self showTabBarView:NO];
+    //[self.navigationController pushViewController:[MessageViewController new] animated:YES];
 }
 
 /*

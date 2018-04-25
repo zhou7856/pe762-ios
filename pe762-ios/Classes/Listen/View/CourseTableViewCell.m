@@ -8,6 +8,7 @@
 
 #import "CourseTableViewCell.h"
 #import "CourseCollectionViewCell.h"
+#import "AudioPlayViewController.h"//音频播放
 
 @interface CourseTableViewCell ()<UICollectionViewDelegate,UICollectionViewDataSource>
 
@@ -82,7 +83,13 @@
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    NSLog(@"你点击了第%ld行", indexPath.row);
     
+    // 跳转到资讯详情页面
+//    [self showTabBarView:NO];
+    AudioPlayViewController *pushVC = [[AudioPlayViewController alloc] init];
+    //pushVC.idStr = [NSString stringWithFormat:@"%ld", indexPath.row];
+    [self.superVC.navigationController pushViewController:pushVC animated:YES];
 }
 
 - (void)awakeFromNib {

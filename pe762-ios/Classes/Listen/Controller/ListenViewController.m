@@ -10,6 +10,7 @@
 #import "CourseTableViewCell.h"//课程-列表
 #import "NewestTableViewCell.h"//上新-列表
 #import "ListViewController.h"//列表页面
+#import "AudioPlayViewController.h"//音频播放
 
 @interface ListenViewController ()<UITableViewDelegate,UITableViewDataSource>
 {
@@ -137,6 +138,7 @@
     
 #pragma mark - 讲专业、降学压、填志愿
     UIImageView *professionImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Group 117"]];
+    professionImageView.userInteractionEnabled = YES;
     [mainView addSubview:professionImageView];
     [professionImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(searchView.mas_bottom).offset(10 * kScreenHeightProportion);
@@ -144,7 +146,15 @@
         make.size.mas_equalTo(CGSizeMake(74 * kScreenWidthProportion, 74 * kScreenWidthProportion));
     }];
     
+    UITapGestureRecognizer *proTap = [[UITapGestureRecognizer alloc] init];
+    [[proTap rac_gestureSignal] subscribeNext:^(id x) {
+        [self showTabBarView:NO];
+        [self.navigationController pushViewController:[ListViewController new] animated:YES];
+    }];
+    [professionImageView addGestureRecognizer:proTap];
+    
     UIImageView *pressureImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Group 119"]];
+    pressureImageView.userInteractionEnabled = YES;
     [mainView addSubview:pressureImageView];
     [pressureImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(professionImageView.mas_top);
@@ -152,13 +162,28 @@
         make.size.mas_equalTo(CGSizeMake(74 * kScreenWidthProportion, 74 * kScreenWidthProportion));
     }];
     
+    UITapGestureRecognizer *preTap = [[UITapGestureRecognizer alloc] init];
+    [[preTap rac_gestureSignal] subscribeNext:^(id x) {
+        [self showTabBarView:NO];
+        [self.navigationController pushViewController:[ListViewController new] animated:YES];
+    }];
+    [pressureImageView addGestureRecognizer:preTap];
+    
     UIImageView *intentImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Group 118"]];
+    intentImageView.userInteractionEnabled = YES;
     [mainView addSubview:intentImageView];
     [intentImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.mas_equalTo(searchView.mas_centerX);
         make.top.mas_equalTo(professionImageView.mas_top);
         make.size.mas_equalTo(CGSizeMake(74 * kScreenWidthProportion, 74 * kScreenWidthProportion));
     }];
+    
+    UITapGestureRecognizer *intTap = [[UITapGestureRecognizer alloc] init];
+    [[intTap rac_gestureSignal] subscribeNext:^(id x) {
+        [self showTabBarView:NO];
+        [self.navigationController pushViewController:[ListViewController new] animated:YES];
+    }];
+    [intentImageView addGestureRecognizer:intTap];
     
 #pragma mark - 免费试听、热门课程
     courseTableView = [[UITableView alloc] init];
@@ -250,6 +275,7 @@
         CourseTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
         if (!cell) {
             cell = [[CourseTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
+            cell.superVC = self;
         }
         // 取消点击cell的效果
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -291,10 +317,10 @@
     NSLog(@"你点击了第%ld行", indexPath.row);
     
     // 跳转到资讯详情页面
-//    [self showTabBarView:NO];
-//    InformationDetailViewController *pushVC = [[InformationDetailViewController alloc] init];
-//    pushVC.idStr = [NSString stringWithFormat:@"%ld", indexPath.row];
-//    [self.navigationController pushViewController:pushVC animated:YES];
+    [self showTabBarView:NO];
+    AudioPlayViewController *pushVC = [[AudioPlayViewController alloc] init];
+    //pushVC.idStr = [NSString stringWithFormat:@"%ld", indexPath.row];
+    [self.navigationController pushViewController:pushVC animated:YES];
     
 }
 
@@ -309,8 +335,8 @@
 // 消息通知
 - (void) noticeBtnAction{
     NSLog(@"消息通知");
-    [self showTabBarView:NO];
-    [self.navigationController pushViewController:[ListViewController new] animated:YES];
+    //[self showTabBarView:NO];
+    //[self.navigationController pushViewController:[ListViewController new] animated:YES];
 }
 
 /*

@@ -95,7 +95,7 @@
     
     // 作者
     authorLabel = [[UILabel alloc] init];
-    authorLabel.textColor = kLightGreyColor;
+    authorLabel.textColor = kTextFieldColor;
     authorLabel.font = FONT(10 * kFontProportion);
     authorLabel.textAlignment = NSTextAlignmentLeft;
 //    authorLabel.backgroundColor = kRedColor;
@@ -109,7 +109,7 @@
     
     // 发布时间
     releaseTimeLabel = [[UILabel alloc] init];
-    releaseTimeLabel.textColor = kLightGreyColor;
+    releaseTimeLabel.textColor = kTextFieldColor;
     releaseTimeLabel.font = FONT(10 * kFontProportion);
     releaseTimeLabel.textAlignment = NSTextAlignmentLeft;
 //    releaseTimeLabel.backgroundColor = kRedColor;
@@ -123,7 +123,7 @@
     
     // 热度
     hotLabel = [[UILabel alloc] init];
-    hotLabel.textColor = kLightGreyColor;
+    hotLabel.textColor = kTextFieldColor;
     hotLabel.font = FONT(10 * kFontProportion);
 //    hotLabel.backgroundColor = kRedColor;
     hotLabel.textAlignment = NSTextAlignmentLeft;
@@ -137,7 +137,7 @@
     
     // 内容
     contentLabel = [[UILabel alloc] init];
-    contentLabel.textColor = kLightGreyColor;
+    contentLabel.textColor = kTextFieldColor;
     contentLabel.font = FONT(10 * kFontProportion);
 //    contentLabel.backgroundColor = kRedColor;
     contentLabel.textAlignment = NSTextAlignmentRight;

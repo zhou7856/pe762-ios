@@ -8,6 +8,7 @@
 
 #import "ListViewController.h"
 #import "NewestTableViewCell.h"//上新-列表
+#import "AudioPlayViewController.h"//音频播放
 
 @interface ListViewController ()<UITableViewDelegate,UITableViewDataSource>
 {
@@ -90,6 +91,7 @@
     }];
     
 #pragma mark - 讲专业、降学压、填志愿 74
+    // 讲专业
     UIImageView *professionImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Group 103"]];
     [self.view addSubview:professionImageView];
     [professionImageView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -97,7 +99,6 @@
         make.left.mas_equalTo(searchView.mas_left).offset(10 * kScreenHeightProportion);
         make.size.mas_equalTo(CGSizeMake(49 * kScreenWidthProportion, 49 * kScreenWidthProportion));
     }];
-    
     
     UILabel *professionLabel = [[UILabel alloc] init];
     professionLabel.text = @"讲专业";
@@ -111,7 +112,17 @@
         make.height.mas_equalTo(13 * kScreenWidthProportion);
     }];
     
+    UIButton *proBtn = [[UIButton alloc] init];
+    proBtn.tag = 1;
+    [proBtn addTarget:self action:@selector(btnAction:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:proBtn];
+    [proBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(professionImageView);
+        make.left.right.mas_equalTo(professionImageView);
+        make.height.mas_equalTo(74 * kScreenWidthProportion);
+    }];
     
+    // 降学压
     UIImageView *pressureImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Group 105"]];
     [self.view addSubview:pressureImageView];
     [pressureImageView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -132,6 +143,17 @@
         make.height.mas_equalTo(13 * kScreenWidthProportion);
     }];
     
+    UIButton *preBtn = [[UIButton alloc] init];
+    preBtn.tag = 3;
+    [preBtn addTarget:self action:@selector(btnAction:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:preBtn];
+    [preBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(pressureImageView);
+        make.left.right.mas_equalTo(pressureImageView);
+        make.height.mas_equalTo(74 * kScreenWidthProportion);
+    }];
+    
+    // 填志愿
     UIImageView *intentImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Group 104"]];
     [self.view addSubview:intentImageView];
     [intentImageView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -150,6 +172,16 @@
         make.top.mas_equalTo(intentImageView.mas_bottom).offset(2 * kScreenWidthProportion);
         make.left.right.mas_equalTo(intentImageView);
         make.height.mas_equalTo(13 * kScreenWidthProportion);
+    }];
+    
+    UIButton *intBtn = [[UIButton alloc] init];
+    intBtn.tag = 2;
+    [intBtn addTarget:self action:@selector(btnAction:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:intBtn];
+    [intBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(intentImageView);
+        make.left.right.mas_equalTo(intentImageView);
+        make.height.mas_equalTo(74 * kScreenWidthProportion);
     }];
     
 #pragma mark - 列表
@@ -227,9 +259,9 @@
     
     // 跳转到资讯详情页面
     //    [self showTabBarView:NO];
-    //    InformationDetailViewController *pushVC = [[InformationDetailViewController alloc] init];
+        AudioPlayViewController *pushVC = [[AudioPlayViewController alloc] init];
     //    pushVC.idStr = [NSString stringWithFormat:@"%ld", indexPath.row];
-    //    [self.navigationController pushViewController:pushVC animated:YES];
+        [self.navigationController pushViewController:pushVC animated:YES];
     
 }
 
@@ -244,8 +276,23 @@
 // 消息通知
 - (void) noticeBtnAction{
     NSLog(@"消息通知");
-    [self showTabBarView:NO];
-    [self.navigationController pushViewController:[ListViewController new] animated:YES];
+    //[self showTabBarView:NO];
+    //[self.navigationController pushViewController:[ListViewController new] animated:YES];
+}
+
+- (void) btnAction:(UIButton *)temp{
+    if (temp.tag == 1) {
+        
+        NSLog(@"讲专业");
+        
+    } else if (temp.tag == 2) {
+        
+        NSLog(@"填志愿");
+        
+    } else {
+        
+        NSLog(@"降学压");
+    }
 }
 
 /*

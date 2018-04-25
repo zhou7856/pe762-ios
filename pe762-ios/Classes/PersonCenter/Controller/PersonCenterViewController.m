@@ -347,14 +347,26 @@
             break;
         case 3: {
             //常见问题
+            [self showTabBarView:NO];
+            CommonProblemViewController *pushVC = [[CommonProblemViewController alloc] init];
+            //pushVC.typeNumber = typeNumber;
+            [self.navigationController pushViewController:pushVC animated:YES];
         }
             break;
         case 4: {
             //意见反馈
+            [self showTabBarView:NO];
+            FeedbackViewController *pushVC = [[FeedbackViewController alloc] init];
+            //pushVC.typeNumber = typeNumber;
+            [self.navigationController pushViewController:pushVC animated:YES];
         }
             break;
         case 5: {
             //联系客服
+            [self showTabBarView:NO];
+            ContactServiceViewController *pushVC = [[ContactServiceViewController alloc] init];
+            //pushVC.typeNumber = typeNumber;
+            [self.navigationController pushViewController:pushVC animated:YES];
         }
             break;
             
