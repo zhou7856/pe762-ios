@@ -95,7 +95,7 @@
         [self.view addSubview:titleButton];
         
         if (i != 2) {
-            UIView *lineView = [UIView viewWithFrame:CGRectMake(titleButton.maxY, titleButton.minY + 9 * kScreenWidthProportion, 2, 12 * kScreenWidthProportion) backgroundColor:RGB(215, 215, 215)];
+            UIView *lineView = [UIView viewWithFrame:CGRectMake(titleButton.maxX - 2, titleButton.minY + 9 * kScreenWidthProportion, 2, 12 * kScreenWidthProportion) backgroundColor:RGB(215, 215, 215)];
             [self.view addSubview:lineView];
         }
         

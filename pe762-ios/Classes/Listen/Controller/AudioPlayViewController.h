@@ -12,4 +12,6 @@
 
 @property (nonatomic, strong) NSString *titleStr;
 
+@property (nonatomic, strong) NSString *fileNameStr;
+
 @end

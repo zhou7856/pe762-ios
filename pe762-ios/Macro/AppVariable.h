@@ -52,6 +52,15 @@
 
 
 /**
+    快进快退时间
+ */
+#define kChangeTime 15.0
+//非VIP用户可用时间
+#define kGeneralUserPlayTime 30.f
+//统计播放次数时间
+#define kStatisticsTime 100.f
+
+/**
  * @brief 封装颜色
  */
 #define RGB(r, g, b) [UIColor colorWithRed:r/255.0f green:g/255.0f blue:b/255.0f alpha:1]
