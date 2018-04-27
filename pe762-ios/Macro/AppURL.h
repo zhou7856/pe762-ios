@@ -83,6 +83,7 @@
 
 /*************************读咨询***********************************/
 //咨询
+#define kReadInformationHomeURL kBaseURL @"user/infor/"
 
 //咨询详情页
 
