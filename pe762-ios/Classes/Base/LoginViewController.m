@@ -29,6 +29,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [self initUI];
+    [self onClickImage];
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -116,6 +117,7 @@
         make.top.mas_equalTo(phoneTextField.mas_top).offset(1 * kScreenHeightProportion);
         make.size.mas_equalTo(CGSizeMake(89 * kScreenWidthProportion * 0.9, 26 * kScreenHeightProportion * 0.9));
     }];
+    [getVerifyCodeBtn addTarget:self action:@selector(getVerifyCodeAPI) forControlEvents:UIControlEventTouchUpInside];
     
     // 下划线
     UIView *firstLineView = [[UIView alloc] init];
@@ -143,7 +145,7 @@
     
     //图形验证码-图片
     verifyImageView = [[UIImageView alloc] init];
-    verifyImageView.backgroundColor = kRedColor;
+//    verifyImageView.backgroundColor = kRedColor;
     [self.view addSubview:verifyImageView];
     [verifyImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.mas_equalTo(shadowImageView.mas_right).offset(-12 * kScreenWidthProportion);
@@ -249,13 +251,166 @@
 
 - (void)loginBtnAction{
     NSLog(@"登录");
-    [self.navigationController popViewControllerAnimated:YES];
+    if (phoneTextField.text.length == 0) {
+        [self showHUDTextOnly:@"请输入手机号码"];
+        return;
+    }
+    
+    if (imageCodeTextField.text.length == 0) {
+        [self showHUDTextOnly:@"请输入图形验证码"];
+        return;
+    }
+    
+    if (verifyTextField.text.length == 0) {
+        [self showHUDTextOnly:@"请输入短信验证码"];
+        return;
+    }
+    
+    NSString *url = [NSString stringWithFormat:@"%@",kLoginURL];
+    url = [self stitchingTokenAndPlatformForURL:url];
+    NSDictionary *parameter = @{
+                                @"salt":verifyTextField.text,
+                                @"phone":phoneTextField.text
+                                };
+    [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+    [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
+    [self defaultRequestwithURL:url withParameters:parameter withMethod:kPOST withBlock:^(NSDictionary *dict, NSError *error) {
+        [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+        //判断有无数据
+        if ([[dict allKeys] containsObject:@"errorCode"]) {
+            NSString *errorCode = [NSString stringWithFormat:@"%@",dict[@"errorCode"]];
+            if ([errorCode isEqualToString:@"-1"]){
+                //判断当前是不是登陆页面
+                if ([[self.navigationController.viewControllers lastObject] isKindOfClass:[LoginViewController class]]) {
+                    return;
+                }
+                
+                //未登陆
+                LoginViewController *loginVC = [[LoginViewController alloc] init];
+                
+                [self.navigationController pushViewController:loginVC animated:YES];
+                return;
+            }
+            
+            if ([errorCode isEqualToString:@"0"]) {
+                NSDictionary *dataDic = dict[@"data"];
+                //处理数据
+                
+            }else {
+                imageCodeTextField.text = @"";
+                verifyTextField.text = @"";
+                [self onClickImage];
+                [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+                return;
+            }
+        }
+    }];
 }
 
 - (void)registerBtnAction{
     NSLog(@"注册");
     [self.navigationController pushViewController:[RegisterViewController new] animated:YES];
 }
+
+//获取短信验证码
+- (void)getVerifyCodeAPI {
+    if (phoneTextField.text.length == 0) {
+        [self showHUDTextOnly:@"请输入手机号码"];
+        return;
+    }
+    
+    if (imageCodeTextField.text.length == 0) {
+        [self showHUDTextOnly:@"请输入图形验证码"];
+        return;
+    }
+    
+    NSString *url = [NSString stringWithFormat:@"%@",kSendSmsURL];
+    url = [self stitchingTokenAndPlatformForURL:url];
+    NSDictionary *parameter = @{
+                                @"type":@"2",
+                                @"phone":phoneTextField.text,
+                                @"captcha":imageCodeTextField.text
+                                };
+    [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+    [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
+    [self defaultRequestwithURL:url withParameters:parameter withMethod:kPOST withBlock:^(NSDictionary *dict, NSError *error) {
+        [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+        //判断有无数据
+        if ([[dict allKeys] containsObject:@"errorCode"]) {
+            NSString *errorCode = [NSString stringWithFormat:@"%@",dict[@"errorCode"]];
+            if ([errorCode isEqualToString:@"-1"]){
+                //判断当前是不是登陆页面
+                if ([[self.navigationController.viewControllers lastObject] isKindOfClass:[LoginViewController class]]) {
+                    return;
+                }
+                
+                //未登陆
+                LoginViewController *loginVC = [[LoginViewController alloc] init];
+                
+                [self.navigationController pushViewController:loginVC animated:YES];
+                return;
+            }
+            
+            if ([errorCode isEqualToString:@"0"]) {
+                //处理数据
+                [self timeFire:getVerifyCodeBtn];
+                NSDictionary *dataDic = dict[@"data"];
+                NSString *saltStr = dataDic[@"salt"];
+                NSLog(@"saltStr%@",saltStr);
+                if (saltStr.length >0) {
+                    [self showHUDTextOnly:saltStr];
+                }
+                else
+                {
+                    [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+                }
+            }else {
+                [self onClickImage];
+                [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+                return;
+            }
+        }
+    }];
+}
+
+#pragma mark 图形验证码
+-(void)onClickImage{
+    // 收起键盘
+    [[[UIApplication sharedApplication] keyWindow] endEditing:YES];
+    
+    NSLog(@"图片被点击!");
+    //获取新的图形验证码
+    NSString *url = [NSString stringWithFormat:@"%@",kImageVerificationURL];
+    url = [self stitchingTokenAndPlatformForURL:url];
+    // url = [NSString stringWithFormat:@"%@&type=company_register_img_salt",url];
+    //    url = [NSString stringWithFormat:@"%@&type=user_register_img_salt",url];
+    // 建立请求访问
+    AFHTTPSessionManager *manager =[AFHTTPSessionManager manager];
+    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+    
+    // 加载缓冲
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    // 开始请求访问
+    [manager GET:url parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+        // 关闭缓冲
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
+        
+        NSData *data = [[NSData data] initWithData:responseObject];
+        
+        UIImage *image = [UIImage imageWithData: data];
+        
+        imageCodeTextField.text = @"";
+        
+        verifyImageView.image = image;
+        
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        NSLog(@"%@",error);
+    }];
+}
+
+
+#pragma mark - 获取图形验证码
+
 
 /*
 #pragma mark - Navigation

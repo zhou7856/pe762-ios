@@ -47,28 +47,32 @@
 //#define kBaseImageURL @"http://www.unjz.cn/upload/"
 //
 //线下
-#define kHostURL @"http://www.b.weizbao.com"
-#define kBaseURL @"http://www.b.weizbao.com/api/"
-#define kH5BaseURL @"http://www.b.weizbao.com"
+#define kHostURL @"http://www.b.izhiqu.com.cn/"
+#define kBaseURL @"http://www.b.izhiqu.com.cn/api/"
+#define kH5BaseURL @"http://www.b.izhiqu.com.cn/"
 //线下图片地址
-#define kBaseImageURL @"http://www.b.weizbao.com/upload/"
+#define kBaseImageURL @"http://www.b.izhiqu.com.cn/upload/"
 
 //postman结构 每个接口后面写上接口连接人员的名称
 /*************************public***********************************/
-//发送短信
+//发送短信 ACE
+#define kSendSmsURL kBaseURL @"public/sendSms"
 
 //数据包
 
 //资源上传
 
-//图形验证码
+//图形验证码 ACE
+#define kImageVerificationURL kHostURL @"system/public/captcha"
+
 
 //二维码
 
 /*************************登录相关***********************************/
 //注册
 
-//登录
+//登录 ACE
+#define kLoginURL kBaseURL @"user/auth/login"
 
 //退出登录
 

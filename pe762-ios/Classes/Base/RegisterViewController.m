@@ -257,6 +257,102 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
+//获取短信验证码
+- (void)getVerifyCodeAPI {
+    if (phoneTextField.text.length == 0) {
+        [self showHUDTextOnly:@"请输入手机号码"];
+        return;
+    }
+    
+    if (imageCodeTextField.text.length == 0) {
+        [self showHUDTextOnly:@"请输入图形验证码"];
+        return;
+    }
+    
+    NSString *url = [NSString stringWithFormat:@"%@",kSendSmsURL];
+    url = [self stitchingTokenAndPlatformForURL:url];
+    NSDictionary *parameter = @{
+                                @"type":@"1",
+                                @"phone":phoneTextField.text,
+                                @"captcha":imageCodeTextField.text
+                                };
+    [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+    [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
+    [self defaultRequestwithURL:url withParameters:parameter withMethod:kPOST withBlock:^(NSDictionary *dict, NSError *error) {
+        [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+        //判断有无数据
+        if ([[dict allKeys] containsObject:@"errorCode"]) {
+            NSString *errorCode = [NSString stringWithFormat:@"%@",dict[@"errorCode"]];
+            if ([errorCode isEqualToString:@"-1"]){
+                //判断当前是不是登陆页面
+                if ([[self.navigationController.viewControllers lastObject] isKindOfClass:[LoginViewController class]]) {
+                    return;
+                }
+                
+                //未登陆
+                LoginViewController *loginVC = [[LoginViewController alloc] init];
+                
+                [self.navigationController pushViewController:loginVC animated:YES];
+                return;
+            }
+            
+            if ([errorCode isEqualToString:@"0"]) {
+                //处理数据
+                [self timeFire:getVerifyCodeBtn];
+                NSDictionary *dataDic = dict[@"data"];
+                NSString *saltStr = dataDic[@"salt"];
+                NSLog(@"saltStr%@",saltStr);
+                if (saltStr.length >0) {
+                    [self showHUDTextOnly:saltStr];
+                }
+                else
+                {
+                    [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+                }
+            }else {
+                [self onClickImage];
+                [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+                return;
+            }
+        }
+    }];
+}
+
+#pragma mark 图形验证码
+-(void)onClickImage{
+    // 收起键盘
+    [[[UIApplication sharedApplication] keyWindow] endEditing:YES];
+    
+    NSLog(@"图片被点击!");
+    //获取新的图形验证码
+    NSString *url = [NSString stringWithFormat:@"%@",kImageVerificationURL];
+    url = [self stitchingTokenAndPlatformForURL:url];
+    // url = [NSString stringWithFormat:@"%@&type=company_register_img_salt",url];
+    //    url = [NSString stringWithFormat:@"%@&type=user_register_img_salt",url];
+    // 建立请求访问
+    AFHTTPSessionManager *manager =[AFHTTPSessionManager manager];
+    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+    
+    // 加载缓冲
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    // 开始请求访问
+    [manager GET:url parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+        // 关闭缓冲
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
+        
+        NSData *data = [[NSData data] initWithData:responseObject];
+        
+        UIImage *image = [UIImage imageWithData: data];
+        
+        imageCodeTextField.text = @"";
+        
+        verifyImageView.image = image;
+        
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        NSLog(@"%@",error);
+    }];
+}
+
 /*
 #pragma mark - Navigation
 
