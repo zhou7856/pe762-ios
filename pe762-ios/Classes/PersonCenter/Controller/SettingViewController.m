@@ -136,9 +136,43 @@
 //
 //}
 
-#pragma mark - 推出登录
+#pragma mark - 退出登录
 - (void)quitBtnAction {
-    [self.navigationController pushViewController:[AudioPlayViewController new] animated:YES];
+//    [self.navigationController pushViewController:[AudioPlayViewController new] animated:YES];
+    NSString *url = [NSString stringWithFormat:@"%@",kLogoutURL];
+    url = [self stitchingTokenAndPlatformForURL:url];
+    
+    [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+    [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
+    [self defaultRequestwithURL:url withParameters:nil withMethod:kGET withBlock:^(NSDictionary *dict, NSError *error) {
+        [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+        //判断有无数据
+        if ([[dict allKeys] containsObject:@"errorCode"]) {
+            NSString *errorCode = [NSString stringWithFormat:@"%@",dict[@"errorCode"]];
+            if ([errorCode isEqualToString:@"-1"]){
+                //判断当前是不是登陆页面
+                if ([[self.navigationController.viewControllers lastObject] isKindOfClass:[LoginViewController class]]) {
+                    return;
+                }
+                
+                //未登陆
+                LoginViewController *loginVC = [[LoginViewController alloc] init];
+                
+                [self.navigationController pushViewController:loginVC animated:YES];
+                return;
+            }
+            
+            if ([errorCode isEqualToString:@"0"]) {
+//                NSDictionary *dataDic = dict[@"data"];
+                //处理数据
+                [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:@"token"];
+                [self.navigationController popViewControllerAnimated:YES];
+            }else {
+                [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+                return;
+            }
+        }
+    }];
 }
 
 

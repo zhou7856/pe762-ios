@@ -360,6 +360,7 @@
                 [headImageVIew setImageWithURL:[NSURL URLWithString:avatarUrlStr]];
                 
                 nameLabel.text = [NSString stringWithFormat:@"%@", infoDic[@"name"]];
+                vipTimeLabel.text = [NSString stringWithFormat:@"剩余%@天", infoDic[@"days"]];
                 
                 //根据vip状态切换
                 [self changeView];
