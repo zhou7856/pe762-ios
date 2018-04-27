@@ -590,14 +590,14 @@ const char *progressHUDKey = "progressHUDKey";
 - (NSString *)stitchingTokenAndPlatformForURL:(NSString *)urlStr {
     NSString *returnURLStr;
     NSString *token = [NSString stringWithFormat:@"%@", [[NSUserDefaults standardUserDefaults] objectForKey:@"token"]];
-    NSString *userType = [NSString stringWithFormat:@"%@", [[NSUserDefaults standardUserDefaults] objectForKey:@"user_type"]];
+//    NSString *userType = [NSString stringWithFormat:@"%@", [[NSUserDefaults standardUserDefaults] objectForKey:@"user_type"]];
     //字条串是否包含有某字符串
     if ([urlStr rangeOfString:@"?"].location == NSNotFound) {
 //        NSLog(@"string 不存在 ?");
-        returnURLStr = [NSString stringWithFormat:@"%@%@%@&user_type=%@",urlStr,kTokenVersion,token,userType];
+        returnURLStr = [NSString stringWithFormat:@"%@%@%@",urlStr,kTokenVersion,token];
     } else {
 //        NSLog(@"string 包含 ?");
-        returnURLStr = [NSString stringWithFormat:@"%@%@%@&user_type=%@",urlStr,kTokenVersions,token,userType];
+        returnURLStr = [NSString stringWithFormat:@"%@%@%@",urlStr,kTokenVersions,token];
     }
 //    NSLog(@"%@",returnURLStr);
     

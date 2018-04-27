@@ -28,14 +28,14 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [self initUI];
-    [self onClickImage];
 }
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     
     // 加载数据
-    
+    [self onClickImage];
+    [self showTabBarView:NO];
 }
 
 - (void)didReceiveMemoryWarning {

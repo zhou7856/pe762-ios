@@ -60,7 +60,8 @@
 
 //数据包
 
-//资源上传
+//资源上传 ACE
+#define kUploadResourcesURL kHostURL @"system/public/uploadResources"
 
 //图形验证码 ACE
 #define kImageVerificationURL kHostURL @"system/public/captcha"
@@ -75,9 +76,10 @@
 //登录 ACE
 #define kLoginURL kBaseURL @"user/auth/login"
 
-//退出登录
+//退出登录 ACE
+#define kLogoutURL kBaseURL @"user/auth/logout"
 
-//注册页面
+//注册页面 H5
 
 /*************************读咨询***********************************/
 //咨询
