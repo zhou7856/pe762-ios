@@ -59,7 +59,7 @@
 #pragma mark - 头像、背景图片、背景阴影
     // 背景图片
     UIImageView *shadowImageView = [[UIImageView alloc] init];
-    shadowImageView.image =[UIImage imageNamed:@""];
+    shadowImageView.image =[UIImage imageNamed:@"VCG211124209403"];
     shadowImageView.backgroundColor = kBackgroundWhiteColor;
     [self.view addSubview:shadowImageView];
     [shadowImageView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -232,7 +232,7 @@
 #pragma mark - LOGO
     // 背景图片
     UIImageView *logoImageView = [[UIImageView alloc] init];
-    logoImageView.image =[UIImage imageNamed:@""];
+    logoImageView.image =[UIImage imageNamed:@"logo_register"];
     logoImageView.backgroundColor = kRedColor;
     [self.view addSubview:logoImageView];
     [logoImageView mas_makeConstraints:^(MASConstraintMaker *make) {

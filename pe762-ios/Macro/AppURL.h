@@ -54,80 +54,120 @@
 #define kBaseImageURL @"http://www.b.weizbao.com/upload/"
 
 //postman结构 每个接口后面写上接口连接人员的名称
-/*************************登录模块***********************************/
-//登录 ACE
-#define kLoginURL kBaseURL @"login"
+/*************************public***********************************/
+//发送短信
 
-//注册 ACE
-#define kRegisteredURL kBaseURL @"register"
+//数据包
 
-//找回密码 ACE
-#define kFindPwdURL kBaseURL @"findPwd"
+//资源上传
 
-//退出登录 Future
-#define kLoginOutURL kBaseURL @"endLogin"
+//图形验证码
 
-/*************************首页模块***********************************/
-//首页banner ACE
-#define kGetHomeBannerURL kBaseURL @"index/banner"
+//二维码
 
-//首页搜索 ACE
-#define kSearchURL kBaseURL @"index/search"
+/*************************登录相关***********************************/
+//注册
 
-//装修服务列表 ACE
-#define kDecorationServiceURL kBaseURL @"index/decorationService"
+//登录
 
-/*************************发现模块***********************************/
-//发现首页 ACE
-#define kFindDataURL kBaseURL @"find/index"
+//退出登录
 
-//装修服务首页 ACE
-#define kServiceIndexURL kBaseURL @"find/serviceIndex"
+//注册页面
 
-//我要招聘 ACE
-#define kRecruitURL kBaseURL @"find/recruit"
+/*************************读咨询***********************************/
+//咨询
 
-/*************************个人中心模块***********************************/
+//咨询详情页
 
-/*******个人中心-企业*******/
-//个人中心页面 Future
-#define kPersonCenterByCompanyURL kBaseURL @"company/companyCenter"
+/*************************设置***********************************/
+//关于我们
 
-//家装建材企业二级分类 Future
-#define kGetCompanyTypeURL kBaseURL @"company/getCompanyType"
+/*************************音频***********************************/
+//专业列表页
 
-//完善企业信息 Future
-#define kCompleteCompanyURL kBaseURL @"company/addCompanyInfo"
+//音频首页
 
-/*******个人中心-用户*******/
-//个人中心页面 Future
-#define kPersonCenterByUserURL kBaseURL @"user/index"
+//音频列表
 
-//修改手机号
+//音频详情页
 
-//我的消息
+//增加音频播放量
+
+//分享音频
+
+/*************************个人中心***********************************/
+
+           /************收藏***************/
+//加入收藏
+#define kAddFavoriteURL kBaseURL @"user/favorite/add"
+
+//删除收藏
+
+//收藏列表
+
+           /************下载***************/
+//下载操作
+
+//下载记录
+
+//删除下载记录
+
+           /************播放记录***************/
+//播放记录列表
+
+//添加播放记录
+
+//删除播放记录
+
+           /************意见反馈***************/
+//添加意见反馈
+
+           /************系统文章***************/
+//列表
+
+//系统文章
+
+           /************个人信息***************/
+//更改头像
+
+//编辑个人信息操作
+
+//编辑个人信息页面
+
+           /************其他***************/
+//联系方式
+
+//我的二维码
 
 
-/*******个人中心-公共*******/
+/*************************代理***********************************/
+//我的团队
+
+//结算列表
+
+//结算详情
+
+/*************************通知***********************************/
+//通知列表
+
+//通知详情
+
+//获取未读通知数
+
+/*************************广告***********************************/
+//获取广告图
 
 
-/*******项目服务*******/
-//发送短信 ACE
-#define kSendSmsURL kBaseURL @"public/sendSms"
 
-//获取所有的市 ACE
-#define kGetAllCityURL kBaseURL @"public/getAllCity"
 
-//得到全部省市区 ACE
-#define kAllAreaURL kBaseURL @"public/allArea"
 
-//服务数据包 Future
-#define kServerDataURL kBaseURL @"public/serverData"
 
-//获取banner数据 ACE 1首页 2发现首页 3装修服务首页
-#define kGetBannerDataURL kBaseURL @"public/banner"
-//上传文件资源 Future
-#define kUploadResourcesURL kHostURL @"/system/public/uploadResources"
+
+
+
+
+
+
 
 
 #endif /* AppURL_h */

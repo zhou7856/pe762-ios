@@ -45,6 +45,8 @@
     BOOL isVip;
     //是否增加统计次数
     BOOL isNumberAdd;
+    
+    //是否加入收藏夹
 }
 
 @property (nonatomic, strong) FSAudioStream *audioStream;
@@ -683,6 +685,7 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
 #pragma mark - 喜欢
 - (void)likeBtnAction{
     NSLog(@"喜欢");
+    
 }
 
 #pragma mark - 去vip充值页面

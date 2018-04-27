@@ -73,7 +73,8 @@
 
 - (void)initUI {
     backgroundImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, kHeaderHeight, kScreenWidth, 178 * kScreenWidthProportion)];
-    backgroundImageView.backgroundColor = [UIColor redColor];
+//    backgroundImageView.backgroundColor = [UIColor redColor];
+    backgroundImageView.image = [UIImage imageNamed:@"VCG211124209403"];
     [self.view addSubview:backgroundImageView];
     
     vipView = [UIView viewWithFrame:CGRectMake(0, 0, kScreenWidth, 40 * kScreenWidthProportion) backgroundColor:kBlackColor];
