@@ -70,6 +70,7 @@
 
 /*************************登录相关***********************************/
 //注册
+#define kRegisteredURL kBaseURL @"user/auth/reg"
 
 //登录 ACE
 #define kLoginURL kBaseURL @"user/auth/login"

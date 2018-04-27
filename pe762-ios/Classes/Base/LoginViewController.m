@@ -52,10 +52,11 @@
     
     leftBtn = [[UIButton alloc] init];
     typeLabel = [[UILabel alloc] init];
-    [self createNavigationFeatureAndTitle:@"注册" withLeftBtn:leftBtn andTypeTitle:typeLabel];
+    [self createNavigationTitle:@"登录"];
+//    [self createNavigationFeatureAndTitle:@"登录" withLeftBtn:leftBtn andTypeTitle:typeLabel];
     
-    [leftBtn addTarget:self action:@selector(leftBtnAction) forControlEvents:UIControlEventTouchUpInside];
-    typeLabel.text = @"专业";
+//    [leftBtn addTarget:self action:@selector(leftBtnAction) forControlEvents:UIControlEventTouchUpInside];
+//    typeLabel.text = @"专业";
     
 #pragma mark - 头像、背景图片、背景阴影
     // 背景图片
@@ -152,6 +153,12 @@
         make.bottom.mas_equalTo(imageCodeTextField.mas_bottom).offset(2 * kScreenHeightProportion);
         make.size.mas_equalTo(CGSizeMake(86 * kScreenWidthProportion * 0.9, 37 * kScreenHeightProportion * 0.9));
     }];
+    verifyImageView.userInteractionEnabled = YES;
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] init];
+    [[tap rac_gestureSignal] subscribeNext:^(id x) {
+        [self onClickImage];
+    }];
+    [verifyImageView addGestureRecognizer:tap];
     
     // 下划线
     UIView *threeLineView = [[UIView alloc] init];
@@ -235,12 +242,13 @@
     // 背景图片
     UIImageView *logoImageView = [[UIImageView alloc] init];
     logoImageView.image =[UIImage imageNamed:@"logo_register"];
-    logoImageView.backgroundColor = kRedColor;
+//    logoImageView.backgroundColor = kRedColor;
     [self.view addSubview:logoImageView];
     [logoImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(self.view.mas_centerX).offset(-25 * kScreenWidthProportion);
+//        make.left.mas_equalTo(self.view.mas_centerX).offset(-25 * kScreenWidthProportion);
         make.top.mas_equalTo(tipLabel.mas_bottom).offset(66 * kScreenHeightProportion);
-        make.size.mas_equalTo(CGSizeMake(50 * kScreenWidthProportion, 30 * kScreenHeightProportion));
+        make.size.mas_equalTo(CGSizeMake(49 * kScreenWidthProportion, 18 * kScreenHeightProportion));
+        make.centerX.mas_equalTo(self.view);
     }];
 }
 
@@ -295,6 +303,16 @@
             if ([errorCode isEqualToString:@"0"]) {
                 NSDictionary *dataDic = dict[@"data"];
                 //处理数据
+                NSDictionary *serverDic = dataDic[@"server"];
+                //是否是代理
+                [[NSUserDefaults standardUserDefaults] setObject:[NSString stringWithFormat:@"%@", serverDic[@"is_proxy"]] forKey:@"is_proxy"];
+                //是否vip
+                [[NSUserDefaults standardUserDefaults] setObject:[NSString stringWithFormat:@"%@", serverDic[@"is_vip"]] forKey:@"is_vip"];
+                [[NSUserDefaults standardUserDefaults] setObject:[NSString stringWithFormat:@"%@", dataDic[@"token"]] forKey:@"token"];
+                
+                [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+                [self.navigationController popViewControllerAnimated:YES];
+                
                 
             }else {
                 imageCodeTextField.text = @"";
