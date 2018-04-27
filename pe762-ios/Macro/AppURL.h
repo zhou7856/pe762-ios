@@ -70,6 +70,7 @@
 
 /*************************登录相关***********************************/
 //注册
+#define kRegisteredURL kBaseURL @"user/auth/reg"
 
 //登录 ACE
 #define kLoginURL kBaseURL @"user/auth/login"
@@ -165,10 +166,12 @@
 
 
 
+/*************************4-27新增***********************************/
+//添加下载记录 ACE
 
 
-
-
+//个人信息首页
+#define kGetUserInfoURL kBaseURL @"user/userIndex/index"
 
 
 

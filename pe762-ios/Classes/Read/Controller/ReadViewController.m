@@ -43,12 +43,6 @@
     // 加在数据
     [self initReadInformationAPI];
     
-    // 临时登录处理
-    if (isLogin == NO) {
-        [self showTabBarView:NO];
-        [self.navigationController pushViewController:[LoginViewController new] animated:YES];
-        isLogin = YES;
-    }
 }
 
 - (void)didReceiveMemoryWarning {

@@ -28,6 +28,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [self initUI];
+    [self onClickImage];
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -50,16 +51,17 @@
     
     leftBtn = [[UIButton alloc] init];
     typeLabel = [[UILabel alloc] init];
-    [self createNavigationFeatureAndTitle:@"登录" withLeftBtn:leftBtn andTypeTitle:typeLabel];
+    [self createNavigationTitle:@"注册"];
+//    [self createNavigationFeatureAndTitle:@"登录" withLeftBtn:leftBtn andTypeTitle:typeLabel];
     
-    [leftBtn addTarget:self action:@selector(leftBtnAction) forControlEvents:UIControlEventTouchUpInside];
-    typeLabel.text = @"专业";
+//    [leftBtn addTarget:self action:@selector(leftBtnAction) forControlEvents:UIControlEventTouchUpInside];
+//    typeLabel.text = @"专业";
     
 #pragma mark - 头像、背景图片、背景阴影
     // 背景图片
     UIImageView *shadowImageView = [[UIImageView alloc] init];
-    shadowImageView.image =[UIImage imageNamed:@""];
-    shadowImageView.backgroundColor = kBackgroundWhiteColor;
+    shadowImageView.image =[UIImage imageNamed:@"VCG211124209403"];
+//    shadowImageView.backgroundColor = kBackgroundWhiteColor;
     [self.view addSubview:shadowImageView];
     [shadowImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(self.view.mas_left);
@@ -115,6 +117,8 @@
         make.top.mas_equalTo(phoneTextField.mas_top).offset(1 * kScreenHeightProportion);
         make.size.mas_equalTo(CGSizeMake(89 * kScreenWidthProportion * 0.9, 26 * kScreenHeightProportion * 0.9));
     }];
+    [getVerifyCodeBtn addTarget:self action:@selector(getVerifyCodeAPI) forControlEvents:UIControlEventTouchUpInside];
+    
     
     // 下划线
     UIView *firstLineView = [[UIView alloc] init];
@@ -149,6 +153,12 @@
         make.bottom.mas_equalTo(imageCodeTextField.mas_bottom).offset(2 * kScreenHeightProportion);
         make.size.mas_equalTo(CGSizeMake(86 * kScreenWidthProportion * 0.9, 37 * kScreenHeightProportion * 0.9));
     }];
+    verifyImageView.userInteractionEnabled = YES;
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] init];
+    [[tap rac_gestureSignal] subscribeNext:^(id x) {
+        [self onClickImage];
+    }];
+    [verifyImageView addGestureRecognizer:tap];
     
     // 下划线
     UIView *threeLineView = [[UIView alloc] init];
@@ -232,13 +242,14 @@
 #pragma mark - LOGO
     // 背景图片
     UIImageView *logoImageView = [[UIImageView alloc] init];
-    logoImageView.image =[UIImage imageNamed:@""];
-    logoImageView.backgroundColor = kRedColor;
+    logoImageView.image =[UIImage imageNamed:@"logo_register"];
+//    logoImageView.backgroundColor = kRedColor;
     [self.view addSubview:logoImageView];
     [logoImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(self.view.mas_centerX).offset(-25 * kScreenWidthProportion);
+//        make.left.mas_equalTo(self.view.mas_centerX).offset(-25 * kScreenWidthProportion);
         make.top.mas_equalTo(tipLabel.mas_bottom).offset(66 * kScreenHeightProportion);
-        make.size.mas_equalTo(CGSizeMake(50 * kScreenWidthProportion, 30 * kScreenHeightProportion));
+        make.size.mas_equalTo(CGSizeMake(49 * kScreenWidthProportion, 18 * kScreenHeightProportion));
+        make.centerX.mas_equalTo(self.view);
     }];
 }
 
@@ -254,7 +265,77 @@
 
 - (void)registerBtnAction{
     NSLog(@"注册");
-    [self.navigationController popViewControllerAnimated:YES];
+    if (phoneTextField.text.length == 0) {
+        [self showHUDTextOnly:@"请输入手机号码"];
+        return;
+    }
+    
+    if (imageCodeTextField.text.length == 0) {
+        [self showHUDTextOnly:@"请输入图形验证码"];
+        return;
+    }
+    
+    if (verifyTextField.text.length == 0) {
+        [self showHUDTextOnly:@"请输入短信验证码"];
+        return;
+    }
+    
+//    [self.navigationController popViewControllerAnimated:YES];
+    NSString *url = [NSString stringWithFormat:@"%@",kRegisteredURL];
+    url = [self stitchingTokenAndPlatformForURL:url];
+    NSDictionary *parameter = @{
+                                @"salt":verifyTextField.text,
+                                @"phone":phoneTextField.text
+                                };
+    [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+    [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
+    [self defaultRequestwithURL:url withParameters:parameter withMethod:kPOST withBlock:^(NSDictionary *dict, NSError *error) {
+        [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+        //判断有无数据
+        if ([[dict allKeys] containsObject:@"errorCode"]) {
+            NSString *errorCode = [NSString stringWithFormat:@"%@",dict[@"errorCode"]];
+            if ([errorCode isEqualToString:@"-1"]){
+                //判断当前是不是登陆页面
+                if ([[self.navigationController.viewControllers lastObject] isKindOfClass:[LoginViewController class]]) {
+                    return;
+                }
+                
+                //未登陆
+                LoginViewController *loginVC = [[LoginViewController alloc] init];
+                
+                [self.navigationController pushViewController:loginVC animated:YES];
+                return;
+            }
+            
+            if ([errorCode isEqualToString:@"0"]) {
+                NSDictionary *dataDic = dict[@"data"];
+                //处理数据
+                //处理数据
+                NSDictionary *serverDic = dataDic[@"server"];
+                //是否是代理
+                [[NSUserDefaults standardUserDefaults] setObject:[NSString stringWithFormat:@"%@", serverDic[@"is_proxy"]] forKey:@"is_proxy"];
+                //是否vip
+                [[NSUserDefaults standardUserDefaults] setObject:[NSString stringWithFormat:@"%@", serverDic[@"is_vip"]] forKey:@"is_vip"];
+                [[NSUserDefaults standardUserDefaults] setObject:[NSString stringWithFormat:@"%@", dataDic[@"token"]] forKey:@"token"];
+                
+                
+                [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+                
+                NSMutableArray *viewArray = [[NSMutableArray alloc] initWithArray:self.navigationController.viewControllers];
+                [viewArray removeLastObject];
+                [viewArray removeLastObject];
+                
+                self.navigationController.viewControllers = viewArray;
+                
+            }else {
+                imageCodeTextField.text = @"";
+                verifyTextField.text = @"";
+                [self onClickImage];
+                [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+                return;
+            }
+        }
+    }];
 }
 
 //获取短信验证码
