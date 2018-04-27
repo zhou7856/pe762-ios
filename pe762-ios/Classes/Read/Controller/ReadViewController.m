@@ -37,11 +37,11 @@
     // 显示底部tabbar
     [self showTabBarView:YES];
     // 加在数据
-    if (isLogin == NO) {
-        [self showTabBarView:NO];
-        [self.navigationController pushViewController:[LoginViewController new] animated:YES];
-        isLogin = YES;
-    }
+//    if (isLogin == NO) {
+//        [self showTabBarView:NO];
+//        [self.navigationController pushViewController:[LoginViewController new] animated:YES];
+//        isLogin = YES;
+//    }
 }
 
 - (void)didReceiveMemoryWarning {

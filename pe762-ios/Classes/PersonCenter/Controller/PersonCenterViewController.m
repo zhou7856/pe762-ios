@@ -32,6 +32,10 @@
     UIView *isVipView; //vip显示页面
     UIImageView *editImageView; //编辑图标
     UIView *typeView; //功能按钮页面
+    
+    NSString *isVip; //是否Vip 0 不是
+    NSString *isProxy; //是否代理商
+    NSString *audit_status; //代理商审核状态  1审核中 2:失败 3:成功
 }
 @end
 
@@ -48,6 +52,7 @@
     [super viewWillAppear:animated];
     
     [self showTabBarView:YES];
+    [self initData];
 }
 
 - (void)initNav {
@@ -311,6 +316,89 @@
             make.height.mas_equalTo(85 * kScreenWidthProportion);
         }];
     }
+}
+
+- (void)initData {
+    NSString *url = [NSString stringWithFormat:@"%@",kGetUserInfoURL];
+    url = [self stitchingTokenAndPlatformForURL:url];
+    
+    [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+    [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
+    [self defaultRequestwithURL:url withParameters:nil withMethod:kGET withBlock:^(NSDictionary *dict, NSError *error) {
+        [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+        //判断有无数据
+        if ([[dict allKeys] containsObject:@"errorCode"]) {
+            NSString *errorCode = [NSString stringWithFormat:@"%@",dict[@"errorCode"]];
+            if ([errorCode isEqualToString:@"-1"]){
+                //判断当前是不是登陆页面
+                if ([[self.navigationController.viewControllers lastObject] isKindOfClass:[LoginViewController class]]) {
+                    return;
+                }
+                
+                //未登陆
+                LoginViewController *loginVC = [[LoginViewController alloc] init];
+                
+                [self.navigationController pushViewController:loginVC animated:YES];
+                return;
+            }
+            
+            if ([errorCode isEqualToString:@"0"]) {
+                NSDictionary *dataDic = dict[@"data"];
+                //处理数据
+                NSDictionary *serverDic = dataDic[@"server"];
+                
+                //是否是代理
+                isProxy = [NSString stringWithFormat:@"%@", serverDic[@"is_proxy"]];
+                [[NSUserDefaults standardUserDefaults] setObject:isProxy forKey:@"is_proxy"];
+                //是否vip
+                isVip = [NSString stringWithFormat:@"%@", serverDic[@"is_vip"]];
+                [[NSUserDefaults standardUserDefaults] setObject:isVip forKey:@"is_vip"];
+                
+                NSDictionary *infoDic = dataDic[@"info"];
+                NSString *avatarUrlStr = [NSString stringWithFormat:@"%@",infoDic[@"avatar_path"]];
+                headImageVIew.image = nil;
+                [headImageVIew setImageWithURL:[NSURL URLWithString:avatarUrlStr]];
+                
+                nameLabel.text = [NSString stringWithFormat:@"%@", infoDic[@"name"]];
+                
+                //根据vip状态切换
+                [self changeView];
+                
+            }else {
+                [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+                return;
+            }
+        }
+    }];
+}
+
+#pragma mark - 根据vip状态修改页面
+- (void)changeView {
+    if ([isVip isEqualToString:@"0"]) {
+        vipView.hidden = NO;
+        isVipView.hidden = YES;
+    } else {
+        vipView.hidden = YES;
+        isVipView.hidden = NO;
+        
+        if ([isProxy isEqualToString:@"1"]) {
+            if ([audit_status isEqualToString:@"1"]) {
+                //审核中
+                isVipView.hidden = YES;
+                reviewView.hidden = NO;
+            } else {
+                reviewView.hidden = YES;
+                isVipView.hidden = NO;
+            }
+        }
+    }
+    
+    if ([isProxy isEqualToString:@"1"]) {
+        proxyFeaturesView.hidden = NO;
+    } else {
+        proxyFeaturesView.hidden = YES;
+    }
+    
 }
 
 #pragma makr - 设置点击

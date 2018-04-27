@@ -165,10 +165,12 @@
 
 
 
+/*************************4-27新增***********************************/
+//添加下载记录 ACE
 
 
-
-
+//个人信息首页
+#define kGetUserInfoURL kBaseURL @"user/userIndex/index"
 
 
 
