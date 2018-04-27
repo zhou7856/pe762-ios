@@ -15,9 +15,13 @@
 
 @interface ReadViewController ()<UITableViewDelegate,UITableViewDataSource>
 {
-    UITableView *informationTabelView;
-    UIButton *searchBtn;
+    UITableView *informationTabelView;//资讯列表
+    UIButton *searchBtn;//搜索按钮
     Boolean isLogin;
+    
+    //分页
+    NSInteger page;
+    NSInteger rows;
 }
 @end
 
@@ -37,6 +41,9 @@
     // 显示底部tabbar
     [self showTabBarView:YES];
     // 加在数据
+    [self initReadInformationAPI];
+    
+    // 临时登录处理
     if (isLogin == NO) {
         [self showTabBarView:NO];
         [self.navigationController pushViewController:[LoginViewController new] animated:YES];
@@ -162,6 +169,42 @@
     NSLog(@"搜索");
     //[self showTabBarView:NO];
     //[self.navigationController pushViewController:[MessageViewController new] animated:YES];
+}
+
+#pragma mark - 读资讯API
+- (void)initReadInformationAPI{
+    NSString *url = [NSString stringWithFormat:@"%@", kReadInformationHomeURL];
+    url = [self stitchingTokenAndPlatformForURL:url];
+
+    // 添加菊花
+    [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+    [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
+    
+    // 开始请求
+    [self defaultRequestwithURL:url withParameters:nil withMethod:kGET withBlock:^(NSDictionary *dict, NSError *error) {
+        // 隐藏菊花
+        [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+        
+        //判断有无数据
+        if ([[dict allKeys] containsObject:@"errorCode"]) {
+            NSString *errorCode = [NSString stringWithFormat:@"%@",dict[@"errorCode"]];
+            if ([errorCode isEqualToString:@"-1"]){
+                //未登陆
+                LoginViewController *loginVC = [[LoginViewController alloc] init];
+                [self.navigationController pushViewController:loginVC animated:YES];
+                return;
+            }
+            
+            if ([errorCode isEqualToString:@"0"]) {
+                
+                
+                
+            } else {
+                [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+                return;
+            }
+        }
+    }];
 }
 
 /*
