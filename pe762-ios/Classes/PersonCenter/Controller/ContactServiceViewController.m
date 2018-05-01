@@ -13,6 +13,8 @@
     UIButton *majorBtn;//专业
     UILabel *typeLabel;//页面标题
     UIButton *noticeBtn;//消息通知
+    UILabel *phoneLabel;
+    UILabel *emailLabel;
 }
 @end
 
@@ -28,7 +30,7 @@
     [super viewWillAppear:animated];
     
     // 加载数据
-    
+    [self initData];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -42,14 +44,15 @@
     
     self.view.backgroundColor = kBackgroundWhiteColor;
     
-    majorBtn = [[UIButton alloc] init];
-    noticeBtn = [[UIButton alloc] init];
-    typeLabel = [[UILabel alloc] init];
-    [self createNavigationFeatureAndTitle:@"联系客服" withLeftBtn:majorBtn andRightBtn:noticeBtn andTypeTitle:typeLabel];
+//    majorBtn = [[UIButton alloc] init];
+//    noticeBtn = [[UIButton alloc] init];
+//    typeLabel = [[UILabel alloc] init];
+//    [self createNavigationFeatureAndTitle:@"联系客服" withLeftBtn:majorBtn andRightBtn:noticeBtn andTypeTitle:typeLabel];
+    [self createNavigationTitle:@"联系客服"];
     
-    [majorBtn addTarget:self action:@selector(majorBtnAction) forControlEvents:UIControlEventTouchUpInside];
-    [noticeBtn addTarget:self action:@selector(noticeBtnAction) forControlEvents:UIControlEventTouchUpInside];
-    typeLabel.text = @"专业";
+//    [majorBtn addTarget:self action:@selector(majorBtnAction) forControlEvents:UIControlEventTouchUpInside];
+//    [noticeBtn addTarget:self action:@selector(noticeBtnAction) forControlEvents:UIControlEventTouchUpInside];
+//    typeLabel.text = @"专业";
     
     //底部
     [self createEndBackView];
@@ -85,7 +88,7 @@
         make.size.mas_equalTo(CGSizeMake(32 * kScreenWidthProportion, 32 * kScreenWidthProportion));
     }];
     
-    UILabel *phoneLabel = [[UILabel alloc] init];
+    phoneLabel = [[UILabel alloc] init];
     phoneLabel.textColor = RGB(124, 38, 191);
     phoneLabel.font = FONT(16 * kFontProportion);
     phoneLabel.textAlignment = NSTextAlignmentLeft;
@@ -118,7 +121,7 @@
         make.size.mas_equalTo(CGSizeMake(32 * kScreenWidthProportion, 32 * kScreenWidthProportion));
     }];
     
-    UILabel *emailLabel = [[UILabel alloc] init];
+    emailLabel = [[UILabel alloc] init];
     emailLabel.textColor = RGB(124, 38, 191);
     emailLabel.font = FONT(16 * kFontProportion);
     emailLabel.textAlignment = NSTextAlignmentLeft;
@@ -132,14 +135,53 @@
 }
 
 #pragma mark - 点击事件
-// 专业
-- (void) majorBtnAction{
-    NSLog(@"专业");
-}
+//// 专业
+//- (void) majorBtnAction{
+//    NSLog(@"专业");
+//}
+//
+//// 消息通知
+//- (void) noticeBtnAction{
+//    NSLog(@"消息通知");
+//}
 
-// 消息通知
-- (void) noticeBtnAction{
-    NSLog(@"消息通知");
+- (void)initData {
+    NSString *url = [NSString stringWithFormat:@"%@",kServiceWayTwigURL];
+    url = [self stitchingTokenAndPlatformForURL:url];
+    
+    [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+    [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
+    [self defaultRequestwithURL:url withParameters:nil withMethod:kGET withBlock:^(NSDictionary *dict, NSError *error) {
+        [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+        //判断有无数据
+        if ([[dict allKeys] containsObject:@"errorCode"]) {
+            NSString *errorCode = [NSString stringWithFormat:@"%@",dict[@"errorCode"]];
+            if ([errorCode isEqualToString:@"-1"]){
+                //判断当前是不是登陆页面
+                if ([[self.navigationController.viewControllers lastObject] isKindOfClass:[LoginViewController class]]) {
+                    return;
+                }
+                
+                //未登陆
+                LoginViewController *loginVC = [[LoginViewController alloc] init];
+                
+                [self.navigationController pushViewController:loginVC animated:YES];
+                return;
+            }
+            
+            if ([errorCode isEqualToString:@"0"]) {
+                NSDictionary *dataDic = dict[@"data"];
+                //处理数据
+                NSDictionary *infoDic = dataDic[@"info"];
+                phoneLabel.text = [NSString stringWithFormat:@"%@", infoDic[@"service_tel"]];
+                emailLabel.text = [NSString stringWithFormat:@"%@", infoDic[@"service_email"]];
+                [emailLabel fontForLabel:16];
+            }else {
+                [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+                return;
+            }
+        }
+    }];
 }
 
 /*

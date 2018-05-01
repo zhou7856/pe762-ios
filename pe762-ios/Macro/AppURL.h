@@ -139,14 +139,15 @@
 //更改头像 ACE
 #define kEditAvatarURL kBaseURL @"user/userIndex/editAvatar"
 
-//编辑个人信息操作 ace
+//编辑个人信息操作 ACE
 #define kEditInfoURL kBaseURL @"user/userIndex/editInfo"
 
 //编辑个人信息页面 ACE
 #define kUserInfoTwigURL kBaseURL @"user/userIndex/userInfoTwig"
 
            /************其他***************/
-//联系方式
+//联系方式 ACE
+#define kServiceWayTwigURL kBaseURL @"user/setting/serviceWayTwig"
 
 //我的二维码
 
