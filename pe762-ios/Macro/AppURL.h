@@ -58,7 +58,8 @@
 //发送短信 ACE
 #define kSendSmsURL kBaseURL @"public/sendSms"
 
-//数据包
+//数据包 ACE 无数据
+#define kGetServerDataURL kBaseURL @"public/sendSms"
 
 //资源上传 ACE
 #define kUploadResourcesURL kHostURL @"system/public/uploadResources"
@@ -70,7 +71,7 @@
 //二维码
 
 /*************************登录相关***********************************/
-//注册
+//注册 ACE
 #define kRegisteredURL kBaseURL @"user/auth/reg"
 
 //登录 ACE
@@ -82,39 +83,49 @@
 //注册页面 H5
 
 /*************************读咨询***********************************/
-//咨询
+//咨询 无数据
 #define kReadInformationHomeURL kBaseURL @"user/infor/"
 
 //咨询详情页
 
 /*************************设置***********************************/
-//关于我们
+//关于我们 无页面
 
 /*************************音频***********************************/
-//专业列表页
+//专业列表页 ACE 无数据
+#define kGetProfessionListURL kBaseURL @"user/course"
 
-//音频首页
+//音频首页 ACE 无数据
+#define kHomeIndexURL kBaseURL @"user/audio/index"
 
-//音频列表
+//音频列表 ACE
+#define kGetAudioListURL kBaseURL @"user/audio/index"
 
-//音频详情页
+//音频详情页 ACE
+#define kGetAudioDetailURL kBaseURL @"user/audio/detail"
 
-//增加音频播放量
+//获得音频地址 ACE
+#define kGetAudioAddressURL kBaseURL @"user/audio/audioPath"
+
+//增加音频播放量 ACE
+#define kPlayNumAddURL kBaseURL @"user/audio/playNumAdd"
 
 //分享音频
 
 /*************************个人中心***********************************/
 
            /************收藏***************/
-//加入收藏
+//加入收藏 ACE
 #define kAddFavoriteURL kBaseURL @"user/favorite/add"
 
-//删除收藏
+//删除收藏 ACE
+#define kDeleteFavoriteURL kBaseURL @"user/favorite/giveUp"
 
 //收藏列表
 
            /************下载***************/
-//下载操作
+//下载操作 ACE
+#define kDownloadRecURL kBaseURL @"user/downloadRec/down"
 
 //下载记录
 
@@ -129,6 +140,7 @@
 
            /************意见反馈***************/
 //添加意见反馈
+#define kAddFeedbackURL kBaseURL @"user/feedback/edit"
 
            /************系统文章***************/
 //列表

@@ -47,11 +47,12 @@
     majorBtn = [[UIButton alloc] init];
     noticeBtn = [[UIButton alloc] init];
     typeLabel = [[UILabel alloc] init];
-    [self createNavigationFeatureAndTitle:@"意见反馈" withLeftBtn:majorBtn andRightBtn:noticeBtn andTypeTitle:typeLabel];
+//    [self createNavigationFeatureAndTitle:@"意见反馈" withLeftBtn:majorBtn andRightBtn:noticeBtn andTypeTitle:typeLabel];
+    [self createNavigationTitle:@"意见反馈"];
     
-    [majorBtn addTarget:self action:@selector(majorBtnAction) forControlEvents:UIControlEventTouchUpInside];
-    [noticeBtn addTarget:self action:@selector(noticeBtnAction) forControlEvents:UIControlEventTouchUpInside];
-    typeLabel.text = @"专业";
+//    [majorBtn addTarget:self action:@selector(majorBtnAction) forControlEvents:UIControlEventTouchUpInside];
+//    [noticeBtn addTarget:self action:@selector(noticeBtnAction) forControlEvents:UIControlEventTouchUpInside];
+//    typeLabel.text = @"专业";
     
     //底部
     [self createEndBackView];
@@ -76,6 +77,8 @@
         make.top.mas_equalTo(contentTextView.mas_bottom).offset(20 * kScreenHeightProportion);
         make.size.mas_equalTo(CGSizeMake(339 * kScreenWidthProportion * 0.885, 41 * kScreenHeightProportion * 0.885));
     }];
+    
+    [submitBtn addTarget:self action:@selector(submitBtnActionAPI) forControlEvents:UIControlEventTouchUpInside];
 }
 
 #pragma mark - 点击事件
@@ -87,6 +90,51 @@
 // 消息通知
 - (void) noticeBtnAction{
     NSLog(@"消息通知");
+}
+
+#pragma mark - 提交
+- (void)submitBtnActionAPI {
+    if (contentTextView.text.length == 0) {
+        [self showHUDTextOnly:@"请输入意见"];
+        return;
+    }
+    
+    NSString *url = [NSString stringWithFormat:@"%@",kAddFeedbackURL];
+    url = [self stitchingTokenAndPlatformForURL:url];
+    NSDictionary *parameter = @{
+                                @"content":contentTextView.text
+                                };
+    [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+    [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
+    [self defaultRequestwithURL:url withParameters:parameter withMethod:kPOST withBlock:^(NSDictionary *dict, NSError *error) {
+        [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+        //判断有无数据
+        if ([[dict allKeys] containsObject:@"errorCode"]) {
+            NSString *errorCode = [NSString stringWithFormat:@"%@",dict[@"errorCode"]];
+            if ([errorCode isEqualToString:@"-1"]){
+                //判断当前是不是登陆页面
+                if ([[self.navigationController.viewControllers lastObject] isKindOfClass:[LoginViewController class]]) {
+                    return;
+                }
+                
+                //未登陆
+                LoginViewController *loginVC = [[LoginViewController alloc] init];
+                
+                [self.navigationController pushViewController:loginVC animated:YES];
+                return;
+            }
+            
+            if ([errorCode isEqualToString:@"0"]) {
+//                NSDictionary *dataDic = dict[@"data"];
+                //处理数据
+                [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+                [self.navigationController popViewControllerAnimated:YES];
+            }else {
+                [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+                return;
+            }
+        }
+    }];
 }
 
 /*

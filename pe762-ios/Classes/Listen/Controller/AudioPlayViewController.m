@@ -37,6 +37,8 @@
     
     NSString *vudioNameStr; //音频名称
     
+    NSString *vudioUrlStr;
+    
     NSNumber *playNumber; //历史播放时间
     
     //是否下载
@@ -47,6 +49,15 @@
     BOOL isNumberAdd;
     
     //是否加入收藏夹
+    BOOL isFavorite;
+    
+    //是否初次使用 刚进页面
+    BOOL isFirstInto;
+    
+    //收藏图标
+    UIImageView *collectionImageView;
+    //下载图标
+    UIImageView *downLoadImageView;
 }
 
 @property (nonatomic, strong) FSAudioStream *audioStream;
@@ -100,14 +111,15 @@
 //    }
     
 //    [self playerInit:[NSURL URLWithString:@"http://sc1.111ttt.cn/2016/1/06/25/199251943186.mp3"]];
+     [self initData];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
     [self showTabBarView:NO];
-    [self initData];
-    [self initPlay];
+//    if (isFirstInto) {}
+//    [self initPlay];
 }
 
 - (void)viewWillDisappear:(BOOL)animated{
@@ -235,10 +247,15 @@
     [playTypeView addSubview:playButton];
     
     //收藏按钮
-    UIImageView *collectionImageView = [[UIImageView alloc] initWithFrame:CGRectMake(42 * kScreenWidthProportion, 0, 19 * kScreenWidthProportion, 18 * kScreenWidthProportion)];
+    collectionImageView = [[UIImageView alloc] initWithFrame:CGRectMake(42 * kScreenWidthProportion, 0, 19 * kScreenWidthProportion, 18 * kScreenWidthProportion)];
     collectionImageView.image = [UIImage imageNamed:@"Path 106"];
     collectionImageView.centerY = playImageView.centerY;
     [playTypeView addSubview:collectionImageView];
+    
+    UIButton *collectionButton = [[UIButton alloc] initWithFrame:CGRectMake(37 * kScreenWidthProportion, self.timeSlider.maxY + 10 * kScreenWidthProportion, 29 * kScreenWidthProportion, 29* kScreenWidthProportion)];
+    [collectionButton addTarget:self action:@selector(collectionButtonAction) forControlEvents:UIControlEventTouchUpInside];
+    collectionButton.centerY = playImageView.centerY;
+    [playTypeView addSubview:collectionButton];
     
     //上一首按钮 （快退）
     UIImageView *previousImageView = [[UIImageView alloc] initWithFrame:CGRectMake(90 * kScreenWidthProportion, 0, 18 * kScreenWidthProportion, 18 * kScreenWidthProportion)];
@@ -263,7 +280,7 @@
     [playTypeView addSubview:nextBackBtn];
     
     //下载按钮
-    UIImageView *downLoadImageView = [[UIImageView alloc] initWithFrame:CGRectMake(265 * kScreenWidthProportion, 0, 18 * kScreenWidthProportion, 20 * kScreenWidthProportion)];
+    downLoadImageView = [[UIImageView alloc] initWithFrame:CGRectMake(265 * kScreenWidthProportion, 0, 18 * kScreenWidthProportion, 20 * kScreenWidthProportion)];
     downLoadImageView.image = [UIImage imageNamed:@"Group 45"];
     downLoadImageView.centerY = playImageView.centerY;
     [playTypeView addSubview:downLoadImageView];
@@ -355,9 +372,59 @@
     }];
 }
 
+#pragma mark - 初始化数据
 - (void)initData {
     contentLabel.text = @"如果说《TED演讲的秘密》和《像TED一样演讲》是开胃菜，那么《演讲的力量》就是期待已久的主菜！TED掌门人克里斯·安德森，这个将TED推向世界的人，亲自传授公开演讲的秘诀！15年TED演讲指导经验总结，比尔·盖茨、丹尼尔·卡尼曼等的演讲教练5大关键演讲技巧，4个一定要避免的陷阱，从1人到1000人的场合都适用，让你从紧张到爆到hold住全场！克里斯·安德森作为TED的掌门人和演讲教练，在15年来参与并指导了上千场TED演讲，与比尔·盖茨、诺奖得主丹尼尔·卡尼曼、超级畅销作家肯·罗宾逊等N多优秀演讲者深入合作，从而总结了第一手公开演讲实战经验。他把自己与TED团队的经验，都写进在了这本书——《演讲的力量》。在书中，克里斯·安德森分享了成功演讲的5大关键技巧——联系、叙述、说明、说服与揭露——教你如何发表一场具有影响力的简短演讲，展现最好的那一...";
     introductionLabel.text = @"克里斯·安德森（ChrisAnderson）TED主席，TED首席教练。毕业于牛津大学，做过记者，创办过100多份成功的杂志刊物和网站。在2001年用非营利组织买下TED，自此开始全身心地经营TED，投身于TED的发展。他提出的TED口号“传播有价值的想法”在全球各地广为传播。目前他居于美国纽约。";
+    
+    NSString *url = [NSString stringWithFormat:@"%@",kGetAudioDetailURL];
+    url = [self stitchingTokenAndPlatformForURL:url];
+    url = [NSString stringWithFormat:@"%@&id=%@", url, @"1"];
+    
+    [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+    [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
+    [self defaultRequestwithURL:url withParameters:nil withMethod:kGET withBlock:^(NSDictionary *dict, NSError *error) {
+        [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+        //判断有无数据
+        if ([[dict allKeys] containsObject:@"errorCode"]) {
+            NSString *errorCode = [NSString stringWithFormat:@"%@",dict[@"errorCode"]];
+            if ([errorCode isEqualToString:@"-1"]){
+                //判断当前是不是登陆页面
+                if ([[self.navigationController.viewControllers lastObject] isKindOfClass:[LoginViewController class]]) {
+                    return;
+                }
+                
+                //未登陆
+                LoginViewController *loginVC = [[LoginViewController alloc] init];
+                
+                [self.navigationController pushViewController:loginVC animated:YES];
+                return;
+            }
+            
+            if ([errorCode isEqualToString:@"0"]) {
+                NSDictionary *dataDic = dict[@"data"];
+                NSDictionary *infoDic = dataDic[@"info"];
+                vudioUrlStr = [NSString stringWithFormat:@"%@", infoDic[@"audio_path"]];
+                NSArray *strArray = [vudioUrlStr componentsSeparatedByString:@"/"];
+                vudioNameStr = [strArray lastObject];
+                
+                //收藏与否
+                NSInteger favorite_num = [infoDic[@"favorite_num"] integerValue];
+                if (favorite_num > 0) {
+                    isFavorite = YES;
+                    collectionImageView.image = [UIImage imageNamed:@"icon_heart_red"];
+                }
+                
+                //处理数据
+                [self initPlay];
+                //增加播放记录
+                [self getAudioAddressAPI];
+            }else {
+                [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+                return;
+            }
+        }
+    }];
 }
 
 #pragma mark 初始化播放器=====================================================
@@ -389,9 +456,10 @@
             NSLog(@"播放出现问题");
         }
     };
+    __weak NSString *weakVudioUrlStr = vudioUrlStr;
     _audioStream.onCompletion=^(){
         [weakSelf playerItemDealloc];
-        [weakSelf playerInit:[NSURL URLWithString:@"http://sc1.111ttt.cn/2016/1/06/25/199251943186.mp3"]];
+        [weakSelf playerInit:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",kHostURL, weakVudioUrlStr]]];
         //        [weakSelf nextButtonAction];
     };
     self.play = YES;
@@ -534,6 +602,7 @@
         [self.playerTimer setFireDate:[NSDate distantFuture]];
         playImageView.image = [UIImage imageNamed:@"Group 147"];
         self.play = !self.play;
+//        return;
     } else {
 //        [self.audioStream pause];
 //        [self.playerTimer setFireDate:[NSDate distantPast]];
@@ -600,7 +669,7 @@
     }
     
     // 创建下载路径
-    NSURL *url = [NSURL URLWithString:@"http://sc1.111ttt.cn/2016/1/06/25/199251943186.mp3"];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",kHostURL, vudioUrlStr]];
     
     // 创建NSURLSession对象，并设计代理方法。其中NSURLSessionConfiguration为默认配置
     NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
@@ -622,9 +691,9 @@ didFinishDownloadingToURL:(NSURL *)location
     // 文件将要移动到的指定目录
     NSString *documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
     
-    NSString *nameStr = @"http://sc1.111ttt.cn/2016/1/06/25/199251943186.mp3";
-    NSArray *array = [nameStr componentsSeparatedByString:@"/"];
-    NSString *fileName = [array lastObject];
+//    NSString *nameStr = @"http://sc1.111ttt.cn/2016/1/06/25/199251943186.mp3";
+//    NSArray *array = [nameStr componentsSeparatedByString:@"/"];
+    NSString *fileName = vudioNameStr;
     // 新文件路径
     NSString *newFilePath = [documentsPath stringByAppendingPathComponent:fileName];
     
@@ -633,6 +702,36 @@ didFinishDownloadingToURL:(NSURL *)location
     // 移动文件到新路径
     [[NSFileManager defaultManager] moveItemAtPath:location.path toPath:newFilePath error:nil];
     
+    //下载完毕
+    isDownLoad = YES;
+    downLoadImageView.image = [UIImage imageNamed:@"icon_down_blacker"];
+    
+    [self addDownloadRecAPI];
+    
+}
+
+#pragma mark - 下载完成通知后台添加记录
+- (void)addDownloadRecAPI {
+    NSString *url = [NSString stringWithFormat:@"%@",kDownloadRecURL];
+    url = [self stitchingTokenAndPlatformForURL:url];
+    NSDictionary *parameter = @{
+                                @"id":@"1"
+                                };
+    [self defaultRequestwithURL:url withParameters:parameter withMethod:kPOST withBlock:^(NSDictionary *dict, NSError *error) {
+        //判断有无数据
+        if ([[dict allKeys] containsObject:@"errorCode"]) {
+            NSString *errorCode = [NSString stringWithFormat:@"%@",dict[@"errorCode"]];
+            
+            if ([errorCode isEqualToString:@"0"]) {
+                //                NSDictionary *dataDic = dict[@"data"];
+                //处理数据
+                [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+            }else {
+                //                [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+                return;
+            }
+        }
+    }];
 }
 
 /**
@@ -656,6 +755,8 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
 
 #pragma mark - 初始化播放组件
 - (void)initPlay {
+    
+    
     playNumber = [[NSUserDefaults standardUserDefaults] objectForKey:vudioNameStr];
     
     //获取到Document 目录
@@ -670,10 +771,12 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
         NSURL *fileUrl=[NSURL fileURLWithPath:filePath];
         [self playerInit:fileUrl];
         isDownLoad = YES;
+        downLoadImageView.image = [UIImage imageNamed:@"icon_down_blacker"];
     } else {
         //本地没有存储此文件
-        [self playerInit:[NSURL URLWithString:@"http://sc1.111ttt.cn/2016/1/06/25/199251943186.mp3"]];
+        [self playerInit:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",kHostURL, vudioUrlStr]]];
         isDownLoad = NO;
+        downLoadImageView.image = [UIImage imageNamed:@"Group 45"];
     }
 }
 
@@ -684,7 +787,6 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
 
 #pragma mark - 喜欢
 - (void)likeBtnAction{
-    NSLog(@"喜欢");
     
 }
 
@@ -697,7 +799,131 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
 
 #pragma mark - 统计次数
 - (void)statisticsCountAPI {
-    isNumberAdd = YES;
+    if (!isNumberAdd) {
+        NSString *url = [NSString stringWithFormat:@"%@",kPlayNumAddURL];
+        url = [self stitchingTokenAndPlatformForURL:url];
+        url = [NSString stringWithFormat:@"%@&id=%@", url, @"1"];
+        
+        [self defaultRequestwithURL:url withParameters:nil withMethod:kGET withBlock:^(NSDictionary *dict, NSError *error) {
+            //判断有无数据
+            if ([[dict allKeys] containsObject:@"errorCode"]) {
+                NSString *errorCode = [NSString stringWithFormat:@"%@",dict[@"errorCode"]];
+                
+                if ([errorCode isEqualToString:@"0"]) {
+                    //                NSDictionary *dataDic = dict[@"data"];
+                    //处理数据
+                    isNumberAdd = YES;
+                }else {
+                    //                [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+                    return;
+                }
+            }
+        }];
+    }
+}
+
+#pragma mark - 获取音频播放地址（播放记录添加）
+- (void)getAudioAddressAPI {
+    NSString *url = [NSString stringWithFormat:@"%@",kGetAudioAddressURL];
+    url = [self stitchingTokenAndPlatformForURL:url];
+    url = [NSString stringWithFormat:@"%@&id=%@", url, @"1"];
+
+    [self defaultRequestwithURL:url withParameters:nil withMethod:kGET withBlock:^(NSDictionary *dict, NSError *error) {
+        //判断有无数据
+        if ([[dict allKeys] containsObject:@"errorCode"]) {
+            NSString *errorCode = [NSString stringWithFormat:@"%@",dict[@"errorCode"]];
+            
+            if ([errorCode isEqualToString:@"0"]) {
+//                NSDictionary *dataDic = dict[@"data"];
+                //处理数据
+            }else {
+//                [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+                return;
+            }
+        }
+    }];
+}
+
+#pragma mark - 收藏
+- (void)collectionButtonAction {
+    if (isFavorite) {
+        //喜欢 取消收藏
+        NSString *url = [NSString stringWithFormat:@"%@",kDeleteFavoriteURL];
+        url = [self stitchingTokenAndPlatformForURL:url];
+        NSDictionary *parameter = @{
+                                    @"id":@"1"
+                                    };
+        [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+        [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
+        [self defaultRequestwithURL:url withParameters:parameter withMethod:kPOST withBlock:^(NSDictionary *dict, NSError *error) {
+            [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+            //判断有无数据
+            if ([[dict allKeys] containsObject:@"errorCode"]) {
+                NSString *errorCode = [NSString stringWithFormat:@"%@",dict[@"errorCode"]];
+                if ([errorCode isEqualToString:@"-1"]){
+                    //判断当前是不是登陆页面
+                    if ([[self.navigationController.viewControllers lastObject] isKindOfClass:[LoginViewController class]]) {
+                        return;
+                    }
+                    
+                    //未登陆
+                    LoginViewController *loginVC = [[LoginViewController alloc] init];
+                    
+                    [self.navigationController pushViewController:loginVC animated:YES];
+                    return;
+                }
+                
+                if ([errorCode isEqualToString:@"0"]) {
+                    //                    NSDictionary *dataDic = dict[@"data"];
+                    //处理数据
+                    isFavorite = NO;
+                    collectionImageView.image = [UIImage imageNamed:@"Path 106"];
+                }else {
+                    [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+                    return;
+                }
+            }
+        }];
+    } else {
+        //不喜欢 加入收藏
+        NSLog(@"喜欢");
+        NSString *url = [NSString stringWithFormat:@"%@",kAddFavoriteURL];
+        url = [self stitchingTokenAndPlatformForURL:url];
+        NSDictionary *parameter = @{
+                                    @"id":@"1"
+                                    };
+        [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+        [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
+        [self defaultRequestwithURL:url withParameters:parameter withMethod:kPOST withBlock:^(NSDictionary *dict, NSError *error) {
+            [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+            //判断有无数据
+            if ([[dict allKeys] containsObject:@"errorCode"]) {
+                NSString *errorCode = [NSString stringWithFormat:@"%@",dict[@"errorCode"]];
+                if ([errorCode isEqualToString:@"-1"]){
+                    //判断当前是不是登陆页面
+                    if ([[self.navigationController.viewControllers lastObject] isKindOfClass:[LoginViewController class]]) {
+                        return;
+                    }
+                    
+                    //未登陆
+                    LoginViewController *loginVC = [[LoginViewController alloc] init];
+                    
+                    [self.navigationController pushViewController:loginVC animated:YES];
+                    return;
+                }
+                
+                if ([errorCode isEqualToString:@"0"]) {
+                    //                    NSDictionary *dataDic = dict[@"data"];
+                    //处理数据
+                    isFavorite = YES;
+                    collectionImageView.image = [UIImage imageNamed:@"icon_heart_red"];
+                }else {
+                    [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+                    return;
+                }
+            }
+        }];
+    }
 }
 
 - (void)didReceiveMemoryWarning {

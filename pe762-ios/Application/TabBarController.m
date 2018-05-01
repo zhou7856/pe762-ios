@@ -24,7 +24,7 @@
     //获取所有省市区
 //    [self getAllAreaAPI];
     //获取服务数据
-//    [self getServerDataAPI];
+    [self getServerDataAPI];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -264,7 +264,26 @@
     }
 }
 
-#pragma mark - 获取所有省市区数据
+#pragma mark - 获取服务器数据包
+- (void)getServerDataAPI {
+    NSString *url = [NSString stringWithFormat:@"%@",kGetServerDataURL];
+    url = [self stitchingTokenAndPlatformForURL:url];
+    
+    [self defaultRequestwithURL:url withParameters:nil withMethod:kGET withBlock:^(NSDictionary *dict, NSError *error) {
+        //判断有无数据
+        if ([[dict allKeys] containsObject:@"errorCode"]) {
+            NSString *errorCode = [NSString stringWithFormat:@"%@",dict[@"errorCode"]];
+            
+            if ([errorCode isEqualToString:@"0"]) {
+                NSDictionary *dataDic = dict[@"data"];
+                //处理数据
+            }else {
+//                [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+                return;
+            }
+        }
+    }];
+}
 
 
 - (void)didReceiveMemoryWarning {
