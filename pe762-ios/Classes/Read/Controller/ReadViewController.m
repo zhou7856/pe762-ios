@@ -17,11 +17,12 @@
 {
     UITableView *informationTabelView;//资讯列表
     UIButton *searchBtn;//搜索按钮
-    Boolean isLogin;
     
     //分页
     NSInteger page;
     NSInteger rows;
+    //数据
+    NSMutableArray *dataArray;
 }
 @end
 
@@ -33,7 +34,11 @@
     
     // 创建页面
     [self initUI];
-    isLogin = NO;
+    // 数据刷新
+    [self updataAction];
+    
+    // 设置rows
+    rows = 10;
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -167,8 +172,13 @@
 
 #pragma mark - 读资讯API
 - (void)initReadInformationAPI{
+    //重置page
+    page = 1;
+    
+    //拼接url
     NSString *url = [NSString stringWithFormat:@"%@", kReadInformationHomeURL];
     url = [self stitchingTokenAndPlatformForURL:url];
+    url = [NSString stringWithFormat:@"%@&page=%ld&rows=%ld", url, page, rows];
 
     // 添加菊花
     [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
@@ -190,14 +200,140 @@
             }
             
             if ([errorCode isEqualToString:@"0"]) {
+                NSDictionary *dataDic = dict[@"data"];
                 
+                dataArray = [[NSMutableArray alloc] init];
+                NSMutableArray *tempArray = [[NSMutableArray alloc] init];
                 
+                if ([dataDic[@"info"] isKindOfClass:[NSArray class]]) {
+                    if ([dataDic[@"info"] count] > 0) {
+                        page++;
+                        [tempArray addObjectsFromArray:dataDic[@"info"]];
+                    }
+                }
+                [dataArray addObjectsFromArray:tempArray];
+                
+                [informationTabelView reloadData];
                 
             } else {
                 [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
                 return;
             }
         }
+    }];
+}
+
+- (void) updataAction{
+    // 下拉刷新
+    informationTabelView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        
+        //重置page
+        page = 1;
+        
+        //拼接url
+        NSString *url = [NSString stringWithFormat:@"%@", kReadInformationHomeURL];
+        url = [self stitchingTokenAndPlatformForURL:url];
+        url = [NSString stringWithFormat:@"%@&page=%ld&rows=%ld", url, page, rows];
+        
+        // 添加菊花
+        [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+        [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
+        
+        // 开始请求
+        [self defaultRequestwithURL:url withParameters:nil withMethod:kGET withBlock:^(NSDictionary *dict, NSError *error) {
+            // 隐藏菊花
+            [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+            [informationTabelView.mj_header endRefreshing];
+            
+            //判断有无数据
+            if ([[dict allKeys] containsObject:@"errorCode"]) {
+                NSString *errorCode = [NSString stringWithFormat:@"%@",dict[@"errorCode"]];
+                if ([errorCode isEqualToString:@"-1"]){
+                    //未登陆
+                    LoginViewController *loginVC = [[LoginViewController alloc] init];
+                    [self.navigationController pushViewController:loginVC animated:YES];
+                    return;
+                }
+                
+                if ([errorCode isEqualToString:@"0"]) {
+                    NSDictionary *dataDic = dict[@"data"];
+                    
+                    dataArray = [[NSMutableArray alloc] init];
+                    NSMutableArray *tempArray = [[NSMutableArray alloc] init];
+                    
+                    if ([dataDic[@"info"] isKindOfClass:[NSArray class]]) {
+                        if ([dataDic[@"info"] count] > 0) {
+                            page++;
+                            [tempArray addObjectsFromArray:dataDic[@"info"]];
+                        }
+                    }
+                    [dataArray addObjectsFromArray:tempArray];
+                    
+                    [informationTabelView reloadData];
+                    
+                } else {
+                    [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+                    return;
+                }
+            }
+        }];
+        
+    }];
+    
+    //上啦加载
+    informationTabelView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
+        if (page == 1) {
+            [informationTabelView.mj_footer endRefreshing];
+            return;
+        }
+        
+        //拼接url
+        NSString *url = [NSString stringWithFormat:@"%@", kReadInformationHomeURL];
+        url = [self stitchingTokenAndPlatformForURL:url];
+        url = [NSString stringWithFormat:@"%@&page=%ld&rows=%ld", url, page, rows];
+        
+        // 添加菊花
+        [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+        [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
+        
+        // 开始请求
+        [self defaultRequestwithURL:url withParameters:nil withMethod:kGET withBlock:^(NSDictionary *dict, NSError *error) {
+            // 隐藏菊花
+            [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+            [informationTabelView.mj_footer endRefreshing];
+            
+            //判断有无数据
+            if ([[dict allKeys] containsObject:@"errorCode"]) {
+                NSString *errorCode = [NSString stringWithFormat:@"%@",dict[@"errorCode"]];
+                if ([errorCode isEqualToString:@"-1"]){
+                    //未登陆
+                    LoginViewController *loginVC = [[LoginViewController alloc] init];
+                    [self.navigationController pushViewController:loginVC animated:YES];
+                    return;
+                }
+                
+                if ([errorCode isEqualToString:@"0"]) {
+                    NSDictionary *dataDic = dict[@"data"];
+                    
+                    NSMutableArray *tempArray = [[NSMutableArray alloc] init];
+                    
+                    if ([dataDic[@"info"] isKindOfClass:[NSArray class]]) {
+                        if ([dataDic[@"info"] count] > 0) {
+                            page++;
+                            [tempArray addObjectsFromArray:dataDic[@"info"]];
+                        }
+                    }
+                    [dataArray addObjectsFromArray:tempArray];
+                    
+                    [informationTabelView reloadData];
+                    
+                } else {
+                    [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+                    return;
+                }
+            }
+        }];
+        
     }];
 }
 
