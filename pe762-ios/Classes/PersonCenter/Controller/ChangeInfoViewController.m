@@ -59,6 +59,57 @@
 #pragma mark - 保存点击
 - (void)saveBtnAction {
     
+    NSDictionary *parameter;
+    if ([_typeStr isEqualToString:@"1"]) {
+        if (changeText.text.length == 0) {
+            [self showHUDTextOnly:@"请输入昵称"];
+            return;
+        }
+        //昵称
+        parameter = @{@"name":changeText.text};
+    } else {
+        if (changeText.text.length == 0) {
+            [self showHUDTextOnly:@"请输入邮箱"];
+            return;
+        }
+        //邮箱
+        parameter = @{@"e_mail":changeText.text};
+    }
+    
+    NSString *url = [NSString stringWithFormat:@"%@",kEditInfoURL];
+    url = [self stitchingTokenAndPlatformForURL:url];
+    
+    [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+    [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
+    [self defaultRequestwithURL:url withParameters:parameter withMethod:kPOST withBlock:^(NSDictionary *dict, NSError *error) {
+        [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+        //判断有无数据
+        if ([[dict allKeys] containsObject:@"errorCode"]) {
+            NSString *errorCode = [NSString stringWithFormat:@"%@",dict[@"errorCode"]];
+            if ([errorCode isEqualToString:@"-1"]){
+                //判断当前是不是登陆页面
+                if ([[self.navigationController.viewControllers lastObject] isKindOfClass:[LoginViewController class]]) {
+                    return;
+                }
+                
+                //未登陆
+                LoginViewController *loginVC = [[LoginViewController alloc] init];
+                
+                [self.navigationController pushViewController:loginVC animated:YES];
+                return;
+            }
+            
+            if ([errorCode isEqualToString:@"0"]) {
+//                NSDictionary *dataDic = dict[@"data"];
+                //处理数据
+                [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+                [self.navigationController popViewControllerAnimated:YES];
+            }else {
+                [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+                return;
+            }
+        }
+    }];
 }
 
 - (void)didReceiveMemoryWarning {

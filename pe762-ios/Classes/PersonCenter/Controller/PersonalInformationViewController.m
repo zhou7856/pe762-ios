@@ -38,6 +38,7 @@
     [super viewWillAppear:animated];
     
     [self showTabBarView:NO];
+    [self initData];
 }
 
 - (void)initNav {
@@ -122,7 +123,9 @@
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] init];
         [[tap rac_gestureSignal] subscribeNext:^(id x) {
             NSLog(@"昵称修改");
-            [self.navigationController pushViewController:[ChangeInfoViewController new] animated:YES];
+            ChangeInfoViewController *pushVC = [[ChangeInfoViewController alloc] init];
+            pushVC.typeStr = @"1";
+            [self.navigationController pushViewController:pushVC animated:YES];
         }];
         [contentView addGestureRecognizer:tap];
     }
@@ -136,7 +139,7 @@
         titleLabel.text = @"邮箱";
         [contentView addSubview:titleLabel];
         
-        emainLabel = [[UILabel alloc] initWithFrame:CGRectMake(150 * kScreenWidthProportion, 0, 135 * kScreenWidthProportion, titleLabel.height)];
+        emainLabel = [[UILabel alloc] initWithFrame:CGRectMake(140 * kScreenWidthProportion, 0, 145 * kScreenWidthProportion, titleLabel.height)];
         [emainLabel setLabelWithTextColor:kGrayLabelColor textAlignment:NSTextAlignmentRight font:13];
         [contentView addSubview:emainLabel];
         
@@ -151,6 +154,9 @@
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] init];
         [[tap rac_gestureSignal] subscribeNext:^(id x) {
             NSLog(@"邮箱修改");
+            ChangeInfoViewController *pushVC = [[ChangeInfoViewController alloc] init];
+            pushVC.typeStr = @"2";
+            [self.navigationController pushViewController:pushVC animated:YES];
         }];
         [contentView addGestureRecognizer:tap];
     }
@@ -219,6 +225,53 @@
     
     
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)initData {
+    NSString *url = [NSString stringWithFormat:@"%@",kUserInfoTwigURL];
+    url = [self stitchingTokenAndPlatformForURL:url];
+    
+    [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+    [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
+    [self defaultRequestwithURL:url withParameters:nil withMethod:kGET withBlock:^(NSDictionary *dict, NSError *error) {
+        [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+        //判断有无数据
+        if ([[dict allKeys] containsObject:@"errorCode"]) {
+            NSString *errorCode = [NSString stringWithFormat:@"%@",dict[@"errorCode"]];
+            if ([errorCode isEqualToString:@"-1"]){
+                //判断当前是不是登陆页面
+                if ([[self.navigationController.viewControllers lastObject] isKindOfClass:[LoginViewController class]]) {
+                    return;
+                }
+                
+                //未登陆
+                LoginViewController *loginVC = [[LoginViewController alloc] init];
+                
+                [self.navigationController pushViewController:loginVC animated:YES];
+                return;
+            }
+            
+            if ([errorCode isEqualToString:@"0"]) {
+                NSDictionary *dataDic = dict[@"data"];
+                //处理数据
+                NSDictionary *infoDic = dataDic[@"info"];
+                nicknameLabel.text = [NSString stringWithFormat:@"%@", infoDic[@"name"]];
+                if ([infoDic[@"e_mail"] isKindOfClass:[NSNull class]]) {
+                    emainLabel.text = @"";
+                } else {
+                    emainLabel.text = [NSString stringWithFormat:@"%@", infoDic[@"e_mail"]];
+                }
+                [emainLabel fontForLabel:13];
+                
+                NSString *headUrlStr = [NSString stringWithFormat:@"%@", infoDic[@"avatar_path"]];
+                headImageView.image = nil;
+                [headImageView setImageWithURL:[NSURL URLWithString:headUrlStr]];
+            }else {
+                [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+                return;
+            }
+        }
+    }];
 }
 
 

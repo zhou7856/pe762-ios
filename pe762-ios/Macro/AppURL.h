@@ -136,12 +136,14 @@
 //系统文章
 
            /************个人信息***************/
-//更改头像
+//更改头像 ACE
 #define kEditAvatarURL kBaseURL @"user/userIndex/editAvatar"
 
-//编辑个人信息操作
+//编辑个人信息操作 ace
+#define kEditInfoURL kBaseURL @"user/userIndex/editInfo"
 
-//编辑个人信息页面
+//编辑个人信息页面 ACE
+#define kUserInfoTwigURL kBaseURL @"user/userIndex/userInfoTwig"
 
            /************其他***************/
 //联系方式
