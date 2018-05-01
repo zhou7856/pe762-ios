@@ -9,7 +9,7 @@
 #import "PersonalInformationViewController.h"
 #import "ChangeInfoViewController.h" //修改信息
 
-@interface PersonalInformationViewController ()
+@interface PersonalInformationViewController () <UINavigationControllerDelegate,UIImagePickerControllerDelegate>
 {
 //    UIButton *setingBtn; //设置按钮
 //    UIButton *messageBtn; //消息按钮
@@ -17,6 +17,7 @@
     UIImageView *headImageView;
     UILabel *nicknameLabel;
     UILabel *emainLabel;
+    
 }
 @end
 
@@ -90,6 +91,7 @@
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] init];
         [[tap rac_gestureSignal] subscribeNext:^(id x) {
             NSLog(@"头像切换");
+            [self headImageAction];
         }];
         [contentView addGestureRecognizer:tap];
     }
@@ -163,6 +165,62 @@
 //- (void)messageBtnAction {
 //    
 //}
+#pragma mark - 切换头像
+- (void)headImageAction {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    //从相册中选
+    [alert addAction:[UIAlertAction actionWithTitle:@"从相册中选择" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        UIImagePickerController *pickerImage = [[UIImagePickerController alloc] init];
+        pickerImage.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+        pickerImage.allowsEditing = YES;
+        pickerImage.delegate = self;
+        [self  presentViewController:pickerImage animated:YES completion:nil];
+    }]];
+    //拍照
+    [alert addAction:[UIAlertAction actionWithTitle:@"拍照" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        UIImagePickerController *pickerImage = [[UIImagePickerController alloc ] init];
+        UIImagePickerControllerSourceType sourceType =UIImagePickerControllerSourceTypeCamera;
+        //pickerImage.sourceType = UIImagePickerControllerSourceTypeCamera;
+        if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+            pickerImage.allowsEditing = YES;
+            pickerImage.delegate = self;
+            pickerImage.sourceType = sourceType;
+            [self presentViewController:pickerImage animated:YES completion:nil];
+        }else{
+            NSLog(@"该设备无摄像头");
+        }
+    }]];
+    
+    [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
+//pickImage代理方法（当用户选取完成后调用）
+#pragma mark 设置头像api
+- (void) imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info{
+    UIImage *newPhoto = [info objectForKey:@"UIImagePickerControllerEditedImage"];
+    NSString *url = [NSString stringWithFormat:@"%@", kEditAvatarURL];
+    url = [self stitchingTokenAndPlatformForURL:url];
+    
+    NSDictionary *typeDif = @{
+                              @"type":@"0"
+                              };
+    
+    [self startMultiPartUploadTaskWithURL:url imagesArray:@[newPhoto] parameterOfimages:@"request" parametersDict:typeDif compressionRatio:0.5 succeedBlock:^(NSDictionary *dict) {
+        NSLog(@"%@",dict);
+        if ([dict[kErrorCode]intValue]==0) {
+            headImageView.image = newPhoto;
+        }else{
+            [self showHUDTextOnly:dict[kMessage]];
+        }
+    } failedBlock:^(NSError *error) {
+        NSLog(@"%@",error);
+    }];
+    
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

@@ -14,6 +14,7 @@
 #import "ContactServiceViewController.h"//联系客服
 #import "AgentsViewController.h" //代理商
 #import "MessageViewController.h" //消息
+#import "ChangeInfoViewController.h" //修改
 
 @interface PersonCenterViewController ()
 {
@@ -169,20 +170,23 @@
     UIImageView *vipImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Group 129"]];
     [isVipView addSubview:vipImageView];
     
-    [vipImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.size.mas_equalTo(CGSizeMake(33 * kScreenWidthProportion, 12 * kScreenWidthProportion));
-        make.top.mas_equalTo(nameLabel.mas_bottom).offset(2 * kScreenWidthProportion);
-        make.centerX.mas_equalTo(isVipView);
-    }];
     
     vipTimeLabel = [[UILabel alloc] init];
-    [vipTimeLabel setLabelWithTextColor:kBlackLabelColor textAlignment:NSTextAlignmentLeft font:13];
+    [vipTimeLabel setLabelWithTextColor:kBlackLabelColor textAlignment:NSTextAlignmentLeft font:12];
     vipTimeLabel.text = @"剩余218天";
     [isVipView addSubview:vipTimeLabel];
     
     [vipTimeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.bottom.mas_equalTo(isVipView);
-        make.left.mas_equalTo(vipImageView.mas_right).offset(5 * kScreenWidthProportion);
+//        make.left.mas_equalTo(vipImageView.mas_right).offset(5 * kScreenWidthProportion);
+        make.centerX.mas_equalTo(isVipView);
+    }];
+    
+    [vipImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.size.mas_equalTo(CGSizeMake(33 * kScreenWidthProportion, 12 * kScreenWidthProportion));
+        make.top.mas_equalTo(nameLabel.mas_bottom).offset(2 * kScreenWidthProportion);
+//        make.centerX.mas_equalTo(isVipView);
+        make.right.mas_equalTo(vipTimeLabel.mas_left).offset(-5 * kScreenWidthProportion);
     }];
     
     renewalsBtn = [[UIButton alloc] init];
@@ -190,7 +194,7 @@
     [renewalsBtn setTitleColor:kWhiteColor forState:0];
     renewalsBtn.backgroundColor = kRedColor;
     [renewalsBtn setCornerRadius:3.f];
-    renewalsBtn.titleLabel.font = FONT(13 * kFontProportion);
+    renewalsBtn.titleLabel.font = FONT(12 * kFontProportion);
     [isVipView addSubview:renewalsBtn];
     
     [renewalsBtn mas_makeConstraints:^(MASConstraintMaker *make) {

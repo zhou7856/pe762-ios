@@ -137,6 +137,7 @@
 
            /************个人信息***************/
 //更改头像
+#define kEditAvatarURL kBaseURL @"user/userIndex/editAvatar"
 
 //编辑个人信息操作
 
