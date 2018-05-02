@@ -51,6 +51,9 @@
     //是否加入收藏夹
     BOOL isFavorite;
     
+    //是否点赞
+    BOOL isAgree;
+    
     //是否初次使用 刚进页面
     BOOL isFirstInto;
     
@@ -58,6 +61,11 @@
     UIImageView *collectionImageView;
     //下载图标
     UIImageView *downLoadImageView;
+    //点赞图标
+    UIImageView *zanImageView;
+    
+    //音频ID
+    NSString *audioIDStr;
 }
 
 @property (nonatomic, strong) FSAudioStream *audioStream;
@@ -112,6 +120,7 @@
 //    }
     
 //    [self playerInit:[NSURL URLWithString:@"http://sc1.111ttt.cn/2016/1/06/25/199251943186.mp3"]];
+    audioIDStr = @"1";
      [self initData];
 }
 
@@ -154,7 +163,7 @@
     [likeBtn addTarget:self action:@selector(likeBtnAction) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:likeBtn];
     
-    UIImageView *zanImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, (kEndBackViewHeight - 37 * kScreenWidthProportion * 0.8)/2.0 + 3 * kScreenWidthProportion, likeBtn.width, 37 * kScreenWidthProportion * 0.8)];
+    zanImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, (kEndBackViewHeight - 37 * kScreenWidthProportion * 0.8)/2.0 + 3 * kScreenWidthProportion, likeBtn.width, 37 * kScreenWidthProportion * 0.8)];
     zanImageView.image = [UIImage imageNamed:@"Group 132"];
     [likeBtn addSubview:zanImageView];
     
@@ -380,7 +389,7 @@
     
     NSString *url = [NSString stringWithFormat:@"%@",kGetAudioDetailURL];
     url = [self stitchingTokenAndPlatformForURL:url];
-    url = [NSString stringWithFormat:@"%@&id=%@", url, @"1"];
+    url = [NSString stringWithFormat:@"%@&id=%@", url, audioIDStr];
     
     [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
     [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
@@ -410,10 +419,17 @@
                 vudioNameStr = [strArray lastObject];
                 
                 //收藏与否
-                NSInteger favorite_num = [infoDic[@"favorite_num"] integerValue];
-                if (favorite_num > 0) {
+                NSInteger is_favorite = [infoDic[@"is_favorite"] integerValue];
+                if (is_favorite == 1) {
                     isFavorite = YES;
                     collectionImageView.image = [UIImage imageNamed:@"icon_heart_red"];
+                }
+                
+                //是否点赞
+                NSInteger is_agree = [infoDic[@"is_agree"] integerValue];
+                if (is_agree == 1) {
+                    isAgree = YES;
+                    zanImageView.image = [UIImage imageNamed:@"icon_good_red"];
                 }
                 
                 //处理数据
@@ -713,12 +729,13 @@ didFinishDownloadingToURL:(NSURL *)location
 
 #pragma mark - 下载完成通知后台添加记录
 - (void)addDownloadRecAPI {
-    NSString *url = [NSString stringWithFormat:@"%@",kDownloadRecURL];
+    NSString *url = [NSString stringWithFormat:@"%@",kAddRDowneCordingURL];
     url = [self stitchingTokenAndPlatformForURL:url];
-    NSDictionary *parameter = @{
-                                @"id":@"1"
-                                };
-    [self defaultRequestwithURL:url withParameters:parameter withMethod:kPOST withBlock:^(NSDictionary *dict, NSError *error) {
+    url = [NSString stringWithFormat:@"%@&id=%@", url, audioIDStr];
+//    NSDictionary *parameter = @{
+//                                @"id":@"1"
+//                                };
+    [self defaultRequestwithURL:url withParameters:nil withMethod:kGET withBlock:^(NSDictionary *dict, NSError *error) {
         //判断有无数据
         if ([[dict allKeys] containsObject:@"errorCode"]) {
             NSString *errorCode = [NSString stringWithFormat:@"%@",dict[@"errorCode"]];
@@ -788,7 +805,63 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
 
 #pragma mark - 喜欢
 - (void)likeBtnAction{
-    
+    if (isAgree) {
+        //目前喜欢 点击取消点赞
+        NSString *url = [NSString stringWithFormat:@"%@",kLikeDeleteURL];
+        url = [self stitchingTokenAndPlatformForURL:url];
+        NSDictionary *parameter = @{
+                                    @"id":audioIDStr,
+                                    @"type":@"1"
+                                    };
+        [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+        [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
+        [self defaultRequestwithURL:url withParameters:parameter withMethod:kPOST withBlock:^(NSDictionary *dict, NSError *error) {
+            [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+            //判断有无数据
+            if ([[dict allKeys] containsObject:@"errorCode"]) {
+                NSString *errorCode = [NSString stringWithFormat:@"%@",dict[@"errorCode"]];
+                
+                if ([errorCode isEqualToString:@"0"]) {
+                    //                    NSDictionary *dataDic = dict[@"data"];
+                    //处理数据
+                    [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+                    isAgree = NO;
+                    zanImageView.image = [UIImage imageNamed:@"Group 132"];
+                }else {
+                    [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+                    return;
+                }
+            }
+        }];
+    } else {
+        //目前不喜欢 点击则点赞
+        NSString *url = [NSString stringWithFormat:@"%@",kLikeAddURL];
+        url = [self stitchingTokenAndPlatformForURL:url];
+        NSDictionary *parameter = @{
+                                    @"id":audioIDStr,
+                                    @"type":@"1"
+                                    };
+        [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+        [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
+        [self defaultRequestwithURL:url withParameters:parameter withMethod:kPOST withBlock:^(NSDictionary *dict, NSError *error) {
+            [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+            //判断有无数据
+            if ([[dict allKeys] containsObject:@"errorCode"]) {
+                NSString *errorCode = [NSString stringWithFormat:@"%@",dict[@"errorCode"]];
+                
+                if ([errorCode isEqualToString:@"0"]) {
+//                    NSDictionary *dataDic = dict[@"data"];
+                    //处理数据
+                    [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+                    isAgree = YES;
+                    zanImageView.image = [UIImage imageNamed:@"icon_good_red"];
+                }else {
+                    [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+                    return;
+                }
+            }
+        }];
+    }
 }
 
 #pragma mark - 去vip充值页面
@@ -803,7 +876,7 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
     if (!isNumberAdd) {
         NSString *url = [NSString stringWithFormat:@"%@",kPlayNumAddURL];
         url = [self stitchingTokenAndPlatformForURL:url];
-        url = [NSString stringWithFormat:@"%@&id=%@", url, @"1"];
+        url = [NSString stringWithFormat:@"%@&id=%@", url, audioIDStr];
         
         [self defaultRequestwithURL:url withParameters:nil withMethod:kGET withBlock:^(NSDictionary *dict, NSError *error) {
             //判断有无数据
@@ -823,11 +896,11 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
     }
 }
 
-#pragma mark - 获取音频播放地址（播放记录添加）
+#pragma mark - 增加播放记录
 - (void)getAudioAddressAPI {
-    NSString *url = [NSString stringWithFormat:@"%@",kGetAudioAddressURL];
+    NSString *url = [NSString stringWithFormat:@"%@",kAddPlayRecordingURL];
     url = [self stitchingTokenAndPlatformForURL:url];
-    url = [NSString stringWithFormat:@"%@&id=%@", url, @"1"];
+    url = [NSString stringWithFormat:@"%@&id=%@", url, audioIDStr];
 
     [self defaultRequestwithURL:url withParameters:nil withMethod:kGET withBlock:^(NSDictionary *dict, NSError *error) {
         //判断有无数据
@@ -852,7 +925,7 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
         NSString *url = [NSString stringWithFormat:@"%@",kDeleteFavoriteURL];
         url = [self stitchingTokenAndPlatformForURL:url];
         NSDictionary *parameter = @{
-                                    @"id":@"1"
+                                    @"id":audioIDStr
                                     };
         [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
         [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
@@ -891,7 +964,7 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
         NSString *url = [NSString stringWithFormat:@"%@",kAddFavoriteURL];
         url = [self stitchingTokenAndPlatformForURL:url];
         NSDictionary *parameter = @{
-                                    @"id":@"1"
+                                    @"id":audioIDStr
                                     };
         [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
         [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];

@@ -148,7 +148,7 @@
     
     NSDictionary *dictionary = listDataArray[indexPath.row];
     
-    NSDictionary *infoDic = dictionary[@"info"];
+    NSDictionary *infoDic = dictionary;
     cell.headImageView.image = nil;
     NSString *headImageUrl = [NSString stringWithFormat:@"%@", infoDic[@"audio_thumb_path"]];
     [cell.headImageView setImageWithURL:[NSURL URLWithString:headImageUrl]];
@@ -163,7 +163,9 @@
     }
     
     if (_typeNumber == 1) {
-        
+        [cell.collectBtn setTitle:@"删除播放记录" forState:0];
+        cell.collectBtn.tag = kTagStart + 12000 + indexPath.row;
+        [cell.collectBtn addTarget:self action:@selector(deletePlayRecording:) forControlEvents:UIControlEventTouchUpInside];
     }
     
     if (_typeNumber == 2) {
@@ -171,21 +173,7 @@
         cell.collectBtn.tag = kTagStart + 11000 + indexPath.row;
         [cell.collectBtn addTarget:self action:@selector(deleteLocalAudio:) forControlEvents:UIControlEventTouchUpInside];
     }
-    
-    if (indexPath.row == 0) {
-        cell.titleLabel.text = @"《大学教育熊视》";
-        cell.contentLabel.text = @"面对大学教育熊丙奇博士给予不同的分析";
-    }
-    
-    if (indexPath.row == 1) {
-        cell.titleLabel.text = @"《步入大学》";
-        cell.contentLabel.text = @"彭子飞老师带您进入大学生活";
-    }
-    
-    if (indexPath.row == 2) {
-        cell.titleLabel.text = @"《走出一个时代的教育困惑》";
-        cell.contentLabel.text = @"面对时代教育我们自有对策";
-    }
+
     
     cell.headImageView.backgroundColor = [UIColor greenColor];
     
@@ -217,6 +205,7 @@
 - (void)typeChangeAPI:(NSInteger) type {
     NSArray *titleArray = @[@"我的收藏夹",@"播放记录",@"我的下载"];
     viewTitleLabel.text = titleArray[type];
+    _typeNumber = type;
     [self initData];
     for (int i = 0; i < 3; i++)  {
         NSInteger tagNumber = i + kTagStart + 10000;
@@ -235,6 +224,7 @@
         [self getFavoriteListAPI];
     } else if (_typeNumber == 1) {
         //我的播放记录
+        [self getPlayRecordingAPI];
     } else if (_typeNumber == 2){
         //我的下载
         [self getDownloadRecordingAPI];
@@ -284,7 +274,7 @@
     NSInteger tagNumber = sender.tag - kTagStart - 10000;
     NSDictionary *dictionary = listDataArray[tagNumber];
     
-    NSString *audioID = [NSString stringWithFormat:@"%@",dictionary[@"id"]];
+    NSString *audioID = [NSString stringWithFormat:@"%@",dictionary[@"audio_id"]];
     
     NSString *url = [NSString stringWithFormat:@"%@",kDeleteFavoriteURL];
     url = [self stitchingTokenAndPlatformForURL:url];
@@ -326,7 +316,85 @@
 
 #pragma mark - 获得播放记录
 - (void)getPlayRecordingAPI {
+    NSString *url = [NSString stringWithFormat:@"%@",kGetPlayRecordingURL];
+    url = [self stitchingTokenAndPlatformForURL:url];
     
+    [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+    [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
+    [self defaultRequestwithURL:url withParameters:nil withMethod:kGET withBlock:^(NSDictionary *dict, NSError *error) {
+        [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+        //判断有无数据
+        if ([[dict allKeys] containsObject:@"errorCode"]) {
+            NSString *errorCode = [NSString stringWithFormat:@"%@",dict[@"errorCode"]];
+            if ([errorCode isEqualToString:@"-1"]){
+                //判断当前是不是登陆页面
+                if ([[self.navigationController.viewControllers lastObject] isKindOfClass:[LoginViewController class]]) {
+                    return;
+                }
+                
+                //未登陆
+                LoginViewController *loginVC = [[LoginViewController alloc] init];
+                
+                [self.navigationController pushViewController:loginVC animated:YES];
+                return;
+            }
+            
+            if ([errorCode isEqualToString:@"0"]) {
+                NSDictionary *dataDic = dict[@"data"];
+                //处理数据
+                listDataArray = dataDic[@"info"];
+                [listTableView reloadData];
+            }else {
+                [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+                return;
+            }
+        }
+    }];
+}
+
+#pragma mark - 删除播放记录
+- (void)deletePlayRecording:(UIButton *) sender {
+    NSInteger tagNumber = sender.tag - kTagStart - 12000;
+    NSDictionary *dictionary = listDataArray[tagNumber];
+    
+    NSString *audioID = [NSString stringWithFormat:@"%@",dictionary[@"audio_id"]];
+    
+    NSString *url = [NSString stringWithFormat:@"%@",kDeletePlayRecordingURL];
+    url = [self stitchingTokenAndPlatformForURL:url];
+    NSDictionary *parameter = @{
+                                @"id":audioID
+                                };
+    [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+    [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
+    [self defaultRequestwithURL:url withParameters:parameter withMethod:kPOST withBlock:^(NSDictionary *dict, NSError *error) {
+        [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+        //判断有无数据
+        if ([[dict allKeys] containsObject:@"errorCode"]) {
+            NSString *errorCode = [NSString stringWithFormat:@"%@",dict[@"errorCode"]];
+            if ([errorCode isEqualToString:@"-1"]){
+                //判断当前是不是登陆页面
+                if ([[self.navigationController.viewControllers lastObject] isKindOfClass:[LoginViewController class]]) {
+                    return;
+                }
+                
+                //未登陆
+                LoginViewController *loginVC = [[LoginViewController alloc] init];
+                
+                [self.navigationController pushViewController:loginVC animated:YES];
+                return;
+            }
+            
+            if ([errorCode isEqualToString:@"0"]) {
+                //                    NSDictionary *dataDic = dict[@"data"];
+                //处理数据
+                [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+                [self initData];
+            }else {
+                [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+                return;
+            }
+        }
+    }];
 }
 
 #pragma mark - 获得下载记录
@@ -372,7 +440,7 @@
     NSInteger tagNumber = sender.tag - kTagStart - 11000;
     NSDictionary *dictionary = listDataArray[tagNumber];
     
-    NSString *audioID = [NSString stringWithFormat:@"%@",dictionary[@"id"]];
+    NSString *audioID = [NSString stringWithFormat:@"%@",dictionary[@"audio_id"]];
     
     NSString *url = [NSString stringWithFormat:@"%@",kDeleteDownloadRecordingURL];
     url = [self stitchingTokenAndPlatformForURL:url];

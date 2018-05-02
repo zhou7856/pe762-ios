@@ -135,10 +135,13 @@
 #define kDeleteDownloadRecordingURL kBaseURL @"user/downloadRec/giveUp"
            /************播放记录***************/
 //播放记录列表
+#define kGetPlayRecordingURL kBaseURL @"user/playRec"
 
 //添加播放记录
+#define kAddPlayRecordingURL kBaseURL @"user/playRec/add?token"
 
 //删除播放记录
+#define kDeletePlayRecordingURL kBaseURL @"user/playRec/giveUpPlay"
 
            /************意见反馈***************/
 //添加意见反馈
@@ -188,14 +191,18 @@
 
 /*************************4-27新增***********************************/
 //添加下载记录 ACE
+#define kAddRDowneCordingURL kBaseURL @"user/audio/downNumAdd"
 
-
-//个人信息首页
+//个人信息首页 ACE
 #define kGetUserInfoURL kBaseURL @"user/userIndex/index"
 
 
+/*************************5-2新增***********************************/
+//点赞
+#define kLikeAddURL kBaseURL @"user/agree/add"
 
-
+//取消点赞
+#define kLikeDeleteURL kBaseURL @"user/agree/giveUp"
 
 
 #endif /* AppURL_h */
