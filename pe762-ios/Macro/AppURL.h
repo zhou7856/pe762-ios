@@ -121,7 +121,8 @@
 //删除收藏 ACE
 #define kDeleteFavoriteURL kBaseURL @"user/favorite/giveUp"
 
-//收藏列表
+//收藏列表 ACE
+#define kGetFavoriteListURL kBaseURL @"user/favorite"
 
            /************下载***************/
 //下载操作 ACE
