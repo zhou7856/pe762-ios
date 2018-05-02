@@ -417,6 +417,7 @@
                 vudioUrlStr = [NSString stringWithFormat:@"%@", infoDic[@"audio_path"]];
                 NSArray *strArray = [vudioUrlStr componentsSeparatedByString:@"/"];
                 vudioNameStr = [strArray lastObject];
+//                vudioNameStr = [NSString stringWithFormat:@"%@", infoDic[@"title"]];
                 
                 //收藏与否
                 NSInteger is_favorite = [infoDic[@"is_favorite"] integerValue];

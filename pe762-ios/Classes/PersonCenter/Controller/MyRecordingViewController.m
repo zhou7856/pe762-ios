@@ -440,8 +440,8 @@
     NSInteger tagNumber = sender.tag - kTagStart - 11000;
     NSDictionary *dictionary = listDataArray[tagNumber];
     
-    NSString *audioID = [NSString stringWithFormat:@"%@",dictionary[@"audio_id"]];
-    
+    NSString *audioID = [NSString stringWithFormat:@"%@",dictionary[@"id"]];
+    NSString *fileName = [NSString stringWithFormat:@"%@",dictionary[@"audio_name"]];
     NSString *url = [NSString stringWithFormat:@"%@",kDeleteDownloadRecordingURL];
     url = [self stitchingTokenAndPlatformForURL:url];
     NSDictionary *parameter = @{
@@ -470,7 +470,10 @@
             if ([errorCode isEqualToString:@"0"]) {
                 //                    NSDictionary *dataDic = dict[@"data"];
                 //处理数据
-                [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+//                [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+                
+                //删除本地文件
+                [self deleteLocalFile:fileName];
                 [self initData];
             }else {
                 [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
@@ -478,6 +481,28 @@
             }
         }
     }];
+}
+
+#pragma mark - 删除本地文件
+- (void)deleteLocalFile:(NSString *)fileName {
+    NSFileManager* fileManager=[NSFileManager defaultManager];
+    //获取到Document 目录
+    NSString *documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
+    NSString *filePath = [NSString stringWithFormat:@"%@/%@", documentsPath, fileName];
+    BOOL blHave=[[NSFileManager defaultManager] fileExistsAtPath:filePath];
+    if (!blHave) {
+        NSLog(@"no  have");
+        return ;
+    }else {
+        NSLog(@" have");
+        BOOL blDele= [fileManager removeItemAtPath:filePath error:nil];
+        if (blDele) {
+            [self showHUDTextOnly:@"删除成功"];
+            NSLog(@"dele success");
+        }else {
+            NSLog(@"dele fail");
+        }
+    }
 }
 
 - (void)didReceiveMemoryWarning {

@@ -107,19 +107,29 @@
         titleLabel.text = @"版本信息";
         [contentView addSubview:titleLabel];
         
-        UIImageView *iconImageView = [[UIImageView alloc] initWithFrame:CGRectMake(295 * kScreenWidthProportion, 0, 6 * kScreenWidthProportion, 9 * kScreenWidthProportion)];
-        iconImageView.image = [UIImage imageNamed:@"Path 185"];
-        iconImageView.centerY = titleLabel.centerY;
-        [contentView addSubview:iconImageView];
+//        UIImageView *iconImageView = [[UIImageView alloc] initWithFrame:CGRectMake(295 * kScreenWidthProportion, 0, 6 * kScreenWidthProportion, 9 * kScreenWidthProportion)];
+//        iconImageView.image = [UIImage imageNamed:@"Path 185"];
+//        iconImageView.centerY = titleLabel.centerY;
+//        [contentView addSubview:iconImageView];
+        
+        NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
+        NSString *appCurVersion = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
+        NSLog(@"当前应用软件版本:%@",appCurVersion);
+        
+        UILabel *versionLabel = [[UILabel alloc] initWithFrame:CGRectMake(240 * kScreenWidthProportion, 0, 60 * kScreenWidthProportion, 20 * kScreenWidthProportion)];
+        versionLabel.centerY = titleLabel.centerY;
+        [versionLabel setLabelWithTextColor:kBlackLabelColor textAlignment:NSTextAlignmentRight font:13];
+        versionLabel.text = appCurVersion;
+        [contentView addSubview:versionLabel];
         
         UIView *endLineView = [UIView viewWithFrame:CGRectMake(15 * kScreenWidthProportion, contentView.height - 1, 290 * kScreenWidthProportion, 1) backgroundColor:kLineGrayColor];
         [contentView addSubview:endLineView];
         
-        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] init];
-        [[tap rac_gestureSignal] subscribeNext:^(id x) {
-            NSLog(@"版本信息");
-        }];
-        [contentView addGestureRecognizer:tap];
+//        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] init];
+//        [[tap rac_gestureSignal] subscribeNext:^(id x) {
+//            NSLog(@"版本信息");
+//        }];
+//        [contentView addGestureRecognizer:tap];
     }
     
     UIButton *quitBtn = [[UIButton alloc] initWithFrame:CGRectMake(20 * kScreenWidthProportion, 160 * kScreenWidthProportion + kHeaderHeight, 280 * kScreenWidthProportion, 40 * kScreenWidthProportion)];
