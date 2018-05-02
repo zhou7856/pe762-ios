@@ -148,15 +148,15 @@
     
     NSDictionary *dictionary = listDataArray[indexPath.row];
     
+    NSDictionary *infoDic = dictionary[@"info"];
+    cell.headImageView.image = nil;
+    NSString *headImageUrl = [NSString stringWithFormat:@"%@", infoDic[@"audio_thumb_path"]];
+    [cell.headImageView setImageWithURL:[NSURL URLWithString:headImageUrl]];
+    
+    cell.titleLabel.text = [NSString stringWithFormat:@"%@", infoDic[@"audio_title"]];
+    cell.contentLabel.text = [NSString stringWithFormat:@"%@", infoDic[@"audio_introductions"]];
+    
     if (_typeNumber == 0) {
-        NSDictionary *infoDic = dictionary[@"info"];
-        cell.headImageView.image = nil;
-        NSString *headImageUrl = [NSString stringWithFormat:@"%@", infoDic[@"audio_thumb_path"]];
-        [cell.headImageView setImageWithURL:[NSURL URLWithString:headImageUrl]];
-        
-        cell.titleLabel.text = [NSString stringWithFormat:@"%@", infoDic[@"audio_title"]];
-        cell.contentLabel.text = [NSString stringWithFormat:@"%@", infoDic[@"audio_introductions"]];
-        
         [cell.collectBtn setTitle:@"取消收藏" forState:0];
         cell.collectBtn.tag = kTagStart + 10000 + indexPath.row;
         [cell.collectBtn addTarget:self action:@selector(deleteFavoriteAudio:) forControlEvents:UIControlEventTouchUpInside];
@@ -167,7 +167,9 @@
     }
     
     if (_typeNumber == 2) {
-        
+        [cell.collectBtn setTitle:@"删除下载记录" forState:0];
+        cell.collectBtn.tag = kTagStart + 11000 + indexPath.row;
+        [cell.collectBtn addTarget:self action:@selector(deleteLocalAudio:) forControlEvents:UIControlEventTouchUpInside];
     }
     
     if (indexPath.row == 0) {
@@ -215,6 +217,7 @@
 - (void)typeChangeAPI:(NSInteger) type {
     NSArray *titleArray = @[@"我的收藏夹",@"播放记录",@"我的下载"];
     viewTitleLabel.text = titleArray[type];
+    [self initData];
     for (int i = 0; i < 3; i++)  {
         NSInteger tagNumber = i + kTagStart + 10000;
         UIButton *titleButton = [self.view viewWithTag:tagNumber];
@@ -234,6 +237,7 @@
         //我的播放记录
     } else if (_typeNumber == 2){
         //我的下载
+        [self getDownloadRecordingAPI];
     }
 }
 
@@ -321,8 +325,91 @@
 }
 
 #pragma mark - 获得播放记录
-- (void)getPlayRecording {
+- (void)getPlayRecordingAPI {
     
+}
+
+#pragma mark - 获得下载记录
+- (void)getDownloadRecordingAPI {
+    NSString *url = [NSString stringWithFormat:@"%@",kGetDownloadRecordingURL];
+    url = [self stitchingTokenAndPlatformForURL:url];
+    
+    [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+    [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
+    [self defaultRequestwithURL:url withParameters:nil withMethod:kGET withBlock:^(NSDictionary *dict, NSError *error) {
+        [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+        //判断有无数据
+        if ([[dict allKeys] containsObject:@"errorCode"]) {
+            NSString *errorCode = [NSString stringWithFormat:@"%@",dict[@"errorCode"]];
+            if ([errorCode isEqualToString:@"-1"]){
+                //判断当前是不是登陆页面
+                if ([[self.navigationController.viewControllers lastObject] isKindOfClass:[LoginViewController class]]) {
+                    return;
+                }
+                
+                //未登陆
+                LoginViewController *loginVC = [[LoginViewController alloc] init];
+                
+                [self.navigationController pushViewController:loginVC animated:YES];
+                return;
+            }
+            
+            if ([errorCode isEqualToString:@"0"]) {
+                NSDictionary *dataDic = dict[@"data"];
+                //处理数据
+                listDataArray = dataDic[@"info"];
+                [listTableView reloadData];
+            }else {
+                [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+                return;
+            }
+        }
+    }];
+}
+
+#pragma mark - 删除下载记录
+- (void)deleteLocalAudio:(UIButton *)sender {
+    NSInteger tagNumber = sender.tag - kTagStart - 11000;
+    NSDictionary *dictionary = listDataArray[tagNumber];
+    
+    NSString *audioID = [NSString stringWithFormat:@"%@",dictionary[@"id"]];
+    
+    NSString *url = [NSString stringWithFormat:@"%@",kDeleteDownloadRecordingURL];
+    url = [self stitchingTokenAndPlatformForURL:url];
+    NSDictionary *parameter = @{
+                                @"id":audioID
+                                };
+    [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+    [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
+    [self defaultRequestwithURL:url withParameters:parameter withMethod:kPOST withBlock:^(NSDictionary *dict, NSError *error) {
+        [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+        //判断有无数据
+        if ([[dict allKeys] containsObject:@"errorCode"]) {
+            NSString *errorCode = [NSString stringWithFormat:@"%@",dict[@"errorCode"]];
+            if ([errorCode isEqualToString:@"-1"]){
+                //判断当前是不是登陆页面
+                if ([[self.navigationController.viewControllers lastObject] isKindOfClass:[LoginViewController class]]) {
+                    return;
+                }
+                
+                //未登陆
+                LoginViewController *loginVC = [[LoginViewController alloc] init];
+                
+                [self.navigationController pushViewController:loginVC animated:YES];
+                return;
+            }
+            
+            if ([errorCode isEqualToString:@"0"]) {
+                //                    NSDictionary *dataDic = dict[@"data"];
+                //处理数据
+                [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+                [self initData];
+            }else {
+                [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+                return;
+            }
+        }
+    }];
 }
 
 - (void)didReceiveMemoryWarning {

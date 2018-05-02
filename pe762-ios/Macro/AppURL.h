@@ -92,7 +92,7 @@
 //关于我们 无页面
 
 /*************************音频***********************************/
-//专业列表页 ACE 无数据
+//专业列表页 ACE
 #define kGetProfessionListURL kBaseURL @"user/course"
 
 //音频首页 ACE 无数据
@@ -128,10 +128,11 @@
 //下载操作 ACE
 #define kDownloadRecURL kBaseURL @"user/downloadRec/down"
 
-//下载记录
+//下载记录 ACE
+#define kGetDownloadRecordingURL kBaseURL @"user/downloadRec"
 
 //删除下载记录
-
+#define kDeleteDownloadRecordingURL kBaseURL @"user/downloadRec/giveUp"
            /************播放记录***************/
 //播放记录列表
 

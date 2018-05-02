@@ -93,7 +93,8 @@
 //    playNumber = [[NSUserDefaults standardUserDefaults] objectForKey:vudioNameStr];
 //
 //    //获取到Document 目录
-//    NSString *documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
+    NSString *documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
+    NSLog(@"%@",documentsPath);
 //    //获取Document目录下的文件名称列表
 //    NSArray *fileNameList=[[NSFileManager defaultManager]
 //                           contentsOfDirectoryAtPath:documentsPath error:nil];
