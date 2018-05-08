@@ -40,7 +40,7 @@
     [super viewWillAppear:animated];
     
     // 加载数据
-    
+    [self initReadInfoDetailAPI];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -84,6 +84,7 @@
     [likeBtn addSubview:zanImageView];
     
     webView = [[WKWebView alloc] init];
+    webView.backgroundColor = kBackgroundWhiteColor;
     //- 33 * kScreenHeightProportion
     if (kScreenHeight == 812) {
         webView.frame = CGRectMake(0, kHeaderHeight, kScreenWidth, kScreenHeight - kHeaderHeight - kEndBackViewHeight);

@@ -67,7 +67,6 @@
 //图形验证码 ACE
 #define kImageVerificationURL kHostURL @"system/public/captcha"
 
-
 //二维码
 
 /*************************登录相关***********************************/
