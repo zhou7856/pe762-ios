@@ -92,7 +92,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 5;
+    return dataArray.count;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
@@ -118,12 +118,23 @@
     // 取消点击cell的效果
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
-    cell.mainTitleLabel.text = @"如何让你了解孩子的大学生活？";
-    cell.subTitleLabel.text = @"愿我们岁月安稳，细水长流";
-    cell.contentImageView.backgroundColor = kRedColor;
-    cell.sourceAndTimeLabel.text = @"知识超市 10:00";
-    cell.zanNumberLabel.text = @"999999999999";
-    cell.authorLabel.text = @"作者:如何让你了解孩子的大学生活";
+    // 取数据
+    NSDictionary *dict = dataArray[indexPath.row];
+    
+    // 赋值
+    NSString *creatTimeStr = [NSString stringWithFormat:@"%@", dict[@"created_at"]];
+    NSString *hmStr = [creatTimeStr substringWithRange:NSMakeRange(10, 6)];
+    NSString *classifyNameStr = [NSString stringWithFormat:@"%@", dict[@"classify_name"]];
+    
+    cell.contentImageView.image = nil;
+    NSString *thumbPathStr = [NSString stringWithFormat:@"%@", dict[@"thumb_path"]];
+    [cell.contentImageView setImageWithURL:[NSURL URLWithString:thumbPathStr]];
+    
+    cell.mainTitleLabel.text = [NSString stringWithFormat:@"%@", dict[@"title"]];
+    cell.subTitleLabel.text = [NSString stringWithFormat:@"%@", dict[@"introductions"]];
+    cell.sourceAndTimeLabel.text = [NSString stringWithFormat:@"%@ %@", classifyNameStr, hmStr];
+    cell.zanNumberLabel.text = [NSString stringWithFormat:@"%@", dict[@"like_num"]];
+    cell.authorLabel.text = [NSString stringWithFormat:@"作者:%@", dict[@"author"]];
 
     // 作者
     CGFloat authorLabelWidth = [cell.authorLabel getTitleTextWidth:cell.authorLabel.text font:FONT(9 * kFontProportion)];
@@ -148,6 +159,9 @@
         
     }];
     
+    cell.likeBtn.tag = kTagStart + 10000 + [dict[@"id"] integerValue];
+    [cell.likeBtn addTarget:self action:@selector(likeBtnAction:) forControlEvents:UIControlEventTouchUpInside];
+    
     return cell;
 }
 
@@ -155,10 +169,13 @@
 
     NSLog(@"你点击了第%ld行", indexPath.row);
 
+    NSDictionary *dict = dataArray[indexPath.row];
+    NSString *idStr = [NSString stringWithFormat:@"%@", dict[@"id"]];
+    
     // 跳转到资讯详情页面
     [self showTabBarView:NO];
     InformationDetailViewController *pushVC = [[InformationDetailViewController alloc] init];
-    pushVC.idStr = [NSString stringWithFormat:@"%ld", indexPath.row];
+    pushVC.idStr = idStr;
     [self.navigationController pushViewController:pushVC animated:YES];
     
 }
@@ -168,6 +185,73 @@
     NSLog(@"搜索");
     //[self showTabBarView:NO];
     //[self.navigationController pushViewController:[MessageViewController new] animated:YES];
+}
+
+#pragma mark - 点赞
+- (void) likeBtnAction:(UIButton *)likeBtn{
+    NSString *readIdStr = [NSString stringWithFormat:@"%ld", likeBtn.tag - kTagStart - 10000];
+    
+    if (likeBtn.isSelected) {
+        //目前喜欢 点击取消点赞
+        NSString *url = [NSString stringWithFormat:@"%@",kLikeDeleteURL];
+        url = [self stitchingTokenAndPlatformForURL:url];
+        NSDictionary *parameter = @{
+                                    @"id":readIdStr,
+                                    @"type":@"2"
+                                    };
+        [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+        [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
+        [self defaultRequestwithURL:url withParameters:parameter withMethod:kPOST withBlock:^(NSDictionary *dict, NSError *error) {
+            [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+            //判断有无数据
+            if ([[dict allKeys] containsObject:@"errorCode"]) {
+                NSString *errorCode = [NSString stringWithFormat:@"%@",dict[@"errorCode"]];
+
+                if ([errorCode isEqualToString:@"0"]) {
+                    //                    NSDictionary *dataDic = dict[@"data"];
+                    //处理数据
+                    [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+                    likeBtn.selected = NO;
+                    [self initReadInformationAPI];
+                }else {
+                    [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+                    return;
+                }
+            }
+        }];
+    } else {
+        //目前不喜欢 点击则点赞
+        NSString *url = [NSString stringWithFormat:@"%@",kLikeAddURL];
+        url = [self stitchingTokenAndPlatformForURL:url];
+        NSDictionary *parameter = @{
+                                    @"id":readIdStr,
+                                    @"type":@"2"
+                                    };
+        [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+        [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
+        [self defaultRequestwithURL:url withParameters:parameter withMethod:kPOST withBlock:^(NSDictionary *dict, NSError *error) {
+            [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+            //判断有无数据
+            if ([[dict allKeys] containsObject:@"errorCode"]) {
+                NSString *errorCode = [NSString stringWithFormat:@"%@",dict[@"errorCode"]];
+
+                if ([errorCode isEqualToString:@"0"]) {
+                    //                    NSDictionary *dataDic = dict[@"data"];
+                    //处理数据
+                    [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+
+                    likeBtn.selected = YES;
+
+                    [self initReadInformationAPI];
+
+                }else {
+                    [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+                    return;
+                }
+            }
+        }];
+    }
+    
 }
 
 #pragma mark - 读资讯API
@@ -211,6 +295,7 @@
                         [tempArray addObjectsFromArray:dataDic[@"info"]];
                     }
                 }
+                
                 [dataArray addObjectsFromArray:tempArray];
                 
                 [informationTabelView reloadData];

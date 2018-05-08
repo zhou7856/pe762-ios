@@ -26,5 +26,7 @@
 @property (nonatomic, strong) UIImageView *headImageView;
 //作者
 @property (nonatomic, strong) UILabel *authorLabel;
+//点赞
+@property (nonatomic, strong) UIButton *likeBtn;
 
 @end

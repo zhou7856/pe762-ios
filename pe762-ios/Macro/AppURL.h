@@ -83,10 +83,11 @@
 //注册页面 H5
 
 /*************************读咨询***********************************/
-//咨询 无数据
+//咨询 Future
 #define kReadInformationHomeURL kBaseURL @"user/infor/"
 
-//咨询详情页
+//咨询详情页 Future
+#define kReadInfoDetailURL kBaseURL @"user/infor/detail"
 
 /*************************设置***********************************/
 //关于我们 无页面

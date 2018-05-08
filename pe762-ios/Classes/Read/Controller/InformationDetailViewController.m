@@ -8,7 +8,7 @@
 
 #import "InformationDetailViewController.h"
 
-@interface InformationDetailViewController ()
+@interface InformationDetailViewController ()<WKUIDelegate>
 {
     UIButton *leftBtn;//专业
     UILabel *typeLabel;//页面标题
@@ -21,6 +21,9 @@
     UILabel *releaseTimeLabel;//发布时间
     UILabel *hotLabel;//热度
     UILabel *contentLabel;//内容
+    UIImageView *zanImageView;
+    
+    WKWebView * webView;
 }
 @end
 
@@ -29,7 +32,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    [self initUI];
+    //[self initUI];
+    [self initWKWebUI];
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -42,6 +46,52 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void) initWKWebUI{
+#pragma mark - 头部
+    self.navigationController.navigationBarHidden = YES;
+    self.view.backgroundColor = kBackgroundWhiteColor;
+    
+    leftBtn = [[UIButton alloc] init];
+    typeLabel = [[UILabel alloc] init];
+    [self createNavigationFeatureAndTitle:@"读资讯" withLeftBtn:leftBtn andTypeTitle:typeLabel];
+    
+    [leftBtn addTarget:self action:@selector(leftBtnAction) forControlEvents:UIControlEventTouchUpInside];
+    typeLabel.text = @"专业";
+    
+#pragma mark - 底部返回、分享、喜欢
+    // 返回
+    [self createEndBackView];
+    
+    //分享
+    shareBtn = [[UIButton alloc] initWithFrame:CGRectMake(228 * kScreenWidthProportion, kScreenHeight - kEndBackViewHeight, 51 * kScreenWidthProportion * 0.8, kEndBackViewHeight)];
+    [shareBtn addTarget:self action:@selector(shareBtnAction) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:shareBtn];
+    
+    UIImageView *shareImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, (kEndBackViewHeight - 37 * kScreenWidthProportion * 0.8)/2.0 + 3 * kScreenWidthProportion, shareBtn.width, 37 * kScreenHeightProportion * 0.8)];
+    shareImageView.image = [UIImage imageNamed:@"Group 131"];
+    [shareBtn addSubview:shareImageView];
+    
+    //喜欢
+    likeBtn = [[UIButton alloc] initWithFrame:CGRectMake(272 * kScreenWidthProportion, kScreenHeight - kEndBackViewHeight, 51 * kScreenWidthProportion * 0.8, kEndBackViewHeight)];
+    likeBtn.selected = NO;
+    [likeBtn addTarget:self action:@selector(likeBtnAction) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:likeBtn];
+    
+    zanImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, (kEndBackViewHeight - 37 * kScreenWidthProportion * 0.8)/2.0 + 3 * kScreenWidthProportion, likeBtn.width, 37 * kScreenWidthProportion * 0.8)];
+    zanImageView.image = [UIImage imageNamed:@"Group 132"];
+    [likeBtn addSubview:zanImageView];
+    
+    webView = [[WKWebView alloc] init];
+    //- 33 * kScreenHeightProportion
+    if (kScreenHeight == 812) {
+        webView.frame = CGRectMake(0, kHeaderHeight, kScreenWidth, kScreenHeight - kHeaderHeight - kEndBackViewHeight);
+    } else {
+        webView.frame = CGRectMake(0, kHeaderHeight, kScreenWidth, kScreenHeight - kHeaderHeight - kEndBackViewHeight);
+    }
+    [self.view addSubview:webView];
+    
 }
 
 #pragma mark - UI
@@ -159,6 +209,96 @@
 
 - (void)likeBtnAction{
     NSLog(@"喜欢");
+    if (likeBtn.isSelected) {
+        //目前喜欢 点击取消点赞
+        NSString *url = [NSString stringWithFormat:@"%@",kLikeDeleteURL];
+        url = [self stitchingTokenAndPlatformForURL:url];
+        NSDictionary *parameter = @{
+                                    @"id":self.idStr,
+                                    @"type":@"2"
+                                    };
+        [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+        [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
+        [self defaultRequestwithURL:url withParameters:parameter withMethod:kPOST withBlock:^(NSDictionary *dict, NSError *error) {
+            [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+            //判断有无数据
+            if ([[dict allKeys] containsObject:@"errorCode"]) {
+                NSString *errorCode = [NSString stringWithFormat:@"%@",dict[@"errorCode"]];
+                
+                if ([errorCode isEqualToString:@"0"]) {
+                    //处理数据
+                    [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+                    likeBtn.selected = NO;
+                    zanImageView.image = [UIImage imageNamed:@"Group 132"];
+                    
+                }else {
+                    [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+                    return;
+                }
+            }
+        }];
+    } else {
+        //目前不喜欢 点击则点赞
+        NSString *url = [NSString stringWithFormat:@"%@",kLikeAddURL];
+        url = [self stitchingTokenAndPlatformForURL:url];
+        NSDictionary *parameter = @{
+                                    @"id":self.idStr,
+                                    @"type":@"2"
+                                    };
+        [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+        [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
+        [self defaultRequestwithURL:url withParameters:parameter withMethod:kPOST withBlock:^(NSDictionary *dict, NSError *error) {
+            [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+            //判断有无数据
+            if ([[dict allKeys] containsObject:@"errorCode"]) {
+                NSString *errorCode = [NSString stringWithFormat:@"%@",dict[@"errorCode"]];
+                
+                if ([errorCode isEqualToString:@"0"]) {
+                    //                    NSDictionary *dataDic = dict[@"data"];
+                    //处理数据
+                    [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+                    
+                    likeBtn.selected = YES;
+                    zanImageView.image = [UIImage imageNamed:@"icon_good_red"];
+                    
+                }else {
+                    [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+                    return;
+                }
+            }
+        }];
+    }
+}
+
+#pragma mark - 读资讯详情API
+- (void) initReadInfoDetailAPI{
+    //目前喜欢 点击取消点赞
+    NSString *url = [NSString stringWithFormat:@"%@", kReadInfoDetailURL];
+    url = [self stitchingTokenAndPlatformForURL:url];
+    url = [NSString stringWithFormat:@"%@&id=%@", url, self.idStr];
+    
+    [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+    [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
+    [self defaultRequestwithURL:url withParameters:nil withMethod:kPOST withBlock:^(NSDictionary *dict, NSError *error) {
+        [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+        //判断有无数据
+        if ([[dict allKeys] containsObject:@"errorCode"]) {
+            NSString *errorCode = [NSString stringWithFormat:@"%@",dict[@"errorCode"]];
+            
+            if ([errorCode isEqualToString:@"0"]) {
+                NSDictionary *dataDict = dict[@"data"];
+                NSString *urlStr = [NSString stringWithFormat:@"%@", dataDict[@"url"]];
+                NSLog(@"%@", urlStr);
+                
+                urlStr = [self stitchingTokenAndPlatformForURL:urlStr];
+                [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:urlStr]]];
+                
+            }else {
+                [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+                return;
+            }
+        }
+    }];
 }
 /*
 #pragma mark - Navigation

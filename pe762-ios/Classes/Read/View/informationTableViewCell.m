@@ -97,10 +97,14 @@
         }];
         
         // 赞图片
-        UIImageView *zanImageView = [[UIImageView alloc] init];
-        zanImageView.image = [UIImage imageNamed:@"Path 105"];
-        [baseView addSubview:zanImageView];
-        [zanImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+        self.likeBtn = [[UIButton alloc] init];
+        [self.likeBtn setBackgroundImage:[UIImage imageNamed:@"Path 105"] forState:UIControlStateNormal];
+        [self.likeBtn setBackgroundImage:[UIImage imageNamed:@"Path 105"] forState:UIControlStateSelected];
+        [baseView addSubview:self.likeBtn];
+//        UIImageView *zanImageView = [[UIImageView alloc] init];
+//        zanImageView.image = [UIImage imageNamed:@"Path 105"];
+//        [baseView addSubview:zanImageView];
+        [self.likeBtn mas_makeConstraints:^(MASConstraintMaker *make) {
             make.right.mas_equalTo(self.zanNumberLabel.mas_left).offset(-2 * kScreenWidthProportion);
             make.top.mas_equalTo(self.sourceAndTimeLabel.mas_top);
             make.size.mas_equalTo(CGSizeMake(11 * kScreenWidthProportion, 11 * kScreenWidthProportion));
