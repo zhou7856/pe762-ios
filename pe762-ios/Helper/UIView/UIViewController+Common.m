@@ -79,15 +79,15 @@ const char *progressHUDKey = "progressHUDKey";
         NSLog(@"this is iPhone X");
         self.navigationController.navigationBarHidden = YES;
         UIView *statusView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 44)];
-        statusView.backgroundColor = kDefaultColor;
+        statusView.backgroundColor = kWhiteColor;
         [self.view addSubview:statusView];
         
-        UIView *view = [UIView viewWithFrame:CGRectMake(0, 44, kScreenWidth, 44) backgroundColor:kDefaultColor];
+        UIView *view = [UIView viewWithFrame:CGRectMake(0, 44, kScreenWidth, 44) backgroundColor:kWhiteColor];
         [self.view addSubview:view];
         
         UILabel *label = [UILabel labelWithFrame:CGRectMake(0, -12, 200, 56) text:title textAlignment:NSTextAlignmentCenter font:FONT(17)];
         label.centerX = kScreenWidth/2.0;
-        label.textColor = kWhiteColor;
+        label.textColor = kBlackLabelColor;
         //        label.backgroundColor = [UIColor redColor];
         [view addSubview:label];
         
@@ -102,15 +102,15 @@ const char *progressHUDKey = "progressHUDKey";
         self.navigationController.navigationBarHidden = YES;
         
         UIView *statusView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 20)];
-        statusView.backgroundColor = kDefaultColor;
+        statusView.backgroundColor = kWhiteColor;
         [self.view addSubview:statusView];
         
-        UIView *view = [UIView viewWithFrame:CGRectMake(0, 20, kScreenWidth, 44) backgroundColor:kDefaultColor];
+        UIView *view = [UIView viewWithFrame:CGRectMake(0, 20, kScreenWidth, 44) backgroundColor:kWhiteColor];
         [self.view addSubview:view];
         
         UILabel *label = [UILabel labelWithFrame:CGRectMake(0, 0, 200, 44) text:title textAlignment:NSTextAlignmentCenter font:FONT(17)];
         label.centerX = kScreenWidth/2.0;
-        label.textColor = kWhiteColor;
+        label.textColor = kBlackLabelColor;
         [view addSubview:label];
         
         UIButton *backButton = [UIButton buttonWithFrame:CGRectMake(0, 0, 35, 44) type:UIButtonTypeCustom title:nil titleColor:nil imageName:@"top_icon_back_white" action:@selector(customBackToViewController) target:self];

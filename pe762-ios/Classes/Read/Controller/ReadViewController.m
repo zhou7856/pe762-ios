@@ -11,7 +11,7 @@
 #import "InformationDetailViewController.h"//资讯详情
 #import "LoginViewController.h"//登录
 #import "MessageViewController.h"//消息
-#import "MyQrCodeViewController.h"
+#import "AboutUsViewController.h"
 
 
 @interface ReadViewController ()<UITableViewDelegate,UITableViewDataSource>
@@ -187,7 +187,7 @@
     //[self showTabBarView:NO];
     //[self.navigationController pushViewController:[MessageViewController new] animated:YES];
     [self showTabBarView:NO];
-    MyQrCodeViewController *pushVC = [[MyQrCodeViewController alloc] init];
+    AboutUsViewController *pushVC = [[AboutUsViewController alloc] init];
     [self.navigationController pushViewController:pushVC animated:YES];
 }
 

@@ -4,7 +4,7 @@
 //
 //  Created by Future on 2018/5/8.
 //  Copyright © 2018年 zmit. All rights reserved.
-//
+//  我的二维码页面
 
 #import "MyQrCodeViewController.h"
 

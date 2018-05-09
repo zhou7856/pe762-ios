@@ -90,7 +90,8 @@
 #define kReadInfoDetailURL kBaseURL @"user/infor/detail"
 
 /*************************设置***********************************/
-//关于我们 无页面
+//关于我们 Future
+#define kAboutUsURL kBaseURL @"user/setting/aboutUs"
 
 /*************************音频***********************************/
 //专业列表页 ACE
@@ -167,8 +168,8 @@
 //联系方式 ACE
 #define kServiceWayTwigURL kBaseURL @"user/setting/serviceWayTwig"
 
-//我的二维码
-
+//我的二维码 Future
+#define kMyQrCodeURL kBaseURL @"user/userIndex/qrCode"
 
 /*************************代理***********************************/
 //我的团队

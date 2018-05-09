@@ -8,6 +8,7 @@
 
 #import "SettingViewController.h"
 #import "AudioPlayViewController.h"
+#import "AboutUsViewController.h"//关于我们
 
 @interface SettingViewController ()
 {
@@ -94,6 +95,8 @@
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] init];
         [[tap rac_gestureSignal] subscribeNext:^(id x) {
             NSLog(@"关于知趣");
+            [self.navigationController pushViewController:[AboutUsViewController new] animated:YES];
+            
         }];
         [contentView addGestureRecognizer:tap];
     }

@@ -107,6 +107,7 @@
 		34FB77AA208DC84E008E53AA /* AudioPlayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34FB77A9208DC84E008E53AA /* AudioPlayViewController.m */; };
 		34FB77AD208E007E008E53AA /* MyRecordingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34FB77AC208E007E008E53AA /* MyRecordingViewController.m */; };
 		34FB77B1208E095F008E53AA /* CollectionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 34FB77B0208E095F008E53AA /* CollectionTableViewCell.m */; };
+		D82D0F2220A2DB640061F579 /* AboutUsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D82D0F2120A2DB640061F579 /* AboutUsViewController.m */; };
 		D82DAF10208EC3C4004A7EFE /* RegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D82DAF0F208EC3C4004A7EFE /* RegisterViewController.m */; };
 		D82DAF13208ED0DF004A7EFE /* MessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D82DAF12208ED0DF004A7EFE /* MessageViewController.m */; };
 		D82DAF16208ED28A004A7EFE /* MessageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D82DAF15208ED28A004A7EFE /* MessageTableViewCell.m */; };
@@ -304,6 +305,8 @@
 		34FB77AF208E095F008E53AA /* CollectionTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CollectionTableViewCell.h; sourceTree = "<group>"; };
 		34FB77B0208E095F008E53AA /* CollectionTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CollectionTableViewCell.m; sourceTree = "<group>"; };
 		8564135A71ED42991B9B9A54 /* Pods-pe762-ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-pe762-ios.debug.xcconfig"; path = "Pods/Target Support Files/Pods-pe762-ios/Pods-pe762-ios.debug.xcconfig"; sourceTree = "<group>"; };
+		D82D0F2020A2DB640061F579 /* AboutUsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AboutUsViewController.h; sourceTree = "<group>"; };
+		D82D0F2120A2DB640061F579 /* AboutUsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AboutUsViewController.m; sourceTree = "<group>"; };
 		D82DAF0E208EC3C4004A7EFE /* RegisterViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RegisterViewController.h; sourceTree = "<group>"; };
 		D82DAF0F208EC3C4004A7EFE /* RegisterViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RegisterViewController.m; sourceTree = "<group>"; };
 		D82DAF11208ED0DF004A7EFE /* MessageViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MessageViewController.h; sourceTree = "<group>"; };
@@ -773,6 +776,8 @@
 				342E35B0208F1AA000819855 /* ClearingDetailsViewController.m */,
 				D857B19620A1CC1B003FF35A /* MyQrCodeViewController.h */,
 				D857B19720A1CC1B003FF35A /* MyQrCodeViewController.m */,
+				D82D0F2020A2DB640061F579 /* AboutUsViewController.h */,
+				D82D0F2120A2DB640061F579 /* AboutUsViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1061,6 +1066,7 @@
 				34076DBC2089E88D005324AB /* UIButton+Common.m in Sources */,
 				34076DC22089E88D005324AB /* UITextField+Common.m in Sources */,
 				34FB77B1208E095F008E53AA /* CollectionTableViewCell.m in Sources */,
+				D82D0F2220A2DB640061F579 /* AboutUsViewController.m in Sources */,
 				D8D61C9C208D813200663054 /* informationTableViewCell.m in Sources */,
 				342E35A5208EE1D300819855 /* AgentsViewController.m in Sources */,
 				342E35AB208F0CF900819855 /* ClearingTableViewCell.m in Sources */,
