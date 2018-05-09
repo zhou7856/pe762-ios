@@ -44,15 +44,7 @@
     
     self.view.backgroundColor = kBackgroundWhiteColor;
     
-//    majorBtn = [[UIButton alloc] init];
-//    noticeBtn = [[UIButton alloc] init];
-//    typeLabel = [[UILabel alloc] init];
-//    [self createNavigationFeatureAndTitle:@"联系客服" withLeftBtn:majorBtn andRightBtn:noticeBtn andTypeTitle:typeLabel];
     [self createNavigationTitle:@"联系客服"];
-    
-//    [majorBtn addTarget:self action:@selector(majorBtnAction) forControlEvents:UIControlEventTouchUpInside];
-//    [noticeBtn addTarget:self action:@selector(noticeBtnAction) forControlEvents:UIControlEventTouchUpInside];
-//    typeLabel.text = @"专业";
     
     //底部
     [self createEndBackView];
@@ -135,16 +127,6 @@
 }
 
 #pragma mark - 点击事件
-//// 专业
-//- (void) majorBtnAction{
-//    NSLog(@"专业");
-//}
-//
-//// 消息通知
-//- (void) noticeBtnAction{
-//    NSLog(@"消息通知");
-//}
-
 - (void)initData {
     NSString *url = [NSString stringWithFormat:@"%@",kServiceWayTwigURL];
     url = [self stitchingTokenAndPlatformForURL:url];

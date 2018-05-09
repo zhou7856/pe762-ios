@@ -18,6 +18,7 @@
     UIButton *majorBtn;//专业
     UILabel *typeLabel;//页面标题
     UIButton *noticeBtn;//消息通知
+    UILabel *redLabel;//未读消息数
     
     UIScrollView *mainScrollView;
     UIView *mainView;
@@ -46,6 +47,9 @@
     
     // 加载数据
     [self initData];
+    
+    // 未读消息
+    [self initNoticeNotReadAPI];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -64,10 +68,13 @@
     noticeBtn = [[UIButton alloc] init];
     typeLabel = [[UILabel alloc] init];
     [self createNavigationFeatureAndTitle:@"知趣大学专业说" withLeftBtn:majorBtn andRightBtn:noticeBtn andTypeTitle:typeLabel];
-    
-    [majorBtn addTarget:self action:@selector(majorBtnAction) forControlEvents:UIControlEventTouchUpInside];
-    [noticeBtn addTarget:self action:@selector(noticeBtnAction) forControlEvents:UIControlEventTouchUpInside];
     typeLabel.text = @"专业";
+    
+    redLabel = [[UILabel alloc] initWithFrame:CGRectMake(kScreenWidth - 16 * kScreenWidthProportion, kStatusHeight + 10, 8, 8)];
+    redLabel.backgroundColor = [UIColor redColor];
+    redLabel.hidden = YES;
+    [redLabel setCornerRadius:4];
+    [self.view addSubview:redLabel];
     
 #pragma mark - mainScrollView
     mainScrollView = [UIScrollView new];
@@ -336,14 +343,6 @@
 
 }
 
-// 消息通知
-- (void) noticeBtnAction{
-    NSLog(@"消息通知");
-    //[self showTabBarView:NO];
-    //[self.navigationController pushViewController:[ListViewController new] animated:YES];
-    [self.navigationController pushViewController:[MessageViewController new] animated:YES];
-}
-
 - (void)initData {
     NSString *url = [NSString stringWithFormat:@"%@",kHomeIndexURL];
     url = [self stitchingTokenAndPlatformForURL:url];
@@ -407,6 +406,33 @@
             if ([errorCode isEqualToString:@"0"]) {
                 NSDictionary *dataDic = dict[@"data"];
                 //处理数据
+            }else {
+                [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+                return;
+            }
+        }
+    }];
+}
+
+#pragma mark - 未读消息API
+- (void) initNoticeNotReadAPI{
+    NSString *url = [NSString stringWithFormat:@"%@", kNoticeReadNumURL];
+    url = [self stitchingTokenAndPlatformForURL:url];
+    
+    [self defaultRequestwithURL:url withParameters:nil withMethod:kGET withBlock:^(NSDictionary *dict, NSError *error) {
+        
+        //判断有无数据
+        if ([[dict allKeys] containsObject:@"errorCode"]) {
+            NSString *errorCode = [NSString stringWithFormat:@"%@",dict[@"errorCode"]];
+            
+            if ([errorCode isEqualToString:@"0"]) {
+                NSDictionary *dataDic = dict[@"data"];
+                NSString *num = [NSString stringWithFormat:@"%@", dataDic[@"num"]];
+                
+                if (![[self stringForNull:num] isEqualToString:@""]) {
+                    redLabel.hidden = NO;
+                }
+                
             }else {
                 [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
                 return;

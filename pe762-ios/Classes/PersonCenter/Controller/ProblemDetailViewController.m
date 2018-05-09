@@ -10,9 +10,9 @@
 
 @interface ProblemDetailViewController ()<WKUIDelegate>
 {
-    UIButton *majorBtn;//专业
-    UILabel *typeLabel;//页面标题
-    UIButton *noticeBtn;//消息通知
+//    UIButton *majorBtn;//专业
+//    UILabel *typeLabel;//页面标题
+//    UIButton *noticeBtn;//消息通知
     
     UILabel *titleLabel;//标题
     UILabel *dateLabel;//发布时间
@@ -55,9 +55,9 @@
     
     self.view.backgroundColor = kWhiteColor;
     
-    majorBtn = [[UIButton alloc] init];
-    noticeBtn = [[UIButton alloc] init];
-    typeLabel = [[UILabel alloc] init];
+//    majorBtn = [[UIButton alloc] init];
+//    noticeBtn = [[UIButton alloc] init];
+//    typeLabel = [[UILabel alloc] init];
     
     NSString *titleString = [[NSString alloc] init];
     if ([self.type isEqualToString:@"1"]) {
@@ -66,11 +66,11 @@
         titleString = @"常见问题";
     }
     
-    [self createNavigationFeatureAndTitle:titleString withLeftBtn:majorBtn andRightBtn:noticeBtn andTypeTitle:typeLabel];
+    [self createNavigationTitle:titleString];
     
-    [majorBtn addTarget:self action:@selector(majorBtnAction) forControlEvents:UIControlEventTouchUpInside];
-    [noticeBtn addTarget:self action:@selector(noticeBtnAction) forControlEvents:UIControlEventTouchUpInside];
-    typeLabel.text = @"专业";
+//    [self createNavigationFeatureAndTitle:titleString withLeftBtn:majorBtn andRightBtn:noticeBtn andTypeTitle:typeLabel];
+//
+//    typeLabel.text = @"专业";
     
     [self createEndBackView];
     
@@ -180,19 +180,6 @@
 }
 
 #pragma mark - 点击事件
-// 专业
-- (void) majorBtnAction{
-    NSLog(@"专业");
-    [self showTabBarView:NO];
-    [self.navigationController pushViewController:[LoginViewController new] animated:YES];
-}
-
-// 消息通知
-- (void) noticeBtnAction{
-    NSLog(@"消息通知");
-    [self showTabBarView:NO];
-    [self.navigationController pushViewController:[LoginViewController new] animated:YES];
-}
 
 #pragma mark - 问题详情API
 - (void) initProblemDetailAPI{

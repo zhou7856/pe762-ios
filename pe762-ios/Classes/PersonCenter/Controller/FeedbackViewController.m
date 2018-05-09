@@ -10,10 +10,6 @@
 
 @interface FeedbackViewController ()
 {
-    UIButton *majorBtn;//专业
-    UILabel *typeLabel;//页面标题
-    UIButton *noticeBtn;//消息通知
-    
     SZTextView *contentTextView;//内容
 }
 @end
@@ -44,15 +40,7 @@
     
     self.view.backgroundColor = kBackgroundWhiteColor;
     
-    majorBtn = [[UIButton alloc] init];
-    noticeBtn = [[UIButton alloc] init];
-    typeLabel = [[UILabel alloc] init];
-//    [self createNavigationFeatureAndTitle:@"意见反馈" withLeftBtn:majorBtn andRightBtn:noticeBtn andTypeTitle:typeLabel];
     [self createNavigationTitle:@"意见反馈"];
-    
-//    [majorBtn addTarget:self action:@selector(majorBtnAction) forControlEvents:UIControlEventTouchUpInside];
-//    [noticeBtn addTarget:self action:@selector(noticeBtnAction) forControlEvents:UIControlEventTouchUpInside];
-//    typeLabel.text = @"专业";
     
     //底部
     [self createEndBackView];
@@ -82,15 +70,6 @@
 }
 
 #pragma mark - 点击事件
-// 专业
-- (void) majorBtnAction{
-    NSLog(@"专业");
-}
-
-// 消息通知
-- (void) noticeBtnAction{
-    NSLog(@"消息通知");
-}
 
 #pragma mark - 提交
 - (void)submitBtnActionAPI {

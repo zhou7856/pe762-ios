@@ -7,6 +7,7 @@
 //  导航分类
 
 #import "UIViewController+Navigation.h"
+#import "MessageViewController.h"
 
 @implementation UIViewController (Navigation)
 
@@ -228,6 +229,7 @@
         [view addSubview:rightIconImageView];
         
         rightBtn.frame = CGRectMake(270 * kScreenWidthProportion, leftBtn.minY, 50 * kScreenWidthProportion, leftBtn.height);
+        [rightBtn addTarget:self action:@selector(noticeBtnAction) forControlEvents:UIControlEventTouchUpInside];
         [view addSubview:rightBtn];
         
         UIView *lineView = [UIView viewWithFrame:CGRectMake(0, 43, kScreenWidth, 1) backgroundColor:RGB(223, 223, 223)];
@@ -291,6 +293,7 @@
         [view addSubview:rightIconImageView];
         
         rightBtn.frame = CGRectMake(270 * kScreenWidthProportion, leftBtn.minY, 50 * kScreenWidthProportion, leftBtn.height);
+        [rightBtn addTarget:self action:@selector(noticeBtnAction) forControlEvents:UIControlEventTouchUpInside];
         [view addSubview:rightBtn];
         
         UIView *lineView = [UIView viewWithFrame:CGRectMake(0, 43, kScreenWidth, 1) backgroundColor:RGB(223, 223, 223)];
@@ -298,7 +301,6 @@
 
     }
 }
-
 
 //创建底部返回
 - (void)createEndBackView {
@@ -338,6 +340,20 @@
 
 - (void)backBtnAction {
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+// 消息通知
+- (void) noticeBtnAction{
+    NSLog(@"消息通知");
+    [self showTabBarView:NO];
+    [self.navigationController pushViewController:[MessageViewController new] animated:YES];
+}
+
+// 专业
+- (void) majorBtnAction{
+    NSLog(@"专业");
+    [self showTabBarView:NO];
+    //[self.navigationController pushViewController:[MessageViewController new] animated:YES];
 }
 
 @end

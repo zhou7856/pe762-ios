@@ -10,7 +10,6 @@
 
 @interface UIViewController (Navigation)
 
-
 /**
  创建导航基于文本
 
@@ -36,9 +35,6 @@
  @param typeLabel 选中的状态文本
  */
 - (void)createNavigationFeatureAndTitle:(NSString *)title withLeftBtn:(UIButton *)leftBtn andRightBtn:(UIButton *)rightBtn andTypeTitle:(UILabel *)typeLabel;
-
-
-
 
 /**
  创建底部的返回页面

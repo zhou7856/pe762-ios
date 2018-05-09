@@ -179,13 +179,13 @@
 //结算详情
 
 /*************************通知***********************************/
-//通知列表
+//通知列表 Future
 #define kNoticeListURL kBaseURL @"user/notice"
 
-//通知详情
+//通知详情 Future
 #define kNoticeDetailURL kBaseURL @"user/notice/detail"
 
-//获取未读通知数
+//获取未读通知数 Future
 #define kNoticeReadNumURL kBaseURL @"user/notice/readNum"
 
 /*************************广告***********************************/

@@ -12,10 +12,6 @@
 
 @interface CommonProblemViewController ()<UITableViewDelegate,UITableViewDataSource>
 {
-    UIButton *majorBtn;//专业
-    UILabel *typeLabel;//页面标题
-    UIButton *noticeBtn;//消息通知
-    
     UITableView *problemTabelView;//问题列表
     NSMutableArray *dataArray;
 }
@@ -50,14 +46,7 @@
     
     self.view.backgroundColor = kWhiteColor;
     
-    majorBtn = [[UIButton alloc] init];
-    noticeBtn = [[UIButton alloc] init];
-    typeLabel = [[UILabel alloc] init];
-    [self createNavigationFeatureAndTitle:@"常见问题" withLeftBtn:majorBtn andRightBtn:noticeBtn andTypeTitle:typeLabel];
-    
-    [majorBtn addTarget:self action:@selector(majorBtnAction) forControlEvents:UIControlEventTouchUpInside];
-    [noticeBtn addTarget:self action:@selector(noticeBtnAction) forControlEvents:UIControlEventTouchUpInside];
-    typeLabel.text = @"专业";
+    [self createNavigationTitle:@"常见问题"];
     
     [self createEndBackView];
     
@@ -127,19 +116,7 @@
 }
 
 #pragma mark - 按钮点击方法
-// 专业
-- (void) majorBtnAction{
-    NSLog(@"专业");
-    [self showTabBarView:NO];
-    [self.navigationController pushViewController:[LoginViewController new] animated:YES];
-}
 
-// 消息通知
-- (void) noticeBtnAction{
-    NSLog(@"消息通知");
-    [self showTabBarView:NO];
-    [self.navigationController pushViewController:[LoginViewController new] animated:YES];
-}
 
 /*
 #pragma mark - Navigation

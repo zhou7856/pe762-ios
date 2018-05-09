@@ -21,6 +21,7 @@
 {
     UIButton *setingBtn; //设置按钮
     UIButton *messageBtn; //消息按钮
+    UILabel *redLabel;//消息红点
     UIImageView *backgroundImageView; //背景图片
     UIView *vipView; //vip页面
     UILabel *vipTimeLabel; //vip剩余天数
@@ -76,6 +77,12 @@
     messageBtn = [[UIButton alloc] initWithFrame:CGRectMake(270 * kScreenWidthProportion, kStatusHeight, 30, 44)];
     [messageBtn addTarget:self action:@selector(messageBtnAction) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:messageBtn];
+    
+    redLabel = [[UILabel alloc] initWithFrame:CGRectMake(messageImageView.maxX, kStatusHeight + 10, 8, 8)];
+    redLabel.backgroundColor = [UIColor redColor];
+    redLabel.hidden = NO;
+    [redLabel setCornerRadius:4];
+    [self.view addSubview:redLabel];
 }
 
 - (void)initUI {
@@ -486,6 +493,33 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - 未读消息API
+- (void) initNoticeNotReadAPI{
+    NSString *url = [NSString stringWithFormat:@"%@", kNoticeReadNumURL];
+    url = [self stitchingTokenAndPlatformForURL:url];
+    
+    [self defaultRequestwithURL:url withParameters:nil withMethod:kGET withBlock:^(NSDictionary *dict, NSError *error) {
+        
+        //判断有无数据
+        if ([[dict allKeys] containsObject:@"errorCode"]) {
+            NSString *errorCode = [NSString stringWithFormat:@"%@",dict[@"errorCode"]];
+            
+            if ([errorCode isEqualToString:@"0"]) {
+                NSDictionary *dataDic = dict[@"data"];
+                NSString *num = [NSString stringWithFormat:@"%@", dataDic[@"num"]];
+                
+                if (![[self stringForNull:num] isEqualToString:@""]) {
+                    redLabel.hidden = NO;
+                }
+                
+            }else {
+                [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+                return;
+            }
+        }
+    }];
 }
 
 /*
