@@ -168,7 +168,7 @@
 //联系方式 ACE
 #define kServiceWayTwigURL kBaseURL @"user/setting/serviceWayTwig"
 
-//我的二维码 Future
+//我的二维码 Future 有问题？
 #define kMyQrCodeURL kBaseURL @"user/userIndex/qrCode"
 
 /*************************代理***********************************/
@@ -180,10 +180,13 @@
 
 /*************************通知***********************************/
 //通知列表
+#define kNoticeListURL kBaseURL @"user/notice"
 
 //通知详情
+#define kNoticeDetailURL kBaseURL @"user/notice/detail"
 
 //获取未读通知数
+#define kNoticeReadNumURL kBaseURL @"user/notice/readNum"
 
 /*************************广告***********************************/
 //获取广告图

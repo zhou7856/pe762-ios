@@ -78,8 +78,8 @@
         make.size.mas_equalTo(CGSizeMake(titleLabelWidth, 46 * kScreenWidthProportion));
     }];
 
-    UIImageView *phoneIconImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@""]];
-    phoneIconImageView.backgroundColor = kRedColor;
+    UIImageView *phoneIconImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_service"]];
+    //phoneIconImageView.backgroundColor = kRedColor;
     [phoneIconImageView setCornerRadius:16 * kScreenWidthProportion];
     [contactPhoneView addSubview:phoneIconImageView];
     [phoneIconImageView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -111,8 +111,8 @@
         make.size.mas_equalTo(CGSizeMake(titleLabelWidth, 46 * kScreenWidthProportion));
     }];
     
-    UIImageView *emailIconImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@""]];
-    emailIconImageView.backgroundColor = kRedColor;
+    UIImageView *emailIconImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_mailbox"]];
+    //emailIconImageView.backgroundColor = kRedColor;
     [emailIconImageView setCornerRadius:16 * kScreenWidthProportion];
     [contactEmailView addSubview:emailIconImageView];
     [emailIconImageView mas_makeConstraints:^(MASConstraintMaker *make) {

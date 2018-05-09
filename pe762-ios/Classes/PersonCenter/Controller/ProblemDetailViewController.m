@@ -8,7 +8,7 @@
 
 #import "ProblemDetailViewController.h"
 
-@interface ProblemDetailViewController ()
+@interface ProblemDetailViewController ()<WKUIDelegate>
 {
     UIButton *majorBtn;//专业
     UILabel *typeLabel;//页面标题
@@ -19,6 +19,8 @@
     UILabel *authorLabel;//作者
     UILabel *hotLabel;//热度
     UILabel *contentLabel;//内容
+    
+    WKWebView * webView;
 }
 @end
 
@@ -27,19 +29,61 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    [self initUI];
+    [self initWKWebUI];
 }
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     
     // 加载数据
-    
+    //type 1 消息列表 2 问题列表
+    if ([self.type isEqualToString:@"1"]) {
+        [self initNoticeDetailAPI];
+    } else {
+        [self initProblemDetailAPI];
+    }
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)initWKWebUI{
+#pragma mark - 头部
+    self.navigationController.navigationBarHidden = YES;
+    
+    self.view.backgroundColor = kWhiteColor;
+    
+    majorBtn = [[UIButton alloc] init];
+    noticeBtn = [[UIButton alloc] init];
+    typeLabel = [[UILabel alloc] init];
+    
+    NSString *titleString = [[NSString alloc] init];
+    if ([self.type isEqualToString:@"1"]) {
+        titleString = @"消息通知";
+    } else {
+        titleString = @"常见问题";
+    }
+    
+    [self createNavigationFeatureAndTitle:titleString withLeftBtn:majorBtn andRightBtn:noticeBtn andTypeTitle:typeLabel];
+    
+    [majorBtn addTarget:self action:@selector(majorBtnAction) forControlEvents:UIControlEventTouchUpInside];
+    [noticeBtn addTarget:self action:@selector(noticeBtnAction) forControlEvents:UIControlEventTouchUpInside];
+    typeLabel.text = @"专业";
+    
+    [self createEndBackView];
+    
+#pragma mark - 内容
+    webView = [[WKWebView alloc] init];
+    webView.backgroundColor = kBackgroundWhiteColor;
+    //- 33 * kScreenHeightProportion
+    if (kScreenHeight == 812) {
+        webView.frame = CGRectMake(0, kHeaderHeight, kScreenWidth, kScreenHeight - kHeaderHeight - kEndBackViewHeight);
+    } else {
+        webView.frame = CGRectMake(0, kHeaderHeight, kScreenWidth, kScreenHeight - kHeaderHeight - kEndBackViewHeight);
+    }
+    [self.view addSubview:webView];
 }
 
 #pragma mark - UI
@@ -52,7 +96,15 @@
     majorBtn = [[UIButton alloc] init];
     noticeBtn = [[UIButton alloc] init];
     typeLabel = [[UILabel alloc] init];
-    [self createNavigationFeatureAndTitle:@"常见问题" withLeftBtn:majorBtn andRightBtn:noticeBtn andTypeTitle:typeLabel];
+    
+    NSString *titleString = [[NSString alloc] init];
+    if ([self.type isEqualToString:@"1"]) {
+        titleString = @"消息通知";
+    } else {
+        titleString = @"常见问题";
+    }
+    
+    [self createNavigationFeatureAndTitle:titleString withLeftBtn:majorBtn andRightBtn:noticeBtn andTypeTitle:typeLabel];
     
     [majorBtn addTarget:self action:@selector(majorBtnAction) forControlEvents:UIControlEventTouchUpInside];
     [noticeBtn addTarget:self action:@selector(noticeBtnAction) forControlEvents:UIControlEventTouchUpInside];
@@ -141,6 +193,79 @@
     [self showTabBarView:NO];
     [self.navigationController pushViewController:[LoginViewController new] animated:YES];
 }
+
+#pragma mark - 问题详情API
+- (void) initProblemDetailAPI{
+    
+    if ([self.idStr isEqualToString:@""] || [self.idStr isEqualToString:@"(null)"]) {
+        return ;
+    }
+    
+    NSString *url = [NSString stringWithFormat:@"%@", kNoticeDetailURL];
+    url = [self stitchingTokenAndPlatformForURL:url];
+    url = [NSString stringWithFormat:@"%@&id=%@", url, self.idStr];
+    
+    [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+    [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
+    [self defaultRequestwithURL:url withParameters:nil withMethod:kGET withBlock:^(NSDictionary *dict, NSError *error) {
+        [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+        //判断有无数据
+        if ([[dict allKeys] containsObject:@"errorCode"]) {
+            NSString *errorCode = [NSString stringWithFormat:@"%@",dict[@"errorCode"]];
+            
+            if ([errorCode isEqualToString:@"0"]) {
+                NSDictionary *dataDict = dict[@"data"];
+                NSString *urlStr = [NSString stringWithFormat:@"%@", dataDict[@"url"]];
+                NSLog(@"%@", urlStr);
+                
+                urlStr = [self stitchingTokenAndPlatformForURL:urlStr];
+                [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:urlStr]]];
+                
+                
+            }else {
+                [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+                return;
+            }
+        }
+    }];
+}
+
+#pragma mark - 通知消息详情API
+- (void) initNoticeDetailAPI{
+    
+    if ([self.idStr isEqualToString:@""] || [self.idStr isEqualToString:@"(null)"]) {
+        return ;
+    }
+    
+    NSString *url = [NSString stringWithFormat:@"%@", kNoticeDetailURL];
+    url = [self stitchingTokenAndPlatformForURL:url];
+    url = [NSString stringWithFormat:@"%@&id=%@", url, self.idStr];
+    
+    [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+    [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
+    [self defaultRequestwithURL:url withParameters:nil withMethod:kGET withBlock:^(NSDictionary *dict, NSError *error) {
+        [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+        //判断有无数据
+        if ([[dict allKeys] containsObject:@"errorCode"]) {
+            NSString *errorCode = [NSString stringWithFormat:@"%@",dict[@"errorCode"]];
+            
+            if ([errorCode isEqualToString:@"0"]) {
+                NSDictionary *dataDict = dict[@"data"];
+                NSString *urlStr = [NSString stringWithFormat:@"%@", dataDict[@"url"]];
+                NSLog(@"%@", urlStr);
+                
+                urlStr = [self stitchingTokenAndPlatformForURL:urlStr];
+                [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:urlStr]]];
+                
+                
+            }else {
+                [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+                return;
+            }
+        }
+    }];
+}
+
 
 /*
 #pragma mark - Navigation

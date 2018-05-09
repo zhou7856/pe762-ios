@@ -17,6 +17,7 @@
     UIButton *noticeBtn;//消息通知
     
     UITableView *problemTabelView;//问题列表
+    NSMutableArray *dataArray;
 }
 @end
 
@@ -113,9 +114,14 @@
     
     NSLog(@"你点击了第%ld行", indexPath.row);
     
+    // 取数据
+    NSDictionary *dict = dataArray[indexPath.row];
+    NSString *idStr = [NSString stringWithFormat:@"%@", dict[@"id"]];
+    
     // 跳转到详情页面
     ProblemDetailViewController *pushVC = [[ProblemDetailViewController alloc] init];
-    pushVC.idStr = [NSString stringWithFormat:@"%ld", indexPath.row];
+    pushVC.idStr = idStr;
+    pushVC.type = @"2";
     [self.navigationController pushViewController:pushVC animated:YES];
     
 }

@@ -69,7 +69,7 @@
     
     [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
     [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
-    [self defaultRequestwithURL:url withParameters:nil withMethod:kPOST withBlock:^(NSDictionary *dict, NSError *error) {
+    [self defaultRequestwithURL:url withParameters:nil withMethod:kGET withBlock:^(NSDictionary *dict, NSError *error) {
         [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
         //判断有无数据
         if ([[dict allKeys] containsObject:@"errorCode"]) {
