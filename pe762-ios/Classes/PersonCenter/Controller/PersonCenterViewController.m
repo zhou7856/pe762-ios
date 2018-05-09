@@ -15,6 +15,7 @@
 #import "AgentsViewController.h" //代理商
 #import "MessageViewController.h" //消息
 #import "ChangeInfoViewController.h" //修改
+#import "MyQrCodeViewController.h"//我的二维码
 
 @interface PersonCenterViewController ()
 {
@@ -472,7 +473,9 @@
 
 #pragma mark - 查看我的分享二维码
 - (void)shareBtnAction {
-    
+    [self showTabBarView:NO];
+    MyQrCodeViewController *pushVC = [[MyQrCodeViewController alloc] init];
+    [self.navigationController pushViewController:pushVC animated:YES];
 }
 
 #pragma mark - 用户管理

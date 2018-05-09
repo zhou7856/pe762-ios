@@ -67,7 +67,8 @@
 //图形验证码 ACE
 #define kImageVerificationURL kHostURL @"system/public/captcha"
 
-//二维码
+//二维码 Future
+#define kQrCodeURL kHostURL @"system/public/qrCode"
 
 /*************************登录相关***********************************/
 //注册 ACE
