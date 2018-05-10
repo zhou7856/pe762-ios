@@ -8,6 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
+// 1支付宝 2微信
+typedef void (^PayVipPopBlock) (UIView *popView, NSInteger payType);
+
 @interface PayVipPopView : UIView
+
+@property (nonatomic, strong) PayVipPopBlock block;
+
+@property (nonatomic, assign) NSInteger type;
+
+//创建
+- (void)createViewWithBlock:(PayVipPopBlock)block andMoney:(NSString *)money;
 
 @end

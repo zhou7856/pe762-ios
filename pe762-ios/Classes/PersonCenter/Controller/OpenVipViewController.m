@@ -7,6 +7,7 @@
 //  开通VIP会员页面
 
 #import "OpenVipViewController.h"
+#import "PayVipPopView.h"
 
 @interface OpenVipViewController ()
 
@@ -157,6 +158,20 @@
         make.right.mas_equalTo(openBtn).offset(8 * kScreenWidthProportion);
         make.height.mas_equalTo(150 * kScreenHeightProportion);
     }];
+    
+    
+    
+    [openBtn addTarget:self action:@selector(openAction) forControlEvents:UIControlEventTouchUpInside];
+}
+
+- (void) openAction{
+    
+    [[PayVipPopView alloc] createViewWithBlock:^(UIView *popView, NSInteger payType) {
+        
+        NSLog(@"typeID -> %ld", payType);
+        
+    } andMoney:@"299"];
+    
 }
 
 /*
