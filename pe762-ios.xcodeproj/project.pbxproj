@@ -118,6 +118,8 @@
 		D82DAF26208F5A52004A7EFE /* ListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D82DAF25208F5A52004A7EFE /* ListViewController.m */; };
 		D857B19820A1CC1B003FF35A /* MyQrCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D857B19720A1CC1B003FF35A /* MyQrCodeViewController.m */; };
 		D876794520A42522000D1D70 /* OpenVipViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D876794420A42522000D1D70 /* OpenVipViewController.m */; };
+		D876794820A43D47000D1D70 /* PayVipPopView.m in Sources */ = {isa = PBXBuildFile; fileRef = D876794720A43D47000D1D70 /* PayVipPopView.m */; };
+		D876794B20A43E0E000D1D70 /* PopShareView.m in Sources */ = {isa = PBXBuildFile; fileRef = D876794A20A43E0E000D1D70 /* PopShareView.m */; };
 		D8D61C9C208D813200663054 /* informationTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D61C9B208D813200663054 /* informationTableViewCell.m */; };
 		D8D61C9F208DBDCE00663054 /* InformationDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D61C9E208DBDCE00663054 /* InformationDetailViewController.m */; };
 		D8D61CA2208E09D200663054 /* CommonProblemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D61CA1208E09D200663054 /* CommonProblemViewController.m */; };
@@ -328,6 +330,10 @@
 		D857B19720A1CC1B003FF35A /* MyQrCodeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyQrCodeViewController.m; sourceTree = "<group>"; };
 		D876794320A42522000D1D70 /* OpenVipViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OpenVipViewController.h; sourceTree = "<group>"; };
 		D876794420A42522000D1D70 /* OpenVipViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OpenVipViewController.m; sourceTree = "<group>"; };
+		D876794620A43D47000D1D70 /* PayVipPopView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PayVipPopView.h; sourceTree = "<group>"; };
+		D876794720A43D47000D1D70 /* PayVipPopView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PayVipPopView.m; sourceTree = "<group>"; };
+		D876794920A43E0E000D1D70 /* PopShareView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PopShareView.h; sourceTree = "<group>"; };
+		D876794A20A43E0E000D1D70 /* PopShareView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PopShareView.m; sourceTree = "<group>"; };
 		D8D61C9A208D813200663054 /* informationTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = informationTableViewCell.h; sourceTree = "<group>"; };
 		D8D61C9B208D813200663054 /* informationTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = informationTableViewCell.m; sourceTree = "<group>"; };
 		D8D61C9D208DBDCE00663054 /* InformationDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InformationDetailViewController.h; sourceTree = "<group>"; };
@@ -855,6 +861,10 @@
 				342E35AA208F0CF900819855 /* ClearingTableViewCell.m */,
 				342E35AC208F1A8700819855 /* ClearingDetailsTableViewCell.h */,
 				342E35AD208F1A8700819855 /* ClearingDetailsTableViewCell.m */,
+				D876794620A43D47000D1D70 /* PayVipPopView.h */,
+				D876794720A43D47000D1D70 /* PayVipPopView.m */,
+				D876794920A43E0E000D1D70 /* PopShareView.h */,
+				D876794A20A43E0E000D1D70 /* PopShareView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1122,10 +1132,12 @@
 				34076CCA2089E606005324AB /* AppDelegate.m in Sources */,
 				34076D892089E855005324AB /* UIView+Layout.m in Sources */,
 				34076D552089E855005324AB /* ShowStarView.m in Sources */,
+				D876794820A43D47000D1D70 /* PayVipPopView.m in Sources */,
 				34076DBA2089E88D005324AB /* NSString+Hash.m in Sources */,
 				D8D61CB0208E36C600663054 /* ProblemTableViewCell.m in Sources */,
 				D82DAF23208F442C004A7EFE /* NewestTableViewCell.m in Sources */,
 				34076DC42089E88D005324AB /* UIView+Common.m in Sources */,
+				D876794B20A43E0E000D1D70 /* PopShareView.m in Sources */,
 				D8D61C9F208DBDCE00663054 /* InformationDetailViewController.m in Sources */,
 				342E35A8208EE23500819855 /* RegisteredUserTableViewCell.m in Sources */,
 				34076D612089E855005324AB /* MSSBrowseLocalViewController.m in Sources */,

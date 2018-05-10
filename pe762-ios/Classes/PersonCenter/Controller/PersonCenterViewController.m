@@ -16,6 +16,7 @@
 #import "MessageViewController.h" //消息
 #import "ChangeInfoViewController.h" //修改
 #import "MyQrCodeViewController.h"//我的二维码
+#import "OpenVipViewController.h"//开通VIP会员
 
 @interface PersonCenterViewController ()
 {
@@ -111,6 +112,18 @@
         make.size.mas_equalTo(CGSizeMake(25 * kScreenWidthProportion, 19 * kScreenWidthProportion));
         make.right.mas_equalTo(titleLabel.mas_left).offset(-10 * kScreenWidthProportion);
         make.centerY.mas_equalTo(titleLabel);
+    }];
+    
+    UIButton *shadowBtn = [[UIButton alloc] init];
+    shadowBtn.backgroundColor = [UIColor clearColor];
+    [self.view addSubview:shadowBtn];
+    [shadowBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.top.right.bottom.mas_equalTo(vipView);
+    }];
+    
+    [[shadowBtn rac_signalForControlEvents:UIControlEventTouchUpInside] subscribeNext:^(id x) {
+        [self showTabBarView:NO];
+        [self.navigationController pushViewController:[OpenVipViewController new] animated:YES];
     }];
     
     UIView *centerView = [UIView viewWithFrame:CGRectMake(12 * kScreenWidthProportion, 115 * kScreenWidthProportion + kHeaderHeight, 296 * kScreenWidthProportion, 320 * kScreenWidthProportion) backgroundColor:kWhiteColor];

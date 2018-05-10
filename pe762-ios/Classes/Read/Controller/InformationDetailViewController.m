@@ -7,6 +7,7 @@
 //  资讯详情页面
 
 #import "InformationDetailViewController.h"
+#import "PopShareView.h"
 
 @interface InformationDetailViewController ()<WKUIDelegate>
 {
@@ -206,6 +207,10 @@
 
 - (void)shareBtnAction{
     NSLog(@"分享");
+    [[PopShareView alloc] createViewWithBlock:^(UIView *popView, NSString *typeID) {
+        
+        NSLog(@"typeID -> %@", typeID);
+    }];
 }
 
 - (void)likeBtnAction{
