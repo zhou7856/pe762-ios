@@ -19,6 +19,9 @@
     UITableView *informationTabelView;//资讯列表
     UIButton *searchBtn;//搜索按钮
     
+    // 无网络页面
+    UIView *notNetView;
+    
     //分页
     NSInteger page;
     NSInteger rows;
@@ -37,9 +40,13 @@
     [self initUI];
     // 数据刷新
     [self updataAction];
+    // 无网络
+    [self initNotNetView];
     
     // 设置rows
     rows = 10;
+    
+    //notNetView.hidden = NO;
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -71,8 +78,8 @@
     [searchBtn addTarget:self action:@selector(searchBtnAction) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:searchBtn];
     
-    UIImageView *searchImageView = [[UIImageView alloc] initWithFrame:CGRectMake(298 * kScreenWidthProportion, kStatusHeight + 16, 12, 12)];
-    searchImageView.image = [UIImage imageNamed:@"Layer_-1"];
+    UIImageView *searchImageView = [[UIImageView alloc] initWithFrame:CGRectMake(291 * kScreenWidthProportion, kStatusHeight + 12.5, 19, 19)];
+    searchImageView.image = [UIImage imageNamed:@"Layer_1_1_1"];
     [self.view addSubview:searchImageView];
     
 #pragma mark - 内容
@@ -85,6 +92,64 @@
     informationTabelView.estimatedSectionHeaderHeight = 0;
     informationTabelView.estimatedSectionFooterHeight = 0;
     [self.view addSubview:informationTabelView];
+}
+
+- (void) initNotNetView{
+    notNetView = [[UIView alloc] initWithFrame:CGRectMake(0, kHeaderHeight, kScreenWidth, kScreenHeight - kHeaderHeight - kTabBarHeight)];
+    notNetView.backgroundColor = kWhiteColor;
+    notNetView.hidden = YES;
+    [self.view addSubview:notNetView];
+    
+    UIImageView *netImageView = [[UIImageView alloc] init];
+    netImageView.image = [UIImage imageNamed:@"Group 182"];
+    [notNetView addSubview:netImageView];
+    
+    UILabel *mainTitleLabel = [[UILabel alloc] init];
+    mainTitleLabel.text = @"当前无网络";
+    mainTitleLabel.textColor = kBlackLabelColor;
+    mainTitleLabel.font = FONT(14 * kFontProportion);
+    mainTitleLabel.textAlignment = NSTextAlignmentCenter;
+    [notNetView addSubview:mainTitleLabel];
+    
+    UILabel *subTitleLabel = [[UILabel alloc] init];
+    subTitleLabel.text = @"请打开手机网络";
+    subTitleLabel.textColor = RGB(192, 192, 192);
+    subTitleLabel.font = FONT(12 * kFontProportion);
+    subTitleLabel.textAlignment = NSTextAlignmentCenter;
+    [notNetView addSubview:subTitleLabel];
+    
+    UIButton *refreshBtn = [[UIButton alloc] init];
+    refreshBtn.backgroundColor = RGB(122, 37, 188);
+    [refreshBtn setTitleColor:kWhiteColor forState:UIControlStateNormal];
+    [refreshBtn setTitle:@"刷新" forState:UIControlStateNormal];
+    refreshBtn.titleLabel.font = FONT(13 * kFontProportion);
+    [notNetView addSubview:refreshBtn];
+    
+    [netImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(notNetView).offset(80 * kScreenHeightProportion);
+        make.centerX.mas_equalTo(notNetView);
+        make.size.mas_equalTo(CGSizeMake(189 * kScreenHeightProportion, 128 * kScreenWidthProportion));
+    }];
+    
+    [mainTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(netImageView.mas_bottom).offset(13 * kScreenHeightProportion);
+        make.left.right.with.equalTo(notNetView);
+        make.height.mas_equalTo(22 * kScreenHeightProportion);
+    }];
+    
+    [subTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(mainTitleLabel.mas_bottom).offset(4 * kScreenHeightProportion);
+        make.left.right.with.equalTo(mainTitleLabel);
+        make.height.mas_equalTo(18 * kScreenHeightProportion);
+    }];
+    
+    [refreshBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(subTitleLabel.mas_bottom).offset(76 * kScreenHeightProportion);
+        make.left.mas_equalTo(subTitleLabel).offset(10 * kScreenWidthProportion);
+        make.right.mas_equalTo(subTitleLabel).offset(-10 * kScreenWidthProportion);
+        make.height.mas_equalTo(45 * kScreenHeightProportion);
+        [refreshBtn setCornerRadius:(45 * kScreenHeightProportion / 2)];
+    }];
 }
 
 #pragma mark - tableView代理
@@ -160,8 +225,8 @@
         
     }];
     
-    cell.likeBtn.tag = kTagStart + 10000 + [dict[@"id"] integerValue];
-    [cell.likeBtn addTarget:self action:@selector(likeBtnAction:) forControlEvents:UIControlEventTouchUpInside];
+//    cell.likeBtn.tag = kTagStart + 10000 + [dict[@"id"] integerValue];
+//    [cell.likeBtn addTarget:self action:@selector(likeBtnAction:) forControlEvents:UIControlEventTouchUpInside];
     
     return cell;
 }

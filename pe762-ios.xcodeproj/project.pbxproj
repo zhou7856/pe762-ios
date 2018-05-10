@@ -117,6 +117,7 @@
 		D82DAF23208F442C004A7EFE /* NewestTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D82DAF22208F442C004A7EFE /* NewestTableViewCell.m */; };
 		D82DAF26208F5A52004A7EFE /* ListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D82DAF25208F5A52004A7EFE /* ListViewController.m */; };
 		D857B19820A1CC1B003FF35A /* MyQrCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D857B19720A1CC1B003FF35A /* MyQrCodeViewController.m */; };
+		D876794520A42522000D1D70 /* OpenVipViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D876794420A42522000D1D70 /* OpenVipViewController.m */; };
 		D8D61C9C208D813200663054 /* informationTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D61C9B208D813200663054 /* informationTableViewCell.m */; };
 		D8D61C9F208DBDCE00663054 /* InformationDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D61C9E208DBDCE00663054 /* InformationDetailViewController.m */; };
 		D8D61CA2208E09D200663054 /* CommonProblemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D61CA1208E09D200663054 /* CommonProblemViewController.m */; };
@@ -325,6 +326,8 @@
 		D82DAF25208F5A52004A7EFE /* ListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ListViewController.m; sourceTree = "<group>"; };
 		D857B19620A1CC1B003FF35A /* MyQrCodeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyQrCodeViewController.h; sourceTree = "<group>"; };
 		D857B19720A1CC1B003FF35A /* MyQrCodeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyQrCodeViewController.m; sourceTree = "<group>"; };
+		D876794320A42522000D1D70 /* OpenVipViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OpenVipViewController.h; sourceTree = "<group>"; };
+		D876794420A42522000D1D70 /* OpenVipViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OpenVipViewController.m; sourceTree = "<group>"; };
 		D8D61C9A208D813200663054 /* informationTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = informationTableViewCell.h; sourceTree = "<group>"; };
 		D8D61C9B208D813200663054 /* informationTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = informationTableViewCell.m; sourceTree = "<group>"; };
 		D8D61C9D208DBDCE00663054 /* InformationDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InformationDetailViewController.h; sourceTree = "<group>"; };
@@ -778,6 +781,8 @@
 				D857B19720A1CC1B003FF35A /* MyQrCodeViewController.m */,
 				D82D0F2020A2DB640061F579 /* AboutUsViewController.h */,
 				D82D0F2120A2DB640061F579 /* AboutUsViewController.m */,
+				D876794320A42522000D1D70 /* OpenVipViewController.h */,
+				D876794420A42522000D1D70 /* OpenVipViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1072,6 +1077,7 @@
 				342E35AB208F0CF900819855 /* ClearingTableViewCell.m in Sources */,
 				34076D642089E855005324AB /* MSSBrowseRemindView.m in Sources */,
 				34FB77AD208E007E008E53AA /* MyRecordingViewController.m in Sources */,
+				D876794520A42522000D1D70 /* OpenVipViewController.m in Sources */,
 				34076D6D2089E855005324AB /* LDImagePicker.m in Sources */,
 				34076DC12089E88D005324AB /* UILabel+Text.m in Sources */,
 				34076DD82089EC07005324AB /* ReadViewController.m in Sources */,

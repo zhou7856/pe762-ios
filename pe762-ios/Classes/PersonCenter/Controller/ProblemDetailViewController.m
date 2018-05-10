@@ -93,9 +93,9 @@
     
     self.view.backgroundColor = kWhiteColor;
     
-    majorBtn = [[UIButton alloc] init];
-    noticeBtn = [[UIButton alloc] init];
-    typeLabel = [[UILabel alloc] init];
+//    majorBtn = [[UIButton alloc] init];
+//    noticeBtn = [[UIButton alloc] init];
+//    typeLabel = [[UILabel alloc] init];
     
     NSString *titleString = [[NSString alloc] init];
     if ([self.type isEqualToString:@"1"]) {
@@ -104,11 +104,11 @@
         titleString = @"常见问题";
     }
     
-    [self createNavigationFeatureAndTitle:titleString withLeftBtn:majorBtn andRightBtn:noticeBtn andTypeTitle:typeLabel];
-    
-    [majorBtn addTarget:self action:@selector(majorBtnAction) forControlEvents:UIControlEventTouchUpInside];
-    [noticeBtn addTarget:self action:@selector(noticeBtnAction) forControlEvents:UIControlEventTouchUpInside];
-    typeLabel.text = @"专业";
+//    [self createNavigationFeatureAndTitle:titleString withLeftBtn:majorBtn andRightBtn:noticeBtn andTypeTitle:typeLabel];
+//    
+//    [majorBtn addTarget:self action:@selector(majorBtnAction) forControlEvents:UIControlEventTouchUpInside];
+//    [noticeBtn addTarget:self action:@selector(noticeBtnAction) forControlEvents:UIControlEventTouchUpInside];
+//    typeLabel.text = @"专业";
     
     [self createEndBackView];
     
