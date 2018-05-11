@@ -120,6 +120,7 @@
 		D876794520A42522000D1D70 /* OpenVipViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D876794420A42522000D1D70 /* OpenVipViewController.m */; };
 		D876794820A43D47000D1D70 /* PayVipPopView.m in Sources */ = {isa = PBXBuildFile; fileRef = D876794720A43D47000D1D70 /* PayVipPopView.m */; };
 		D876794B20A43E0E000D1D70 /* PopShareView.m in Sources */ = {isa = PBXBuildFile; fileRef = D876794A20A43E0E000D1D70 /* PopShareView.m */; };
+		D876794E20A46E5D000D1D70 /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D876794D20A46E5D000D1D70 /* SearchViewController.m */; };
 		D8D61C9C208D813200663054 /* informationTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D61C9B208D813200663054 /* informationTableViewCell.m */; };
 		D8D61C9F208DBDCE00663054 /* InformationDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D61C9E208DBDCE00663054 /* InformationDetailViewController.m */; };
 		D8D61CA2208E09D200663054 /* CommonProblemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D61CA1208E09D200663054 /* CommonProblemViewController.m */; };
@@ -334,6 +335,8 @@
 		D876794720A43D47000D1D70 /* PayVipPopView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PayVipPopView.m; sourceTree = "<group>"; };
 		D876794920A43E0E000D1D70 /* PopShareView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PopShareView.h; sourceTree = "<group>"; };
 		D876794A20A43E0E000D1D70 /* PopShareView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PopShareView.m; sourceTree = "<group>"; };
+		D876794C20A46E5D000D1D70 /* SearchViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SearchViewController.h; sourceTree = "<group>"; };
+		D876794D20A46E5D000D1D70 /* SearchViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SearchViewController.m; sourceTree = "<group>"; };
 		D8D61C9A208D813200663054 /* informationTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = informationTableViewCell.h; sourceTree = "<group>"; };
 		D8D61C9B208D813200663054 /* informationTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = informationTableViewCell.m; sourceTree = "<group>"; };
 		D8D61C9D208DBDCE00663054 /* InformationDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InformationDetailViewController.h; sourceTree = "<group>"; };
@@ -822,6 +825,8 @@
 				34076DD72089EC07005324AB /* ReadViewController.m */,
 				D8D61C9D208DBDCE00663054 /* InformationDetailViewController.h */,
 				D8D61C9E208DBDCE00663054 /* InformationDetailViewController.m */,
+				D876794C20A46E5D000D1D70 /* SearchViewController.h */,
+				D876794D20A46E5D000D1D70 /* SearchViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1124,6 +1129,7 @@
 				34076D862089E855005324AB /* TZPhotoPreviewCell.m in Sources */,
 				34076D5E2089E855005324AB /* MSSBrowseBaseViewController.m in Sources */,
 				342E35AE208F1A8700819855 /* ClearingDetailsTableViewCell.m in Sources */,
+				D876794E20A46E5D000D1D70 /* SearchViewController.m in Sources */,
 				34076CD82089E606005324AB /* main.m in Sources */,
 				34FB77A7208DC384008E53AA /* SettingViewController.m in Sources */,
 				34076D812089E855005324AB /* TZAssetCell.m in Sources */,

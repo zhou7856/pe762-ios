@@ -69,7 +69,7 @@
         [self.detailLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.mas_equalTo(self.nameLabel);
             make.top.mas_equalTo(self.nameLabel.mas_bottom).offset(2 * kScreenHeightProportion);
-            make.size.mas_equalTo(CGSizeMake(146 * kScreenWidthProportion, 12 * kScreenHeightProportion));
+            make.size.mas_equalTo(CGSizeMake(146 * kScreenWidthProportion, 26 * kScreenHeightProportion));
         }];
         
         // 热度图标

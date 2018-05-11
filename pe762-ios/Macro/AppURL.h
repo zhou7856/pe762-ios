@@ -114,6 +114,9 @@
 
 //分享音频
 
+//音频列表 Future
+#define kSearchAudioURL kBaseURL @"user/audio/"
+
 /*************************个人中心***********************************/
 
            /************收藏***************/
@@ -208,6 +211,11 @@
 
 //取消点赞
 #define kLikeDeleteURL kBaseURL @"user/agree/giveUp"
+
+
+/*************************5-2新增***********************************/
+//搜索页面 Future
+#define kAudioSearchURL kBaseURL @"user/audio/search"
 
 
 #endif /* AppURL_h */
