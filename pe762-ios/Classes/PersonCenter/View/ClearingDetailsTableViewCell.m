@@ -28,6 +28,7 @@
         [self.nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.mas_equalTo(40 * kScreenWidthProportion);
             make.top.bottom.mas_equalTo(centerView);
+            make.width.mas_equalTo(36 * kScreenWidthProportion);
         }];
         
         self.phoneLabel = [[UILabel alloc] init];

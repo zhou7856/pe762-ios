@@ -16,6 +16,9 @@
     
     UILabel *priceLabel;
     UILabel *numberLabel;
+    
+    // 列表数据
+    NSMutableArray *dataArray;
 }
 @end
 
@@ -32,6 +35,8 @@
     [super viewWillAppear:animated];
     
     [self showTabBarView:NO];
+    
+    [self initProxyFlowDetailAPI];
 }
 
 - (void)initNav {
@@ -61,7 +66,7 @@
         numberLabel = [[UILabel alloc] init];
         [numberLabel setLabelWithTextColor:RGB(130, 34, 194) textAlignment:NSTextAlignmentCenter font:13];
         [clearingView addSubview:numberLabel];
-        numberLabel.text = @"1500";
+        numberLabel.text = @"";
         
         [numberLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.bottom.mas_equalTo(titleLabel);
@@ -96,7 +101,7 @@
         priceLabel = [[UILabel alloc] init];
         [priceLabel setLabelWithTextColor:RGB(130, 34, 194) textAlignment:NSTextAlignmentCenter font:13];
         [clearingView addSubview:priceLabel];
-        priceLabel.text = @"10";
+        priceLabel.text = @"";
         
         [priceLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.right.mas_equalTo(unitLabel.mas_left);
@@ -136,7 +141,7 @@
 
 #pragma mark - TableViewDataSource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 15;
+    return dataArray.count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -153,13 +158,21 @@
     
     cell.backgroundColor = self.view.backgroundColor;
     
+    NSDictionary *dict = dataArray[indexPath.row];
+    
+    NSString *user_avatar_path = [NSString stringWithFormat:@"%@", dict[@"user_avatar_path"]];
+    cell.headImgeView.image = nil;
+    [cell.headImgeView setImageWithURL:[NSURL URLWithString:user_avatar_path]];
+    
     cell.headImgeView.backgroundColor = [UIColor greenColor];
     
-    cell.nameLabel.text = @"Anny01";
+    cell.nameLabel.text = [NSString stringWithFormat:@"%@", dict[@"user_name"]];
     
-    cell.phoneLabel.text = @"15055301588";
+    cell.phoneLabel.text = [NSString stringWithFormat:@"%@", dict[@"phone"]];
     
-    cell.timeLabel.text = @"2018-03-11";
+    NSString *created_at = [NSString stringWithFormat:@"%@", dict[@"created_at"]];
+    NSString *date = [created_at substringToIndex:10];
+    cell.timeLabel.text = date;
     
     return cell;
 }
@@ -174,6 +187,45 @@
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
     return nil;
 }
+
+
+#pragma mark - 结算详情API
+- (void) initProxyFlowDetailAPI{
+    NSString *url = [NSString stringWithFormat:@"%@", kProxyFlowDetailURL];
+    url = [self stitchingTokenAndPlatformForURL:url];
+    url = [NSString stringWithFormat:@"%@&id=%@", url, self.idStr];
+    
+    [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+    [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
+    [self defaultRequestwithURL:url withParameters:nil withMethod:kGET withBlock:^(NSDictionary *dict, NSError *error) {
+        [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+        //判断有无数据
+        if ([[dict allKeys] containsObject:@"errorCode"]) {
+            NSString *errorCode = [NSString stringWithFormat:@"%@",dict[@"errorCode"]];
+            
+            if ([errorCode isEqualToString:@"0"]) {
+                NSDictionary *dataDict = dict[@"data"];
+                //处理数据
+                dataArray = [[NSMutableArray alloc] init];
+                if ([dataDict[@"info"] isKindOfClass:[NSArray class]] && [dataDict[@"info"] count] > 0) {
+                    [dataArray addObjectsFromArray:dataDict[@"info"]];
+                }
+                
+                [listTableView reloadData];
+                
+                
+                NSString *proxy_money = [NSString stringWithFormat:@"%@", dataDict[@"proxy_money"]];
+                priceLabel.text = [NSString stringWithFormat:@"%ld", dataArray.count];
+                numberLabel.text = proxy_money;
+                
+            }else {
+                [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+                return;
+            }
+        }
+    }];
+}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

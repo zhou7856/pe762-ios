@@ -15,6 +15,7 @@
 {
     //0 注册用户 1 vip用户 2 已结算
     NSInteger type;
+    NSString *typeStr;
     
     UIView *clearingView; //结算页面
     UILabel *numberLabel;
@@ -22,6 +23,12 @@
     
     UITableView *listTableView;
     NSArray *listDataArray;
+    
+    // 数据
+    NSMutableArray *dataArray;
+    // 是否第一次创建页面
+    NSInteger isNew;
+    
     
 }
 @end
@@ -33,12 +40,17 @@
     // Do any additional setup after loading the view.
     [self initNav];
     [self initUI];
+    
+    typeStr = @"1";
+    type = 0;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
     [self showTabBarView:NO];
+    
+    [self typeChangeAPI:type];
 }
 
 - (void)dealloc {
@@ -98,7 +110,7 @@
         numberLabel = [[UILabel alloc] init];
         [numberLabel setLabelWithTextColor:RGB(130, 34, 194) textAlignment:NSTextAlignmentCenter font:13];
         [clearingView addSubview:numberLabel];
-        numberLabel.text = @"100";
+        numberLabel.text = @"";
         
         [numberLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.bottom.mas_equalTo(titleLabel);
@@ -133,7 +145,7 @@
         priceLabel = [[UILabel alloc] init];
         [priceLabel setLabelWithTextColor:RGB(130, 34, 194) textAlignment:NSTextAlignmentCenter font:13];
         [clearingView addSubview:priceLabel];
-        priceLabel.text = @"1500";
+        priceLabel.text = @"";
 
         [priceLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.right.mas_equalTo(unitLabel.mas_left);
@@ -185,13 +197,13 @@
         listTableView.estimatedSectionFooterHeight =0;
     }
     
-    [self typeChangeAPI:0];
+    //[self typeChangeAPI:0];
 }
 
 #pragma mark - TableViewDataSource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
 //    return listDataArray.count;
-    return 7;
+    return dataArray.count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -210,14 +222,23 @@
             cell = [[RegisteredUserTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-
+        
         cell.backgroundColor = self.view.backgroundColor;
-
+        
+        
+        NSDictionary *dict = dataArray[indexPath.row];
+        
+        NSString *user_avatar_path = [NSString stringWithFormat:@"%@", dict[@"user_avatar_path"]];
+        cell.headImageView.image = nil;
+        [cell.headImageView setImageWithURL:[NSURL URLWithString:user_avatar_path]];
         cell.headImageView.backgroundColor = [UIColor greenColor];
 
-        cell.nameLabel.text = @"Anny02";
-        cell.phoneLabel.text = @"1524385897";
-        cell.timeLabel.text = @"注册时间：2018-03-11";
+        cell.nameLabel.text = [NSString stringWithFormat:@"%@", dict[@"user_name"]];
+        cell.phoneLabel.text = [NSString stringWithFormat:@"%@", dict[@"phone"]];
+        
+        NSString *created_at = [NSString stringWithFormat:@"%@", dict[@"created_at"]];
+        NSString *date = [created_at substringToIndex:10];
+        cell.timeLabel.text = [NSString stringWithFormat:@"注册时间：%@", date];
 
         return cell;
     }
@@ -231,15 +252,25 @@
     
     cell.backgroundColor = self.view.backgroundColor;
     
-    cell.priceLabel.text = @"1500";
-    cell.numberLabel.text = @"10";
-    cell.timeLabel.text = @"2018-03-11";
+    NSDictionary *dict = dataArray[indexPath.row];
+    cell.priceLabel.text = [NSString stringWithFormat:@"%@", dict[@"money"]];
+    cell.numberLabel.text = [NSString stringWithFormat:@"%@", dict[@"peo_number"]];
+    NSString *created_at = [NSString stringWithFormat:@"%@", dict[@"created_at"]];
+    NSString *date = [created_at substringToIndex:10];
+    cell.timeLabel.text = date;
 
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    [self.navigationController pushViewController:[ClearingDetailsViewController new] animated:YES];
+    
+    if (type == 2) {
+        NSDictionary *dict = dataArray[indexPath.row];
+        NSString *idStr = [NSString stringWithFormat:@"%@", dict[@"id"]];
+        ClearingDetailsViewController *pushVC = [[ClearingDetailsViewController alloc] init];
+        pushVC.idStr = idStr;
+        [self.navigationController pushViewController:pushVC animated:YES];
+    }
 }
 
 #pragma mark - 按钮点击
@@ -250,11 +281,27 @@
         [clearingView mas_updateConstraints:^(MASConstraintMaker *make) {
             make.height.mas_equalTo(75 * kScreenWidthProportion);
         }];
+        
+        typeStr = @"2";
+        
+        [self initProxyTeamAPI];
+        
     } else {
         clearingView.hidden = YES;
         [clearingView mas_updateConstraints:^(MASConstraintMaker *make) {
             make.height.mas_equalTo(0);
         }];
+        
+        
+        
+        if (type == 0) {
+
+            typeStr = @"1";
+            [self initProxyTeamAPI];
+        } else {
+            
+            [self initProxyFlowAPI];
+        }
     }
     
     for (int i = 0; i < 3; i++)  {
@@ -267,8 +314,93 @@
         }
     }
     
-    [listTableView reloadData];
+    //[listTableView reloadData];
 }
+
+#pragma mark - 代理商API数据
+- (void) initProxyTeamAPI{
+    NSString *url = [NSString stringWithFormat:@"%@", kProxyTeamURL];
+    url = [self stitchingTokenAndPlatformForURL:url];
+    NSDictionary *parameter = @{
+                                @"type":typeStr
+                                };
+    [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+    [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
+    [self defaultRequestwithURL:url withParameters:parameter withMethod:kPOST withBlock:^(NSDictionary *dict, NSError *error) {
+        [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+        //判断有无数据
+        if ([[dict allKeys] containsObject:@"errorCode"]) {
+            NSString *errorCode = [NSString stringWithFormat:@"%@",dict[@"errorCode"]];
+            if ([errorCode isEqualToString:@"-1"]){
+                //判断当前是不是登陆页面
+                if ([[self.navigationController.viewControllers lastObject] isKindOfClass:[LoginViewController class]]) {
+                    return;
+                }
+                
+                //未登陆
+                LoginViewController *loginVC = [[LoginViewController alloc] init];
+                [self.navigationController pushViewController:loginVC animated:YES];
+                return;
+            }
+            
+            if ([errorCode isEqualToString:@"0"]) {
+                NSDictionary *dataDic = dict[@"data"];
+                //处理数据
+                dataArray = [[NSMutableArray alloc] init];
+                if ([dataDic[@"info"] isKindOfClass:[NSArray class]] && [dataDic[@"info"] count] > 0) {
+                    [dataArray addObjectsFromArray:dataDic[@"info"]];
+                }
+                
+                [listTableView reloadData];
+                
+                NSString *proxy_money = [NSString stringWithFormat:@"%@", dataDic[@"proxy_money"]];
+                numberLabel.text = [NSString stringWithFormat:@"%ld", dataArray.count];
+                priceLabel.text = proxy_money;
+                
+            } else {
+                
+                [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+                return;
+            }
+        }
+    }];
+
+}
+
+#pragma mark - 结算列表API
+- (void) initProxyFlowAPI{
+    NSString *url = [NSString stringWithFormat:@"%@", kProxyFlowURL];
+    url = [self stitchingTokenAndPlatformForURL:url];
+    
+    [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+    [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
+    [self defaultRequestwithURL:url withParameters:nil withMethod:kGET withBlock:^(NSDictionary *dict, NSError *error) {
+        [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+        //判断有无数据
+        if ([[dict allKeys] containsObject:@"errorCode"]) {
+            NSString *errorCode = [NSString stringWithFormat:@"%@",dict[@"errorCode"]];
+            
+            if ([errorCode isEqualToString:@"0"]) {
+                NSDictionary *dataDict = dict[@"data"];
+                //处理数据
+                dataArray = [[NSMutableArray alloc] init];
+                if ([dataDict[@"info"] isKindOfClass:[NSArray class]] && [dataDict[@"info"] count] > 0) {
+                    [dataArray addObjectsFromArray:dataDict[@"info"]];
+                }
+                
+                [listTableView reloadData];
+                
+                
+                
+            }else {
+                [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+                return;
+            }
+        }
+    }];
+}
+
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

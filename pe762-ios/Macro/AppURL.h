@@ -99,7 +99,7 @@
 //专业列表页 ACE
 #define kGetProfessionListURL kBaseURL @"user/course"
 
-//音频首页 ACE 无数据
+//音频首页 ACE
 #define kHomeIndexURL kBaseURL @"user/audio/index"
 
 //音频列表 ACE
@@ -155,10 +155,10 @@
 #define kAddFeedbackURL kBaseURL @"user/feedback/edit"
 
            /************系统文章***************/
-//列表
+//列表 Future
 #define kListURL kBaseURL @"user/sysAct/"
 
-//系统文章
+//系统文章 Future
 #define kSysListDetailURL kBaseURL @"user/sysAct/detail"
 
            /************个人信息***************/
@@ -179,11 +179,14 @@
 #define kMyQrCodeURL kBaseURL @"user/userIndex/qrCode"
 
 /*************************代理***********************************/
-//我的团队
+//我的团队 Future
+#define kProxyTeamURL kBaseURL @"user/proxy/team"
 
-//结算列表
+//结算列表 Future
+#define kProxyFlowURL kBaseURL @"user/proxyFlow/"
 
-//结算详情
+//结算详情 Future
+#define kProxyFlowDetailURL kBaseURL @"user/proxyFlow/detail"
 
 /*************************通知***********************************/
 //通知列表 Future
@@ -196,7 +199,7 @@
 #define kNoticeReadNumURL kBaseURL @"user/notice/readNum"
 
 /*************************充值***********************************/
-//会员充值支付页面
+//会员充值支付页面 Future
 #define kRechargeVipTwigURL kBaseURL @"user/userIndex/rechargeVipTwig"
 
 //会员充值操作
@@ -216,10 +219,10 @@
 
 
 /*************************5-2新增***********************************/
-//点赞
+//点赞 ACE
 #define kLikeAddURL kBaseURL @"user/agree/add"
 
-//取消点赞
+//取消点赞 ACE
 #define kLikeDeleteURL kBaseURL @"user/agree/giveUp"
 
 

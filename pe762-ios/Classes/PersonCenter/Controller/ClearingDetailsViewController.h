@@ -10,4 +10,7 @@
 
 @interface ClearingDetailsViewController : UIViewController
 
+//id
+@property (nonatomic, copy) NSString *idStr;
+
 @end
