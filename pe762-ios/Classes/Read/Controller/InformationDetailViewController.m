@@ -299,6 +299,16 @@
                 urlStr = [self stitchingTokenAndPlatformForURL:urlStr];
                 [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:urlStr]]];
                 
+                // 是否点赞
+                if ([dataDict[@"info"] isKindOfClass:[NSDictionary class]]) {
+                    NSDictionary *infoDict = [[NSDictionary alloc] initWithDictionary:dataDict[@"info"]];
+                    NSString *isAgree = [NSString stringWithFormat:@"%@", infoDict[@"is_agree"]];
+                    if ([isAgree isEqualToString:@"1"]) {
+                        likeBtn.selected = YES;
+                        zanImageView.image = [UIImage imageNamed:@"icon_good_red"];
+                    }
+                }
+                
             }else {
                 [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
                 return;

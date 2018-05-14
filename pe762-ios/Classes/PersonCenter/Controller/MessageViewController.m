@@ -101,7 +101,7 @@
 // cell 的高度
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    return 71 * kScreenWidthProportion;
+    return 84 * kScreenWidthProportion;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -128,10 +128,14 @@
     cell.sourceLabel.text = classifyNameStr;
     cell.dateLabel.text = hmStr;
     cell.mainTitleLabel.text = [NSString stringWithFormat:@"%@", dict[@"push_title"]];
-    cell.subtitleLabel.text = [NSString stringWithFormat:@"%@", dict[@"push_content"]];
+    //cell.subtitleLabel.text = [NSString stringWithFormat:@"%@", dict[@"push_content"]];
+    NSAttributedString *detailsAttrStr = [[NSAttributedString alloc] initWithData:[dict[@"push_content"] dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute:NSHTMLTextDocumentType } documentAttributes:nil error:nil];
+    cell.subtitleLabel.attributedText = detailsAttrStr;
+    //[cell.subtitleLabel setLineSpacing:5.0f];
+    cell.subtitleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     
     NSString *isRead = [NSString stringWithFormat:@"%@", dict[@"is_read"]];
-    if ([isRead integerValue] > 0) {
+    if ([isRead isEqualToString:@"0"]) {
         cell.redlabel.hidden = NO;
     } else {
         cell.redlabel.hidden = YES;
@@ -181,6 +185,8 @@
             
             if ([errorCode isEqualToString:@"0"]) {
                 NSDictionary *dataDic = dict[@"data"];
+                
+                dataArray = [[NSMutableArray alloc] init];
                 
                 NSMutableArray *tempArray = [[NSMutableArray alloc] init];
                 

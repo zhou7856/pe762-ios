@@ -189,7 +189,7 @@
     
     // 赋值
     NSString *creatTimeStr = [NSString stringWithFormat:@"%@", dict[@"created_at"]];
-    NSString *hmStr = [creatTimeStr substringWithRange:NSMakeRange(10, 6)];
+    NSString *hmStr = [creatTimeStr substringWithRange:NSMakeRange(0, 10)];
     NSString *classifyNameStr = [NSString stringWithFormat:@"%@", dict[@"classify_name"]];
     
     cell.contentImageView.image = nil;

@@ -103,6 +103,7 @@
         self.subtitleLabel.textColor = kTextFieldColor;
         self.subtitleLabel.font = FONT(9 * kFontProportion);
         self.subtitleLabel.textAlignment = NSTextAlignmentLeft;
+        self.subtitleLabel.numberOfLines = 1;
         [self.contentView addSubview:self.subtitleLabel];
         [self.subtitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.mas_equalTo(self.sourceLabel.mas_left);
