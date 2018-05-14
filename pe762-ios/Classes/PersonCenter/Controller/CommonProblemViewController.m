@@ -15,7 +15,7 @@
     UITableView *problemTabelView;//问题列表
     NSMutableArray *dataArray;
     
-    //
+    // 分页
     NSInteger page;
     NSInteger rows;
 }
@@ -143,6 +143,8 @@
             
             if ([errorCode isEqualToString:@"0"]) {
                 NSDictionary *dataDic = dict[@"data"];
+                
+                dataArray = [[NSMutableArray alloc] init];
                 
                 NSMutableArray *tempArray = [[NSMutableArray alloc] init];
                 
