@@ -10,6 +10,7 @@
 #import "FSAudioStream.h"
 #import "AudioPlayerTool.h"
 #import "ListViewController.h"
+#import "OpenVipViewController.h"
 
 @interface AudioPlayViewController () <NSURLSessionDownloadDelegate>
 {
@@ -869,7 +870,7 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
 - (void)gotoVipView {
     isVip = YES;
     //此处模拟去充值页面
-    [self.navigationController pushViewController:[ListViewController new] animated:YES];
+    [self.navigationController pushViewController:[OpenVipViewController new] animated:YES];
 }
 
 #pragma mark - 统计次数

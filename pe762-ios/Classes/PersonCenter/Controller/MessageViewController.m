@@ -64,7 +64,6 @@
     typeLabel = [[UILabel alloc] init];
     [self createNavigationFeatureAndTitle:@"消息通知" withLeftBtn:majorBtn andTypeTitle:typeLabel];
     
-    [majorBtn addTarget:self action:@selector(majorBtnAction) forControlEvents:UIControlEventTouchUpInside];
     typeLabel.text = @"专业";
     
     [self createEndBackView];
@@ -160,12 +159,6 @@
 }
 
 #pragma mark - 按钮点击方法
-// 专业
-- (void) majorBtnAction{
-    NSLog(@"专业");
-    [self showTabBarView:NO];
-    [self.navigationController pushViewController:[LoginViewController new] animated:YES];
-}
 
 #pragma mark - 通知消息列表API
 - (void) initNoticeListAPI{

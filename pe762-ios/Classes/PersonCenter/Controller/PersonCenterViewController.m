@@ -126,6 +126,7 @@
         [self.navigationController pushViewController:[OpenVipViewController new] animated:YES];
     }];
     
+    
     UIView *centerView = [UIView viewWithFrame:CGRectMake(12 * kScreenWidthProportion, 115 * kScreenWidthProportion + kHeaderHeight, 296 * kScreenWidthProportion, 320 * kScreenWidthProportion) backgroundColor:kWhiteColor];
     [centerView setCornerRadius:3.f];
     [self.view addSubview:centerView];
@@ -178,6 +179,22 @@
         }];
         [editImageView addGestureRecognizer:tap];
     }
+    
+    //[UIColor clearColor];
+    // 编辑个人信息，拓宽触发区域
+    UIButton *editBtn = [[UIButton alloc] init];
+    editBtn.backgroundColor = [UIColor clearColor];
+    [self.view addSubview:editBtn];
+    [editBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.bottom.mas_equalTo(nameLabel);
+        make.right.mas_equalTo(editImageView);
+        make.top.mas_equalTo(headImageVIew);
+    }];
+    
+    [[editBtn rac_signalForControlEvents:UIControlEventTouchUpInside] subscribeNext:^(id x) {
+        [self showTabBarView:NO];
+        [self.navigationController pushViewController:[PersonalInformationViewController new] animated:YES];
+    }];
     
     isVipView = [[UIView alloc] init];
     [centerView addSubview:isVipView];

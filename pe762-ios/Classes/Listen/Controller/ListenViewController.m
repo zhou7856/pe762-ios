@@ -339,12 +339,6 @@
 }
 
 #pragma mark - 按钮点击方法
-// 专业
-- (void) majorBtnAction{
-    NSLog(@"专业");
-    //[self showTabBarView:NO];
-
-}
 
 - (void)initData {
     NSString *url = [NSString stringWithFormat:@"%@",kHomeIndexURL];

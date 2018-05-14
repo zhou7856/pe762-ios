@@ -53,7 +53,12 @@
     
     changeText = [[UITextField alloc] initWithFrame:CGRectMake(12 * kScreenWidthProportion, 0, 200 * kScreenWidthProportion, 40 * kScreenWidthProportion)];
     [textView addSubview:changeText];
-    changeText.placeholder = @"User name";
+    if ([_typeStr isEqualToString:@"1"]) {
+        changeText.placeholder = @"User name";
+    } else {
+        changeText.placeholder = @"User Email";
+    }
+    
 }
 
 #pragma mark - 保存点击
