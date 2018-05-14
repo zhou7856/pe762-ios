@@ -21,12 +21,12 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [self initUI];
-    [self initQrCodeAPI:@"https://www.baidu.com"];
 }
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     
+    [self initMyQrCodeAPI];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -109,7 +109,6 @@
     }];
 }
 
-
 #pragma mark - 生成二维码API
 - (void) initQrCodeAPI:(NSString *) urlStr{
     //获取新的图形验证码
@@ -143,6 +142,37 @@
     }];
 }
 
+#pragma mark - 获取我的二维码API
+- (void) initMyQrCodeAPI{
+    NSString *url = [NSString stringWithFormat:@"%@", kMyQrCodeURL];
+    url = [self stitchingTokenAndPlatformForURL:url];
+    
+    [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+    [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
+    [self defaultRequestwithURL:url withParameters:nil withMethod:kGET withBlock:^(NSDictionary *dict, NSError *error) {
+        [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+        //判断有无数据
+        if ([[dict allKeys] containsObject:@"errorCode"]) {
+            NSString *errorCode = [NSString stringWithFormat:@"%@",dict[@"errorCode"]];
+            
+            if ([errorCode isEqualToString:@"0"]) {
+                NSDictionary *dataDict = dict[@"data"];
+                NSString *urlStr = [NSString stringWithFormat:@"%@", dataDict[@"url"]];
+                NSLog(@"%@", urlStr);
+                
+                urlStr = [self stitchingTokenAndPlatformForURL:urlStr];
+                
+                if (![urlStr isEqualToString:@""]) {
+                    [self initQrCodeAPI:urlStr];
+                }
+                
+            }else {
+                [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+                return;
+            }
+        }
+    }];
+}
 
 /*
 #pragma mark - Navigation

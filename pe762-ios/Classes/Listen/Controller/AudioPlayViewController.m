@@ -9,8 +9,9 @@
 #import "AudioPlayViewController.h"
 #import "FSAudioStream.h"
 #import "AudioPlayerTool.h"
-#import "ListViewController.h"
-#import "OpenVipViewController.h"
+#import "ListViewController.h"//音频列表
+#import "OpenVipViewController.h"//开通VIP
+#import "PopShareView.h"//分享弹窗
 
 @interface AudioPlayViewController () <NSURLSessionDownloadDelegate>
 {
@@ -803,6 +804,10 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
 #pragma mark - 分享
 - (void)shareBtnAction{
     NSLog(@"分享");
+    [[PopShareView alloc] createViewWithBlock:^(UIView *popView, NSString *typeID) {
+        
+        NSLog(@"typeID -> %@", typeID);
+    }];
 }
 
 #pragma mark - 喜欢

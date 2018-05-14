@@ -89,6 +89,8 @@
 //咨询详情页 Future
 #define kReadInfoDetailURL kBaseURL @"user/infor/detail"
 
+//分享
+
 /*************************设置***********************************/
 //关于我们 Future
 #define kAboutUsURL kBaseURL @"user/setting/aboutUs"
@@ -173,7 +175,7 @@
 //联系方式 ACE
 #define kServiceWayTwigURL kBaseURL @"user/setting/serviceWayTwig"
 
-//我的二维码 Future 有问题？
+//我的二维码 Future 
 #define kMyQrCodeURL kBaseURL @"user/userIndex/qrCode"
 
 /*************************代理***********************************/
