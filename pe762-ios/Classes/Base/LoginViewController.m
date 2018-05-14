@@ -88,7 +88,8 @@
     
     // 头像背景
     headImageView = [[UIImageView alloc] initWithFrame:CGRectMake(3 * kScreenWidthProportion, 3 * kScreenWidthProportion, 64 * kScreenWidthProportion, 64 * kScreenWidthProportion)];
-    headImageView.backgroundColor = kRedColor;
+    headImageView.image = [UIImage imageNamed:@"APP图标-120x120-2"];
+    //headImageView.backgroundColor = kRedColor;
     [headImageView setCornerRadius:32 * kScreenWidthProportion];
     [shadowBtn addSubview:headImageView];
     
@@ -258,6 +259,9 @@
 }
 
 - (void)loginBtnAction{
+    // 收起键盘
+    [[[UIApplication sharedApplication] keyWindow] endEditing:YES];
+    
     NSLog(@"登录");
     if (phoneTextField.text.length == 0) {
         [self showHUDTextOnly:@"请输入手机号码"];
@@ -332,6 +336,9 @@
 
 //获取短信验证码
 - (void)getVerifyCodeAPI {
+    // 收起键盘
+    [[[UIApplication sharedApplication] keyWindow] endEditing:YES];
+    
     if (phoneTextField.text.length == 0) {
         [self showHUDTextOnly:@"请输入手机号码"];
         return;

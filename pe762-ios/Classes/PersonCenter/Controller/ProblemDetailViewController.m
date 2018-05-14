@@ -188,7 +188,7 @@
         return ;
     }
     
-    NSString *url = [NSString stringWithFormat:@"%@", kNoticeDetailURL];
+    NSString *url = [NSString stringWithFormat:@"%@", kSysListDetailURL];
     url = [self stitchingTokenAndPlatformForURL:url];
     url = [NSString stringWithFormat:@"%@&id=%@", url, self.idStr];
     

@@ -48,6 +48,9 @@
     // 加载数据
     [self initData];
     
+    //
+    [self getBannerAPI];
+    
     // 未读消息
     [self initNoticeNotReadAPI];
 }
@@ -370,6 +373,39 @@
             if ([errorCode isEqualToString:@"0"]) {
                 NSDictionary *dataDic = dict[@"data"];
                 //处理数据
+            }else {
+                [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+                return;
+            }
+        }
+    }];
+}
+
+#pragma mark - 获取banner图
+- (void) getBannerAPI{
+    NSString *url = [NSString stringWithFormat:@"%@",kBannerURL];
+    url = [self stitchingTokenAndPlatformForURL:url];
+    
+    [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+    [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
+    [self defaultRequestwithURL:url withParameters:nil withMethod:kGET withBlock:^(NSDictionary *dict, NSError *error) {
+        [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+        //判断有无数据
+        if ([[dict allKeys] containsObject:@"errorCode"]) {
+            NSString *errorCode = [NSString stringWithFormat:@"%@",dict[@"errorCode"]];
+            
+            if ([errorCode isEqualToString:@"0"]) {
+                NSDictionary *dataDic = dict[@"data"];
+                //处理数据
+                NSArray *infoArray = dataDic[@"info"];
+                
+                NSMutableArray *pathArray = [[NSMutableArray alloc] init];
+                for (NSDictionary *temp in infoArray) {
+                    [pathArray addObject:temp[@"image_path"]];
+                }
+                
+                bannerScrollView.imageURLStringsGroup = pathArray;
+                
             }else {
                 [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
                 return;

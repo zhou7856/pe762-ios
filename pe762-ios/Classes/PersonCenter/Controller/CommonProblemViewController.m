@@ -14,6 +14,10 @@
 {
     UITableView *problemTabelView;//问题列表
     NSMutableArray *dataArray;
+    
+    //
+    NSInteger page;
+    NSInteger rows;
 }
 @end
 
@@ -25,13 +29,17 @@
     
     // 创建页面
     [self initUI];
+    [self updataAction];
+    
+    page = 1;
+    rows = 10;
 }
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     
     // 加在数据
-    
+    [self initSysActListAPI];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -68,7 +76,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 5;
+    return dataArray.count;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
@@ -94,7 +102,9 @@
     // 取消点击cell的效果
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
-    cell.contentLabel.text = @"取消点击cell的效果取消点击cell的效果取消点击cell的效果";
+    NSDictionary *dict = dataArray[indexPath.row];
+    
+    cell.contentLabel.text = [NSString stringWithFormat:@"%@", dict[@"title"]];
     
     return cell;
 }
@@ -115,8 +125,158 @@
     
 }
 
-#pragma mark - 按钮点击方法
+#pragma mark - 通知消息列表API
+- (void) initSysActListAPI{
+    page = 1;
+    
+    NSString *url = [NSString stringWithFormat:@"%@", kListURL];
+    url = [self stitchingTokenAndPlatformForURL:url];
+    url = [NSString stringWithFormat:@"%@&page=%ld&rows=%ld", url, page, rows];
+    
+    [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+    [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
+    [self defaultRequestwithURL:url withParameters:nil withMethod:kGET withBlock:^(NSDictionary *dict, NSError *error) {
+        [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+        //判断有无数据
+        if ([[dict allKeys] containsObject:@"errorCode"]) {
+            NSString *errorCode = [NSString stringWithFormat:@"%@",dict[@"errorCode"]];
+            
+            if ([errorCode isEqualToString:@"0"]) {
+                NSDictionary *dataDic = dict[@"data"];
+                
+                NSMutableArray *tempArray = [[NSMutableArray alloc] init];
+                
+                if ([dataDic[@"info"] isKindOfClass:[NSArray class]]) {
+                    if ([dataDic[@"info"] count] > 0) {
+                        page++;
+                        [tempArray addObjectsFromArray:dataDic[@"info"]];
+                    }
+                }
+                [dataArray addObjectsFromArray:tempArray];
+                
+                [problemTabelView reloadData];
+                
+            }else {
+                [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+                return;
+            }
+        }
+    }];
+}
 
+- (void) updataAction{
+    // 下拉刷新
+    problemTabelView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        
+        //重置page
+        page = 1;
+        
+        //拼接url
+        NSString *url = [NSString stringWithFormat:@"%@", kListURL];
+        url = [self stitchingTokenAndPlatformForURL:url];
+        url = [NSString stringWithFormat:@"%@&page=%ld&rows=%ld", url, page, rows];
+        
+        // 添加菊花
+        [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+        [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
+        
+        // 开始请求
+        [self defaultRequestwithURL:url withParameters:nil withMethod:kGET withBlock:^(NSDictionary *dict, NSError *error) {
+            // 隐藏菊花
+            [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+            [problemTabelView.mj_header endRefreshing];
+            
+            //判断有无数据
+            if ([[dict allKeys] containsObject:@"errorCode"]) {
+                NSString *errorCode = [NSString stringWithFormat:@"%@",dict[@"errorCode"]];
+                if ([errorCode isEqualToString:@"-1"]){
+                    //未登陆
+                    LoginViewController *loginVC = [[LoginViewController alloc] init];
+                    [self.navigationController pushViewController:loginVC animated:YES];
+                    return;
+                }
+                
+                if ([errorCode isEqualToString:@"0"]) {
+                    NSDictionary *dataDic = dict[@"data"];
+                    
+                    dataArray = [[NSMutableArray alloc] init];
+                    NSMutableArray *tempArray = [[NSMutableArray alloc] init];
+                    
+                    if ([dataDic[@"info"] isKindOfClass:[NSArray class]]) {
+                        if ([dataDic[@"info"] count] > 0) {
+                            page++;
+                            [tempArray addObjectsFromArray:dataDic[@"info"]];
+                        }
+                    }
+                    [dataArray addObjectsFromArray:tempArray];
+                    
+                    [problemTabelView reloadData];
+                    
+                } else {
+                    [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+                    return;
+                }
+            }
+        }];
+        
+    }];
+    
+    //上啦加载
+    problemTabelView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
+        if (page == 1) {
+            [problemTabelView.mj_footer endRefreshing];
+            return;
+        }
+        
+        //拼接url
+        NSString *url = [NSString stringWithFormat:@"%@", kListURL];
+        url = [self stitchingTokenAndPlatformForURL:url];
+        url = [NSString stringWithFormat:@"%@&page=%ld&rows=%ld", url, page, rows];
+        
+        // 添加菊花
+        [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+        [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
+        
+        // 开始请求
+        [self defaultRequestwithURL:url withParameters:nil withMethod:kGET withBlock:^(NSDictionary *dict, NSError *error) {
+            // 隐藏菊花
+            [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+            [problemTabelView.mj_footer endRefreshing];
+            
+            //判断有无数据
+            if ([[dict allKeys] containsObject:@"errorCode"]) {
+                NSString *errorCode = [NSString stringWithFormat:@"%@",dict[@"errorCode"]];
+                if ([errorCode isEqualToString:@"-1"]){
+                    //未登陆
+                    LoginViewController *loginVC = [[LoginViewController alloc] init];
+                    [self.navigationController pushViewController:loginVC animated:YES];
+                    return;
+                }
+                
+                if ([errorCode isEqualToString:@"0"]) {
+                    NSDictionary *dataDic = dict[@"data"];
+                    
+                    NSMutableArray *tempArray = [[NSMutableArray alloc] init];
+                    
+                    if ([dataDic[@"info"] isKindOfClass:[NSArray class]]) {
+                        if ([dataDic[@"info"] count] > 0) {
+                            page++;
+                            [tempArray addObjectsFromArray:dataDic[@"info"]];
+                        }
+                    }
+                    [dataArray addObjectsFromArray:tempArray];
+                    
+                    [problemTabelView reloadData];
+                    
+                } else {
+                    [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+                    return;
+                }
+            }
+        }];
+        
+    }];
+}
 
 /*
 #pragma mark - Navigation

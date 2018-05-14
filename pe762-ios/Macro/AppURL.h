@@ -27,7 +27,7 @@
 //返回的数据
 #define kData @"data"
 
-#define kBuild @"1.0.0.9"
+#define kBuild @"1.0.0.2"
 
 #define kVersion @"?platform=Ios&version=" kBuild
 
@@ -154,8 +154,10 @@
 
            /************系统文章***************/
 //列表
+#define kListURL kBaseURL @"user/sysAct/"
 
 //系统文章
+#define kSysListDetailURL kBaseURL @"user/sysAct/detail"
 
            /************个人信息***************/
 //更改头像 ACE
@@ -193,8 +195,7 @@
 
 /*************************广告***********************************/
 //获取广告图
-
-
+#define kBannerURL kBaseURL @"user/image/adv"
 
 
 /*************************4-27新增***********************************/
