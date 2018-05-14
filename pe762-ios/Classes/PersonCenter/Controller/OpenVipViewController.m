@@ -10,7 +10,16 @@
 #import "PayVipPopView.h"
 
 @interface OpenVipViewController ()
-
+{
+    // 用户名
+    UILabel *nameLabel;
+    // 开通费用金额
+    UILabel *vipMoneyLabel;
+    // 会员权益简介
+    UILabel *powerDetailLabel;
+    //
+    NSString *vipmoney;
+}
 @end
 
 @implementation OpenVipViewController
@@ -19,11 +28,14 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [self initUI];
+    
+    vipmoney = @"0.00";
 }
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     
+    [self initRechargeVipTwigAPI];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -43,7 +55,7 @@
     
 #pragma mark - 颈部 - 用户名、宣传语
     // 用户名
-    UILabel *nameLabel = [[UILabel alloc] init];
+    nameLabel = [[UILabel alloc] init];
     nameLabel.text = @"用户名";
     nameLabel.textColor = kBlackLabelColor;
     nameLabel.textAlignment = NSTextAlignmentCenter;
@@ -94,8 +106,8 @@
     UIImageView *vipImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Group 129"]];
     [oneContenView addSubview:vipImageView];
     
-    UILabel *vipMoneyLabel = [[UILabel alloc] init];
-    vipMoneyLabel.text = @"299元";
+    vipMoneyLabel = [[UILabel alloc] init];
+    //vipMoneyLabel.text = @"299元";
     vipMoneyLabel.textColor = kBlackLabelColor;
     vipMoneyLabel.textAlignment = NSTextAlignmentRight;
     vipMoneyLabel.font = FONT(13 * kFontProportion);
@@ -118,6 +130,12 @@
     UIView *twoContenView = [[UIView alloc] init];
     twoContenView.backgroundColor = RGB(234, 234, 234);
     [oneContenView addSubview:twoContenView];
+    
+    powerDetailLabel = [[UILabel alloc] init];
+    powerDetailLabel.textColor = kBlackLabelColor;
+    powerDetailLabel.textAlignment = NSTextAlignmentLeft;
+    powerDetailLabel.font = FONT(13 * kFontProportion);
+    [twoContenView addSubview:powerDetailLabel];
     
     [vipTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(oneContenView).offset(17 * kScreenHeightProportion);
@@ -160,6 +178,12 @@
     }];
     
     
+    [powerDetailLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(twoContenView).offset(18 * kScreenHeightProportion);
+        make.left.mas_equalTo(twoContenView).offset(20 * kScreenWidthProportion);
+        make.right.mas_equalTo(twoContenView).offset(-20 * kScreenWidthProportion);
+        make.bottom.mas_equalTo(twoContenView).offset(-18 * kScreenHeightProportion);
+    }];
     
     [openBtn addTarget:self action:@selector(openAction) forControlEvents:UIControlEventTouchUpInside];
 }
@@ -170,8 +194,49 @@
         
         NSLog(@"typeID -> %ld", payType);
         
-    } andMoney:@"299"];
+    } andMoney:vipmoney];
     
+}
+
+#pragma mark - 获取充值页面的数据API
+- (void) initRechargeVipTwigAPI{
+    NSString *url = [NSString stringWithFormat:@"%@", kRechargeVipTwigURL];
+    url = [self stitchingTokenAndPlatformForURL:url];
+    
+    [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+    [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
+    [self defaultRequestwithURL:url withParameters:nil withMethod:kGET withBlock:^(NSDictionary *dict, NSError *error) {
+        [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+        //判断有无数据
+        if ([[dict allKeys] containsObject:@"errorCode"]) {
+            NSString *errorCode = [NSString stringWithFormat:@"%@",dict[@"errorCode"]];
+            
+            if ([errorCode isEqualToString:@"0"]) {
+                NSDictionary *dataDict = dict[@"data"];
+                vipmoney = [NSString stringWithFormat:@"%@", dataDict[@"vipmoney"]];
+                NSString *vip_introduction = [NSString stringWithFormat:@"%@", dataDict[@"vip_introduction"]];
+                NSString *username = [NSString stringWithFormat:@"%@", dataDict[@"username"]];
+                
+                // 会员金额
+                vipMoneyLabel.text = [NSString stringWithFormat:@"%@元", vipmoney];
+                
+                // 会员名称
+                nameLabel.text = username;
+                
+                // 会员权益
+                NSAttributedString *detailsAttrStr = [[NSAttributedString alloc] initWithData:[vip_introduction dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute:NSHTMLTextDocumentType } documentAttributes:nil error:nil];
+                powerDetailLabel.attributedText = detailsAttrStr;
+                //[powerDetailLabel setLineSpacing:5.0f];
+                powerDetailLabel.numberOfLines = 0;
+                //powerDetailLabel.lineBreakMode = NSLineBreakByTruncatingTail;
+                
+                
+            }else {
+                [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+                return;
+            }
+        }
+    }];
 }
 
 /*

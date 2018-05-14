@@ -195,6 +195,10 @@
 //获取未读通知数 Future
 #define kNoticeReadNumURL kBaseURL @"user/notice/readNum"
 
+/*************************充值***********************************/
+//会员充值支付页面
+#define kRechargeVipTwigURL kBaseURL @"user/userIndex/rechargeVipTwig"
+
 /*************************广告***********************************/
 //获取广告图
 #define kBannerURL kBaseURL @"user/image/adv"
@@ -219,6 +223,7 @@
 /*************************5-2新增***********************************/
 //搜索页面 Future
 #define kAudioSearchURL kBaseURL @"user/audio/search"
+
 
 
 #endif /* AppURL_h */
