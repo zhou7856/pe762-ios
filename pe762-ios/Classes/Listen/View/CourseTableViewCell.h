@@ -15,6 +15,8 @@
 // 内容
 @property (nonatomic, strong) UICollectionView *courseCollectionView;
 // 上层页面
-@property (nonatomic , strong) UIViewController *superVC;
+@property (nonatomic, strong) UIViewController *superVC;
+// 数据
+@property (nonatomic, strong) NSMutableArray *dataArray;
 
 @end

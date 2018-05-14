@@ -122,7 +122,7 @@
 //    }
     
 //    [self playerInit:[NSURL URLWithString:@"http://sc1.111ttt.cn/2016/1/06/25/199251943186.mp3"]];
-    audioIDStr = @"1";
+    //audioIDStr = self.idStr;
      [self initData];
 }
 
@@ -391,7 +391,7 @@
     
     NSString *url = [NSString stringWithFormat:@"%@",kGetAudioDetailURL];
     url = [self stitchingTokenAndPlatformForURL:url];
-    url = [NSString stringWithFormat:@"%@&id=%@", url, audioIDStr];
+    url = [NSString stringWithFormat:@"%@&id=%@", url, self.idStr];
     
     [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
     [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
@@ -734,7 +734,7 @@ didFinishDownloadingToURL:(NSURL *)location
 - (void)addDownloadRecAPI {
     NSString *url = [NSString stringWithFormat:@"%@",kAddRDowneCordingURL];
     url = [self stitchingTokenAndPlatformForURL:url];
-    url = [NSString stringWithFormat:@"%@&id=%@", url, audioIDStr];
+    url = [NSString stringWithFormat:@"%@&id=%@", url, self.idStr];
 //    NSDictionary *parameter = @{
 //                                @"id":@"1"
 //                                };
@@ -817,7 +817,7 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
         NSString *url = [NSString stringWithFormat:@"%@",kLikeDeleteURL];
         url = [self stitchingTokenAndPlatformForURL:url];
         NSDictionary *parameter = @{
-                                    @"id":audioIDStr,
+                                    @"id":self.idStr,
                                     @"type":@"1"
                                     };
         [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
@@ -845,7 +845,7 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
         NSString *url = [NSString stringWithFormat:@"%@",kLikeAddURL];
         url = [self stitchingTokenAndPlatformForURL:url];
         NSDictionary *parameter = @{
-                                    @"id":audioIDStr,
+                                    @"id":self.idStr,
                                     @"type":@"1"
                                     };
         [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
@@ -883,7 +883,7 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
     if (!isNumberAdd) {
         NSString *url = [NSString stringWithFormat:@"%@",kPlayNumAddURL];
         url = [self stitchingTokenAndPlatformForURL:url];
-        url = [NSString stringWithFormat:@"%@&id=%@", url, audioIDStr];
+        url = [NSString stringWithFormat:@"%@&id=%@", url, self.idStr];
         
         [self defaultRequestwithURL:url withParameters:nil withMethod:kGET withBlock:^(NSDictionary *dict, NSError *error) {
             //判断有无数据
@@ -907,7 +907,7 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
 - (void)getAudioAddressAPI {
     NSString *url = [NSString stringWithFormat:@"%@",kAddPlayRecordingURL];
     url = [self stitchingTokenAndPlatformForURL:url];
-    url = [NSString stringWithFormat:@"%@&id=%@", url, audioIDStr];
+    url = [NSString stringWithFormat:@"%@&id=%@", url, self.idStr];
 
     [self defaultRequestwithURL:url withParameters:nil withMethod:kGET withBlock:^(NSDictionary *dict, NSError *error) {
         //判断有无数据
@@ -932,7 +932,7 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
         NSString *url = [NSString stringWithFormat:@"%@",kDeleteFavoriteURL];
         url = [self stitchingTokenAndPlatformForURL:url];
         NSDictionary *parameter = @{
-                                    @"id":audioIDStr
+                                    @"id":self.idStr
                                     };
         [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
         [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
@@ -971,7 +971,7 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
         NSString *url = [NSString stringWithFormat:@"%@",kAddFavoriteURL];
         url = [self stitchingTokenAndPlatformForURL:url];
         NSDictionary *parameter = @{
-                                    @"id":audioIDStr
+                                    @"id":self.idStr
                                     };
         [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
         [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];

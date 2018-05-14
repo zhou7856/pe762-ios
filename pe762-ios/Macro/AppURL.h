@@ -199,6 +199,9 @@
 //会员充值支付页面
 #define kRechargeVipTwigURL kBaseURL @"user/userIndex/rechargeVipTwig"
 
+//会员充值操作
+
+
 /*************************广告***********************************/
 //获取广告图
 #define kBannerURL kBaseURL @"user/image/adv"

@@ -26,6 +26,13 @@
     
     UITableView *courseTableView;//免费试听、热门课程
     UITableView *freshTableView;//最新
+    
+    //轮播图数组
+    NSMutableArray *bannerArray;
+    //免费试听，最热音频
+    NSMutableArray *freeHotArray;
+    //最新音频
+    NSMutableArray *newArray;
 }
 @end
 
@@ -49,7 +56,7 @@
     [self initData];
     
     //
-    [self getBannerAPI];
+    //[self getBannerAPI];
     
     // 未读消息
     [self initNoticeNotReadAPI];
@@ -213,7 +220,7 @@
     [courseTableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.mas_equalTo(mainView);
         make.top.mas_equalTo(intentImageView.mas_bottom);
-        make.height.mas_equalTo(2 * 242 * kScreenHeightProportion);
+        make.height.mas_equalTo(0);
     }];
     
 #pragma mark - 最新
@@ -242,7 +249,7 @@
     [freshTableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.mas_equalTo(mainView);
         make.top.mas_equalTo(titleLabel.mas_bottom);
-        make.height.mas_equalTo(3 * 120 * kScreenHeightProportion);
+        make.height.mas_equalTo(0);
     }];
     
     [mainView mas_updateConstraints:^(MASConstraintMaker *make) {
@@ -257,9 +264,9 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     if (tableView == courseTableView) {
-        return 2;
+        return freeHotArray.count;
     } else {
-        return 3;
+        return newArray.count;
     }
 }
 
@@ -294,7 +301,13 @@
         // 取消点击cell的效果
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
-        cell.titleLabel.text = @"热门课程";
+        // 获取cell数据
+        NSDictionary *dict = freeHotArray[indexPath.row];
+        
+        // 赋值
+        cell.titleLabel.text = [NSString stringWithFormat:@"%@", dict[@"title"]];
+        cell.dataArray = dict[@"data"];
+        [cell.courseCollectionView reloadData];
         
         return cell;
         
@@ -307,18 +320,26 @@
         // 取消点击cell的效果
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
-        cell.iconImageView.backgroundColor = kRedColor;
-        cell.classLabel.text = @"学习工作";
-        cell.nameLabel.text = @"《直面就业问题》";
-        cell.detailLabel.text = @"面对就业我们为你提供最专业的客观分析";
-        cell.hotLabel.text = @"75万";
-        cell.dateLabel.text = @"2018.02.17 上新";
+        // 获取数据
+        NSDictionary *dict = newArray[indexPath.row];
         
-        CGFloat height = [cell.detailLabel getTitleHeight:cell.detailLabel.text withWidth:146 * kScreenWidthProportion andFont:11];
-        cell.detailLabel.numberOfLines = 0;
+        NSString *avatarPathStr = [NSString stringWithFormat:@"%@%@", kHostURL ,dict[@"thumb"]];
+        cell.iconImageView.image = nil;
+        [cell.iconImageView setImageWithURL:[NSURL URLWithString:avatarPathStr]];
+        
+        cell.classLabel.text = [NSString stringWithFormat:@"%@", dict[@"classify_name"]];
+        cell.nameLabel.text = [NSString stringWithFormat:@"《%@》", dict[@"title"]];
+        cell.detailLabel.text = [NSString stringWithFormat:@"%@", dict[@"introductions"]];
+        cell.hotLabel.text = [NSString stringWithFormat:@"%@", dict[@"browse_num"]];
+        
+        NSString *creatTimeStr = [NSString stringWithFormat:@"%@", dict[@"created_at"]];
+        NSString *hmStr = [creatTimeStr substringWithRange:NSMakeRange(0, 10)];
+        cell.dateLabel.text = [NSString stringWithFormat:@"%@ 上新", hmStr];
+        
         [cell.detailLabel mas_updateConstraints:^(MASConstraintMaker *make) {
-            
-            make.height.mas_equalTo(height);
+            make.height.mas_equalTo(28 * kScreenHeightProportion);
+            cell.detailLabel.numberOfLines = 2;
+            cell.detailLabel.lineBreakMode = NSLineBreakByTruncatingTail;
         }];
         
         return cell;
@@ -330,16 +351,21 @@
     
     NSLog(@"你点击了第%ld行", indexPath.row);
     
-    // 跳转到资讯详情页面
-    [self showTabBarView:NO];
-    AudioPlayViewController *pushVC = [[AudioPlayViewController alloc] init];
-    //pushVC.idStr = [NSString stringWithFormat:@"%ld", indexPath.row];
-    [self.navigationController pushViewController:pushVC animated:YES];
+    if (tableView == freshTableView) {
+        NSDictionary *dict = newArray[indexPath.row];
+        NSString *idStr = [NSString stringWithFormat:@"%@", dict[@"id"]];
+        NSString *title = [NSString stringWithFormat:@"%@", dict[@"title"]];
+        // 跳转到资讯详情页面
+        [self showTabBarView:NO];
+        AudioPlayViewController *pushVC = [[AudioPlayViewController alloc] init];
+        pushVC.idStr = idStr;
+        pushVC.titleStr = title;
+        [self.navigationController pushViewController:pushVC animated:YES];
+    }
     
 }
 
-#pragma mark - 按钮点击方法
-
+#pragma mark - 音频首页数据API
 - (void)initData {
     NSString *url = [NSString stringWithFormat:@"%@",kHomeIndexURL];
     url = [self stitchingTokenAndPlatformForURL:url];
@@ -365,8 +391,65 @@
             }
             
             if ([errorCode isEqualToString:@"0"]) {
-                NSDictionary *dataDic = dict[@"data"];
+                NSDictionary *dataDict = dict[@"data"];
+                
                 //处理数据
+                // 轮播图
+                bannerArray = [[NSMutableArray alloc] init];
+                if ([dataDict[@"banners"] isKindOfClass:[NSArray class]] && [dataDict[@"banners"] count] > 0) {
+                    [bannerArray addObjectsFromArray:dataDict[@"banners"]];
+                    
+                    // 图片路径数组
+                    NSMutableArray *pathArray = [[NSMutableArray alloc] init];
+                    for (NSDictionary *temp in bannerArray) {
+                        [pathArray addObject:temp[@"image_path"]];
+                    }
+                    
+                    bannerScrollView.imageURLStringsGroup = pathArray;
+                    
+                }
+                
+                // 课程数据
+                NSDictionary *infoDict = dataDict[@"info"];
+                
+                freeHotArray = [[NSMutableArray alloc] init];
+                
+                // free
+                NSMutableDictionary *freeDict = [[NSMutableDictionary alloc] init];
+                [freeDict setObject:@"免费试听" forKey:@"title"];
+                
+                if ([infoDict[@"free"] isKindOfClass:[NSArray class]]) {
+                    [freeDict setObject:infoDict[@"free"] forKey:@"data"];
+                }
+                [freeHotArray addObject:freeDict];
+                
+                // hot
+                NSMutableDictionary *hotDict = [[NSMutableDictionary alloc] init];
+                [hotDict setObject:@"热门课程" forKey:@"title"];
+                
+                if ([infoDict[@"hot"] isKindOfClass:[NSArray class]]) {
+                    [hotDict setObject:infoDict[@"hot"] forKey:@"data"];
+                }
+                [freeHotArray addObject:hotDict];
+                
+                // new
+                newArray = [[NSMutableArray alloc] init];
+                if ([infoDict[@"new"] isKindOfClass:[NSArray class]] && [infoDict[@"new"] count] > 0) {
+                    [newArray addObjectsFromArray:infoDict[@"new"]];
+                }
+                
+                [courseTableView mas_updateConstraints:^(MASConstraintMaker *make) {
+                    make.height.mas_equalTo(freeHotArray.count * 242 * kScreenHeightProportion);
+                }];
+                
+                [freshTableView mas_updateConstraints:^(MASConstraintMaker *make) {
+                    make.height.mas_equalTo(newArray.count * 120 * kScreenHeightProportion);
+                }];
+                
+                // 刷新数据
+                [courseTableView reloadData];
+                [freshTableView reloadData];
+                
             }else {
                 [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
                 return;

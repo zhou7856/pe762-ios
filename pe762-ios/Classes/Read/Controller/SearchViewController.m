@@ -226,14 +226,17 @@
     cell.classLabel.text = [NSString stringWithFormat:@"%@", dict[@"classify_name"]];
     cell.nameLabel.text = [NSString stringWithFormat:@"《%@》", dict[@"title"]];
     cell.detailLabel.text = [NSString stringWithFormat:@"%@", dict[@"introductions"]];
-    cell.hotLabel.text = [NSString stringWithFormat:@"%@", dict[@"favorite_num"]];
+    cell.hotLabel.text = [NSString stringWithFormat:@"%@", dict[@"browse_num"]];
     
     NSString *creatTimeStr = [NSString stringWithFormat:@"%@", dict[@"created_at"]];
     NSString *hmStr = [creatTimeStr substringWithRange:NSMakeRange(0, 10)];
     cell.dateLabel.text = [NSString stringWithFormat:@"%@ 上新", hmStr];
     
-    cell.detailLabel.lineBreakMode = NSLineBreakByWordWrapping;
-    cell.detailLabel.numberOfLines = 0;
+    [cell.detailLabel mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.height.mas_equalTo(28 * kScreenHeightProportion);
+        cell.detailLabel.numberOfLines = 2;
+        cell.detailLabel.lineBreakMode = NSLineBreakByTruncatingTail;
+    }];
     
     return cell;
     

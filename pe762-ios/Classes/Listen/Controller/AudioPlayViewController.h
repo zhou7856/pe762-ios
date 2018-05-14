@@ -14,4 +14,6 @@
 
 @property (nonatomic, strong) NSString *fileNameStr;
 
+@property (nonatomic, copy) NSString *idStr;
+
 @end

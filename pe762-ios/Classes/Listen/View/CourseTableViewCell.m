@@ -66,7 +66,7 @@
 
 // 指定section中的collectionViewCell的个数
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return 6;
+    return self.dataArray.count;
 }
 
 // 配置section中的collectionViewCell的显示
@@ -75,9 +75,17 @@
     CourseCollectionViewCell *cell = (CourseCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"CourseCollectionViewCell" forIndexPath:indexPath];
     cell.backgroundColor = kWhiteColor;
     
-    cell.iconImageView.backgroundColor = kRedColor;
-    cell.nameLabel.text = @"《大学教育雄狮》";
-    cell.teacherLabel.text = @"熊丙奇";
+    // 获取cell数据
+    NSDictionary *dict = self.dataArray[indexPath.row];
+    
+    // 赋值
+    NSString *lecturer_avatar_path = [NSString stringWithFormat:@"%@", dict[@"lecturer_avatar_path"]];
+    cell.iconImageView.image = nil;
+    [cell.iconImageView setImageWithURL:[NSURL URLWithString:lecturer_avatar_path]];
+    
+    //cell.iconImageView.backgroundColor = kRedColor;
+    cell.nameLabel.text = [NSString stringWithFormat:@"《%@》", dict[@"title"]];
+    cell.teacherLabel.text = [NSString stringWithFormat:@"%@", dict[@"lecturer_name"]];
     
     return cell;
 }
@@ -85,10 +93,15 @@
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     NSLog(@"你点击了第%ld行", indexPath.row);
     
+    NSDictionary *dict = self.dataArray[indexPath.row];
+    
+    NSString *idStr = [NSString stringWithFormat:@"%@", dict[@"id"]];
+    
     // 跳转到资讯详情页面
 //    [self showTabBarView:NO];
     AudioPlayViewController *pushVC = [[AudioPlayViewController alloc] init];
-    //pushVC.idStr = [NSString stringWithFormat:@"%ld", indexPath.row];
+    pushVC.idStr = idStr;
+    pushVC.titleStr = [NSString stringWithFormat:@"%@", dict[@"title"]];
     [self.superVC.navigationController pushViewController:pushVC animated:YES];
 }
 
