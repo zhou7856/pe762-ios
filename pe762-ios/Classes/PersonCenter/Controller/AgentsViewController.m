@@ -92,7 +92,7 @@
     [clearingView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.mas_equalTo(self.view);
         make.top.mas_equalTo(kHeaderHeight + 70 * kScreenWidthProportion);
-        make.height.mas_equalTo(75 * kScreenWidthProportion);
+        make.height.mas_equalTo(30 * kScreenWidthProportion);
     }];
     
     {
@@ -165,6 +165,7 @@
         }];
     }
     
+    /*
     UIButton *applyBtn = [[UIButton alloc] initWithFrame:CGRectMake(15 * kScreenWidthProportion, 35 * kScreenWidthProportion, 290 * kScreenWidthProportion, 30 * kScreenWidthProportion)];
     [applyBtn setTitle:@"申请结算" forState:0];
     [applyBtn setTitleColor:kWhiteColor forState:0];
@@ -172,6 +173,7 @@
     applyBtn.backgroundColor = RGB(130, 34, 194);
     [applyBtn setCornerRadius:15 * kScreenWidthProportion];
     [clearingView addSubview:applyBtn];
+    */
     
     listTableView = [[UITableView alloc] init];
     listTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -279,7 +281,7 @@
     if (type == 1) {
         clearingView.hidden = NO;
         [clearingView mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.height.mas_equalTo(75 * kScreenWidthProportion);
+            make.height.mas_equalTo(30 * kScreenWidthProportion);
         }];
         
         typeStr = @"2";
