@@ -13,7 +13,7 @@
 #import "AudioPlayViewController.h"//音频播放
 #import "MessageViewController.h" //消息
 
-@interface ListenViewController ()<UITableViewDelegate,UITableViewDataSource>
+@interface ListenViewController ()<UITableViewDelegate,UITableViewDataSource,SDCycleScrollViewDelegate>
 {
     UIButton *majorBtn;//专业
     UILabel *typeLabel;//页面标题
@@ -116,6 +116,7 @@
     bannerScrollView.autoScrollTimeInterval = 2;
     bannerScrollView.currentPageDotColor = kDefaultColor;
     bannerScrollView.pageDotColor = kLineGrayColor;
+    bannerScrollView.delegate = self;
     bannerScrollView.titleLabelBackgroundColor = [UIColor clearColor];
     
     [SDCycleScrollView clearImagesCache];// 清除缓存。
@@ -255,6 +256,17 @@
     [mainView mas_updateConstraints:^(MASConstraintMaker *make) {
         make.bottom.mas_equalTo(freshTableView.mas_bottom);
     }];
+}
+
+#pragma mark - banner代理
+- (void)cycleScrollView:(SDCycleScrollView *)cycleScrollView didSelectItemAtIndex:(NSInteger)index{
+    NSDictionary *dict = bannerArray[index];
+    NSString *idStr = [NSString stringWithFormat:@"%@", dict[@"id"]];
+    // 跳转到资讯详情页面
+    [self showTabBarView:NO];
+    AudioPlayViewController *pushVC = [[AudioPlayViewController alloc] init];
+    pushVC.idStr = idStr;
+    [self.navigationController pushViewController:pushVC animated:YES];
 }
 
 #pragma mark - tableView代理
