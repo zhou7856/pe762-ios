@@ -398,7 +398,7 @@
 - (void)initData {
     NSString *url = [NSString stringWithFormat:@"%@",kHomeIndexURL];
     url = [self stitchingTokenAndPlatformForURL:url];
-   
+    NSLog(@"url-->>%@",url);
     [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
     [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
     [self defaultRequestwithURL:url withParameters:nil withMethod:kGET withBlock:^(NSDictionary *dict, NSError *error) {

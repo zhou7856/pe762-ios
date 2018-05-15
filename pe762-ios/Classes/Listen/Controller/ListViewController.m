@@ -355,10 +355,10 @@
     NSString *url = [NSString stringWithFormat:@"%@",kSearchAudioURL];
     url = [self stitchingTokenAndPlatformForURL:url];
     NSDictionary *parameter = @{
-                                @"type":@"",
+                                @"type":type,
                                 @"title":@"",
                                 @"course_classify_id":@"",
-                                @"course_id":type
+                                @"course_id":@""
                                 };
     [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
     [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];

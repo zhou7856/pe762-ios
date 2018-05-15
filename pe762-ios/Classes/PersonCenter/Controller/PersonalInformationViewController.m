@@ -125,6 +125,7 @@
             NSLog(@"昵称修改");
             ChangeInfoViewController *pushVC = [[ChangeInfoViewController alloc] init];
             pushVC.typeStr = @"1";
+            pushVC.userInfo= nicknameLabel.text;
             [self.navigationController pushViewController:pushVC animated:YES];
         }];
         [contentView addGestureRecognizer:tap];

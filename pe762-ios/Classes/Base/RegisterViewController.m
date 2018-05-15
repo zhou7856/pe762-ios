@@ -324,7 +324,7 @@
                 
                 
                 [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
-                
+                [self showHUDTextOnly:@"注册成功"];
                 NSMutableArray *viewArray = [[NSMutableArray alloc] initWithArray:self.navigationController.viewControllers];
                 [viewArray removeLastObject];
                 [viewArray removeLastObject];

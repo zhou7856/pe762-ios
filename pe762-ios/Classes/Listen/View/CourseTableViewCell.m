@@ -79,7 +79,7 @@
     NSDictionary *dict = self.dataArray[indexPath.row];
     
     // 赋值
-    NSString *lecturer_avatar_path = [NSString stringWithFormat:@"%@", dict[@"lecturer_avatar_path"]];
+    NSString *lecturer_avatar_path = [NSString stringWithFormat:@"%@%@", kHostURL, dict[@"thumb"]];
     cell.iconImageView.image = nil;
     [cell.iconImageView setImageWithURL:[NSURL URLWithString:lecturer_avatar_path]];
     
