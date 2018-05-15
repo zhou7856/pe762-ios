@@ -17,9 +17,15 @@
     UIButton *noticeBtn;//消息通知
     UILabel *redLabel;//未读消息数
     
-    UITableView *freshTableView;//最新
+    UILabel *professionLabel;//讲专业
+    UILabel *pressureLabel;//降学压
+    UILabel *intentLabel;//填志愿
     
+    // 音频列表
+    UITableView *freshTableView;
+    // 音频列表数据
     NSMutableArray *dataArray;
+    // 音频类型
     NSString *type;
 }
 @end
@@ -31,6 +37,7 @@
     // Do any additional setup after loading the view.
     [self initUI];
     type = self.typeStr;
+    [self changeTitleColor:type];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -113,7 +120,7 @@
         make.size.mas_equalTo(CGSizeMake(49 * kScreenWidthProportion, 49 * kScreenWidthProportion));
     }];
     
-    UILabel *professionLabel = [[UILabel alloc] init];
+    professionLabel = [[UILabel alloc] init];
     professionLabel.text = @"讲专业";
     professionLabel.font = FONT(10 * kFontProportion);
     professionLabel.textColor = kBlackLabelColor;
@@ -144,7 +151,7 @@
         make.size.mas_equalTo(CGSizeMake(49 * kScreenWidthProportion, 49 * kScreenWidthProportion));
     }];
     
-    UILabel *pressureLabel = [[UILabel alloc] init];
+    pressureLabel = [[UILabel alloc] init];
     pressureLabel.text = @"降学压";
     pressureLabel.font = FONT(10 * kFontProportion);
     pressureLabel.textColor = kBlackLabelColor;
@@ -175,7 +182,7 @@
         make.size.mas_equalTo(CGSizeMake(49 * kScreenWidthProportion, 49 * kScreenWidthProportion));
     }];
     
-    UILabel *intentLabel = [[UILabel alloc] init];
+    intentLabel = [[UILabel alloc] init];
     intentLabel.text = @"填志愿";
     intentLabel.font = FONT(10 * kFontProportion);
     intentLabel.textColor = kBlackLabelColor;
@@ -306,7 +313,33 @@
         NSLog(@"降学压");
         type = @"4";
     }
+    
+    [self changeTitleColor:type];
+    [self initData];
 }
+
+- (void) changeTitleColor:(NSString *)type{
+    if ([type isEqualToString:@"2"]) {
+        
+        professionLabel.textColor = RGB(130, 34, 194);
+        intentLabel.textColor = kBlackLabelColor;
+        pressureLabel.textColor = kBlackLabelColor;
+        
+    } else if ([type isEqualToString:@"3"]) {
+        
+        professionLabel.textColor = kBlackLabelColor;
+        intentLabel.textColor = RGB(130, 34, 194);
+        pressureLabel.textColor = kBlackLabelColor;
+        
+    } else if ([type isEqualToString:@"4"]) {
+        
+        professionLabel.textColor = kBlackLabelColor;
+        intentLabel.textColor = kBlackLabelColor;
+        pressureLabel.textColor = RGB(130, 34, 194);
+        
+    }
+}
+
 
 - (void)initData {
     NSString *url = [NSString stringWithFormat:@"%@",kSearchAudioURL];
