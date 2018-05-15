@@ -145,7 +145,7 @@
 }
 
 - (void)initNav {
-    _titleStr = @"演讲的力量";
+    _titleStr = self.titleStr;
     self.view.backgroundColor = kWhiteColor;
     [self createNavigationTitle:_titleStr];
     
@@ -342,7 +342,7 @@
         UILabel *titleLabel = [[UILabel alloc] init];
         [titleLabel setLabelWithTextColor:kBlackLabelColor textAlignment:NSTextAlignmentLeft font:15];
         titleLabel.text = @"讲师";
-        [contentView addSubview:titleLabel];
+        [introductionView addSubview:titleLabel];
         
         [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.mas_equalTo(15 * kScreenWidthProportion);
@@ -357,7 +357,7 @@
 
         nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(105 * kScreenWidthProportion, photoImageView.minY, 100 * kScreenWidthProportion, 20 * kScreenWidthProportion)];
         [nameLabel setLabelWithTextColor:kBlackLabelColor textAlignment:NSTextAlignmentLeft font:15];
-        nameLabel.text = @"熊丙奇";
+        nameLabel.text = @"";
         [introductionView addSubview:nameLabel];
 
         introductionLabel = [[UILabel alloc] init];
@@ -379,6 +379,8 @@
 
     }
     
+    //introductionView.backgroundColor = kRedColor;
+    
     [mainView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.mas_equalTo(introductionView.mas_bottom).offset(40 * kScreenWidthProportion);
     }];
@@ -386,8 +388,8 @@
 
 #pragma mark - 初始化数据
 - (void)initData {
-    contentLabel.text = @"如果说《TED演讲的秘密》和《像TED一样演讲》是开胃菜，那么《演讲的力量》就是期待已久的主菜！TED掌门人克里斯·安德森，这个将TED推向世界的人，亲自传授公开演讲的秘诀！15年TED演讲指导经验总结，比尔·盖茨、丹尼尔·卡尼曼等的演讲教练5大关键演讲技巧，4个一定要避免的陷阱，从1人到1000人的场合都适用，让你从紧张到爆到hold住全场！克里斯·安德森作为TED的掌门人和演讲教练，在15年来参与并指导了上千场TED演讲，与比尔·盖茨、诺奖得主丹尼尔·卡尼曼、超级畅销作家肯·罗宾逊等N多优秀演讲者深入合作，从而总结了第一手公开演讲实战经验。他把自己与TED团队的经验，都写进在了这本书——《演讲的力量》。在书中，克里斯·安德森分享了成功演讲的5大关键技巧——联系、叙述、说明、说服与揭露——教你如何发表一场具有影响力的简短演讲，展现最好的那一...";
-    introductionLabel.text = @"克里斯·安德森（ChrisAnderson）TED主席，TED首席教练。毕业于牛津大学，做过记者，创办过100多份成功的杂志刊物和网站。在2001年用非营利组织买下TED，自此开始全身心地经营TED，投身于TED的发展。他提出的TED口号“传播有价值的想法”在全球各地广为传播。目前他居于美国纽约。";
+//    contentLabel.text = @"如果说《TED演讲的秘密》和《像TED一样演讲》是开胃菜，那么《演讲的力量》就是期待已久的主菜！TED掌门人克里斯·安德森，这个将TED推向世界的人，亲自传授公开演讲的秘诀！15年TED演讲指导经验总结，比尔·盖茨、丹尼尔·卡尼曼等的演讲教练5大关键演讲技巧，4个一定要避免的陷阱，从1人到1000人的场合都适用，让你从紧张到爆到hold住全场！克里斯·安德森作为TED的掌门人和演讲教练，在15年来参与并指导了上千场TED演讲，与比尔·盖茨、诺奖得主丹尼尔·卡尼曼、超级畅销作家肯·罗宾逊等N多优秀演讲者深入合作，从而总结了第一手公开演讲实战经验。他把自己与TED团队的经验，都写进在了这本书——《演讲的力量》。在书中，克里斯·安德森分享了成功演讲的5大关键技巧——联系、叙述、说明、说服与揭露——教你如何发表一场具有影响力的简短演讲，展现最好的那一...";
+//    introductionLabel.text = @"克里斯·安德森（ChrisAnderson）TED主席，TED首席教练。毕业于牛津大学，做过记者，创办过100多份成功的杂志刊物和网站。在2001年用非营利组织买下TED，自此开始全身心地经营TED，投身于TED的发展。他提出的TED口号“传播有价值的想法”在全球各地广为传播。目前他居于美国纽约。";
     
     NSString *url = [NSString stringWithFormat:@"%@",kGetAudioDetailURL];
     url = [self stitchingTokenAndPlatformForURL:url];
@@ -434,6 +436,25 @@
                     isAgree = YES;
                     zanImageView.image = [UIImage imageNamed:@"icon_good_red"];
                 }
+                
+                // 课程简介
+                contentLabel.text = [NSString stringWithFormat:@"%@", infoDic[@"introductions"]];
+                
+                // 讲师简介
+                nameLabel.text = [NSString stringWithFormat:@"%@", infoDic[@"lecturer_name"]];
+                introductionLabel.text = [NSString stringWithFormat:@"%@", infoDic[@"lecturer_introductions"]];
+                NSString *lecturer_avatar_path = [NSString stringWithFormat:@"%@", infoDic[@"lecturer_avatar_path"]];
+                photoImageView.image = nil;
+                [photoImageView setImageWithURL:[NSURL URLWithString:lecturer_avatar_path]];
+                
+                [introductionView mas_updateConstraints:^(MASConstraintMaker *make) {
+                    if (photoImageView.maxY > introductionLabel.maxY) {
+                        make.bottom.mas_equalTo(photoImageView.mas_bottom);
+                    } else {
+                        make.bottom.mas_equalTo(introductionLabel.mas_bottom);
+                    }
+                }];
+                
                 
                 //处理数据
                 [self initPlay];

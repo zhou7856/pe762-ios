@@ -18,6 +18,9 @@
     UILabel *redLabel;//未读消息数
     
     UITableView *freshTableView;//最新
+    
+    NSMutableArray *dataArray;
+    NSString *type;
 }
 @end
 
@@ -27,6 +30,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [self initUI];
+    type = self.typeStr;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -217,7 +221,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 3;
+    return dataArray.count;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
@@ -244,18 +248,26 @@
     // 取消点击cell的效果
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
-    cell.iconImageView.backgroundColor = kRedColor;
-    cell.classLabel.text = @"学习工作";
-    cell.nameLabel.text = @"《直面就业问题》";
-    cell.detailLabel.text = @"面对就业我们为你提供最专业的客观分析";
-    cell.hotLabel.text = @"75万";
-    cell.dateLabel.text = @"2018.02.17 上新";
+    // 获取数据
+    NSDictionary *dict = dataArray[indexPath.row];
     
-    CGFloat height = [cell.detailLabel getTitleHeight:cell.detailLabel.text withWidth:146 * kScreenWidthProportion andFont:11];
-    cell.detailLabel.numberOfLines = 0;
+    NSString *avatarPathStr = [NSString stringWithFormat:@"%@%@", kHostURL ,dict[@"thumb"]];
+    cell.iconImageView.image = nil;
+    [cell.iconImageView setImageWithURL:[NSURL URLWithString:avatarPathStr]];
+    
+    cell.classLabel.text = [NSString stringWithFormat:@"%@", dict[@"classify_name"]];
+    cell.nameLabel.text = [NSString stringWithFormat:@"《%@》", dict[@"title"]];
+    cell.detailLabel.text = [NSString stringWithFormat:@"%@", dict[@"introductions"]];
+    cell.hotLabel.text = [NSString stringWithFormat:@"%@", dict[@"browse_num"]];
+    
+    NSString *creatTimeStr = [NSString stringWithFormat:@"%@", dict[@"created_at"]];
+    NSString *hmStr = [creatTimeStr substringWithRange:NSMakeRange(0, 10)];
+    cell.dateLabel.text = [NSString stringWithFormat:@"%@ 上新", hmStr];
+    
     [cell.detailLabel mas_updateConstraints:^(MASConstraintMaker *make) {
-        
-        make.height.mas_equalTo(height);
+        make.height.mas_equalTo(28 * kScreenHeightProportion);
+        cell.detailLabel.numberOfLines = 2;
+        cell.detailLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     }];
     
     return cell;
@@ -267,10 +279,15 @@
     NSLog(@"你点击了第%ld行", indexPath.row);
     
     // 跳转到资讯详情页面
-    //    [self showTabBarView:NO];
-        AudioPlayViewController *pushVC = [[AudioPlayViewController alloc] init];
-    //    pushVC.idStr = [NSString stringWithFormat:@"%ld", indexPath.row];
-        [self.navigationController pushViewController:pushVC animated:YES];
+    NSDictionary *dict = dataArray[indexPath.row];
+    NSString *idStr = [NSString stringWithFormat:@"%@", dict[@"id"]];
+    NSString *title = [NSString stringWithFormat:@"%@", dict[@"title"]];
+    // 跳转到资讯详情页面
+    [self showTabBarView:NO];
+    AudioPlayViewController *pushVC = [[AudioPlayViewController alloc] init];
+    pushVC.idStr = idStr;
+    pushVC.titleStr = title;
+    [self.navigationController pushViewController:pushVC animated:YES];
     
 }
 
@@ -279,24 +296,26 @@
     if (temp.tag == 1) {
         
         NSLog(@"讲专业");
-        
+        type = @"2";
     } else if (temp.tag == 2) {
         
         NSLog(@"填志愿");
-        
+        type = @"3";
     } else {
         
         NSLog(@"降学压");
+        type = @"4";
     }
 }
 
 - (void)initData {
-    NSString *url = [NSString stringWithFormat:@"%@",kGetAudioListURL];
+    NSString *url = [NSString stringWithFormat:@"%@",kSearchAudioURL];
     url = [self stitchingTokenAndPlatformForURL:url];
     NSDictionary *parameter = @{
-                                @"type":@"5",
-                                @"title":@"哲学A",
-                                @"course_classify_id":@"1"
+                                @"type":@"",
+                                @"title":@"",
+                                @"course_classify_id":@"",
+                                @"course_id":type
                                 };
     [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
     [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
@@ -321,6 +340,13 @@
             if ([errorCode isEqualToString:@"0"]) {
                 NSDictionary *dataDic = dict[@"data"];
                 //处理数据
+                dataArray = [[NSMutableArray alloc] init];
+                if ([dataDic[@"info"] isKindOfClass:[NSArray class]] || [dataDic[@"info"] count] > 0) {
+                    [dataArray addObjectsFromArray:dataDic[@"info"]];
+                }
+                
+                [freshTableView reloadData];
+                
             }else {
                 [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
                 return;
@@ -346,6 +372,8 @@
                 
                 if (![[self stringForNull:num] isEqualToString:@""]) {
                     redLabel.hidden = NO;
+                } else {
+                    redLabel.hidden = YES;
                 }
                 
             }else {

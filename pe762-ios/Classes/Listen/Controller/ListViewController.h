@@ -10,4 +10,7 @@
 
 @interface ListViewController : UIViewController
 
+//音频type
+@property (nonatomic, copy) NSString *typeStr;
+
 @end

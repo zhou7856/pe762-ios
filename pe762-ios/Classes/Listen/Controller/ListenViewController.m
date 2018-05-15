@@ -171,7 +171,9 @@
     UITapGestureRecognizer *proTap = [[UITapGestureRecognizer alloc] init];
     [[proTap rac_gestureSignal] subscribeNext:^(id x) {
         [self showTabBarView:NO];
-        [self.navigationController pushViewController:[ListViewController new] animated:YES];
+        ListViewController *pushVC = [[ListViewController alloc] init];
+        pushVC.typeStr = @"2";
+        [self.navigationController pushViewController:pushVC animated:YES];
     }];
     [professionImageView addGestureRecognizer:proTap];
     
@@ -187,7 +189,9 @@
     UITapGestureRecognizer *preTap = [[UITapGestureRecognizer alloc] init];
     [[preTap rac_gestureSignal] subscribeNext:^(id x) {
         [self showTabBarView:NO];
-        [self.navigationController pushViewController:[ListViewController new] animated:YES];
+        ListViewController *pushVC = [[ListViewController alloc] init];
+        pushVC.typeStr = @"4";
+        [self.navigationController pushViewController:pushVC animated:YES];
     }];
     [pressureImageView addGestureRecognizer:preTap];
     
@@ -203,7 +207,9 @@
     UITapGestureRecognizer *intTap = [[UITapGestureRecognizer alloc] init];
     [[intTap rac_gestureSignal] subscribeNext:^(id x) {
         [self showTabBarView:NO];
-        [self.navigationController pushViewController:[ListViewController new] animated:YES];
+        ListViewController *pushVC = [[ListViewController alloc] init];
+        pushVC.typeStr = @"3";
+        [self.navigationController pushViewController:pushVC animated:YES];
     }];
     [intentImageView addGestureRecognizer:intTap];
     
