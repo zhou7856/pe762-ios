@@ -8,7 +8,7 @@
 
 #import "MajorChoiceViewController.h"
 #import "MajorTableViewCell.h"
-#import "ListViewController.h"
+#import "MajorSearchListViewController.h"
 
 @interface MajorChoiceViewController ()<UITableViewDelegate,UITableViewDataSource>
 {
@@ -31,13 +31,13 @@
     
     dataArray = [[NSMutableArray alloc] init];
     
+    [self getProfessionListAPI];
     [self initUI];
 }
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     
-    [self getProfessionListAPI];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -229,8 +229,8 @@
             NSLog(@"%@ %ld", titleLabel.text, titleLabel.tag);
             
             NSString *idStr = [NSString stringWithFormat:@"%ld", titleLabel.tag - kTagStart];
-            ListViewController *pushVC = [[ListViewController alloc] init];
-            pushVC.typeStr = @"";
+            MajorSearchListViewController *pushVC = [[MajorSearchListViewController alloc] init];
+            pushVC.titleStr = titleLabel.text;
             pushVC.idStr = idStr;
             [self.navigationController pushViewController:pushVC animated:YES];
             

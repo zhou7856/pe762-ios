@@ -9,6 +9,7 @@
 #import "ListViewController.h"
 #import "NewestTableViewCell.h"//上新-列表
 #import "AudioPlayViewController.h"//音频播放
+#import "SearchViewController.h"
 
 @interface ListViewController ()<UITableViewDelegate,UITableViewDataSource>
 {
@@ -109,6 +110,15 @@
         make.right.mas_equalTo(searchLabel.mas_left).offset(-6 * kScreenWidthProportion);
         make.size.mas_equalTo(CGSizeMake(12 * kScreenWidthProportion, 12 * kScreenWidthProportion));
     }];
+    
+    searchView.userInteractionEnabled = YES;
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] init];
+    [[tap rac_gestureSignal] subscribeNext:^(id x) {
+        [self showTabBarView:NO];
+        SearchViewController *pushVC = [[SearchViewController alloc] init];
+        [self.navigationController pushViewController:pushVC animated:YES];
+    }];
+    [searchView addGestureRecognizer:tap];
     
 #pragma mark - 讲专业、降学压、填志愿 74
     // 讲专业
@@ -347,7 +357,7 @@
     NSDictionary *parameter = @{
                                 @"type":@"",
                                 @"title":@"",
-                                @"course_classify_id":self.idStr,
+                                @"course_classify_id":@"",
                                 @"course_id":type
                                 };
     [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];

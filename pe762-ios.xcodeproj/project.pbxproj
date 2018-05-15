@@ -130,6 +130,7 @@
 		D8D61CB9208E490500663054 /* ContactServiceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D61CB8208E490500663054 /* ContactServiceViewController.m */; };
 		D8E75AC420AA7D3A008DA479 /* MajorChoiceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E75AC320AA7D3A008DA479 /* MajorChoiceViewController.m */; };
 		D8E75AC720AA891B008DA479 /* MajorTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E75AC620AA891B008DA479 /* MajorTableViewCell.m */; };
+		D8E75ACA20AAC835008DA479 /* MajorSearchListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E75AC920AAC835008DA479 /* MajorSearchListViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -357,6 +358,8 @@
 		D8E75AC320AA7D3A008DA479 /* MajorChoiceViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MajorChoiceViewController.m; sourceTree = "<group>"; };
 		D8E75AC520AA891B008DA479 /* MajorTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MajorTableViewCell.h; sourceTree = "<group>"; };
 		D8E75AC620AA891B008DA479 /* MajorTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MajorTableViewCell.m; sourceTree = "<group>"; };
+		D8E75AC820AAC835008DA479 /* MajorSearchListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MajorSearchListViewController.h; sourceTree = "<group>"; };
+		D8E75AC920AAC835008DA479 /* MajorSearchListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MajorSearchListViewController.m; sourceTree = "<group>"; };
 		F1C1CD50920F591E08B8475E /* libPods-pe762-ios.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-pe762-ios.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -813,6 +816,8 @@
 				D82DAF25208F5A52004A7EFE /* ListViewController.m */,
 				D8E75AC220AA7D3A008DA479 /* MajorChoiceViewController.h */,
 				D8E75AC320AA7D3A008DA479 /* MajorChoiceViewController.m */,
+				D8E75AC820AAC835008DA479 /* MajorSearchListViewController.h */,
+				D8E75AC920AAC835008DA479 /* MajorSearchListViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1102,6 +1107,7 @@
 				342E35A5208EE1D300819855 /* AgentsViewController.m in Sources */,
 				342E35AB208F0CF900819855 /* ClearingTableViewCell.m in Sources */,
 				34076D642089E855005324AB /* MSSBrowseRemindView.m in Sources */,
+				D8E75ACA20AAC835008DA479 /* MajorSearchListViewController.m in Sources */,
 				34FB77AD208E007E008E53AA /* MyRecordingViewController.m in Sources */,
 				D876794520A42522000D1D70 /* OpenVipViewController.m in Sources */,
 				34076D6D2089E855005324AB /* LDImagePicker.m in Sources */,

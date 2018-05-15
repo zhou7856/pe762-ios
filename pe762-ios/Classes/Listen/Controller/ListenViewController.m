@@ -12,6 +12,7 @@
 #import "ListViewController.h"//列表页面
 #import "AudioPlayViewController.h"//音频播放
 #import "MessageViewController.h" //消息
+#import "SearchViewController.h"
 
 @interface ListenViewController ()<UITableViewDelegate,UITableViewDataSource,SDCycleScrollViewDelegate>
 {
@@ -157,6 +158,16 @@
         make.right.mas_equalTo(searchLabel.mas_left).offset(-6 * kScreenWidthProportion);
         make.size.mas_equalTo(CGSizeMake(12 * kScreenWidthProportion, 12 * kScreenWidthProportion));
     }];
+    
+    
+    searchView.userInteractionEnabled = YES;
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] init];
+    [[tap rac_gestureSignal] subscribeNext:^(id x) {
+        [self showTabBarView:NO];
+        SearchViewController *pushVC = [[SearchViewController alloc] init];
+        [self.navigationController pushViewController:pushVC animated:YES];
+    }];
+    [searchView addGestureRecognizer:tap];
     
 #pragma mark - 讲专业、降学压、填志愿
     UIImageView *professionImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Group 117"]];
