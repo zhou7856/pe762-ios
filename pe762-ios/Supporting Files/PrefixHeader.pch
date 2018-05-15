@@ -22,7 +22,7 @@
 #import "IQToolbar.h"
 #import "IQUIView+Hierarchy.h"
 #import "IQUIView+IQKeyboardToolbar.h"
-#import "IQUIWindow+Hierarchy.h"
+//#import "IQUIWindow+Hierarchy.h"
 #endif
 
 #import "Masonry.h"

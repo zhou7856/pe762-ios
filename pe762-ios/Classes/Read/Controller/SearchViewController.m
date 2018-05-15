@@ -140,9 +140,9 @@
         make.right.mas_equalTo(historyView).offset(-15 * kScreenWidthProportion);
     }];
     
-#pragma mark - 热门搜素
+#pragma mark - 热门搜索
     UILabel *hotTypeLabel = [[UILabel alloc] init];
-    hotTypeLabel.text = @"热门搜素";
+    hotTypeLabel.text = @"热门搜索";
     hotTypeLabel.font = FONT(13 * kFontProportion);
     hotTypeLabel.textColor = kBlackLabelColor;
     hotTypeLabel.textAlignment = NSTextAlignmentLeft;
