@@ -347,7 +347,7 @@
     NSDictionary *parameter = @{
                                 @"type":@"",
                                 @"title":@"",
-                                @"course_classify_id":@"",
+                                @"course_classify_id":self.idStr,
                                 @"course_id":type
                                 };
     [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];

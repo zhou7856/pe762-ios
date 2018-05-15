@@ -13,4 +13,7 @@
 //音频type
 @property (nonatomic, copy) NSString *typeStr;
 
+//
+@property (nonatomic, copy) NSString *idStr;
+
 @end

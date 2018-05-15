@@ -129,6 +129,7 @@
 		D8D61CB6208E488700663054 /* FeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D61CB5208E488700663054 /* FeedbackViewController.m */; };
 		D8D61CB9208E490500663054 /* ContactServiceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D61CB8208E490500663054 /* ContactServiceViewController.m */; };
 		D8E75AC420AA7D3A008DA479 /* MajorChoiceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E75AC320AA7D3A008DA479 /* MajorChoiceViewController.m */; };
+		D8E75AC720AA891B008DA479 /* MajorTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E75AC620AA891B008DA479 /* MajorTableViewCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -354,6 +355,8 @@
 		D8D61CB8208E490500663054 /* ContactServiceViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ContactServiceViewController.m; sourceTree = "<group>"; };
 		D8E75AC220AA7D3A008DA479 /* MajorChoiceViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MajorChoiceViewController.h; sourceTree = "<group>"; };
 		D8E75AC320AA7D3A008DA479 /* MajorChoiceViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MajorChoiceViewController.m; sourceTree = "<group>"; };
+		D8E75AC520AA891B008DA479 /* MajorTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MajorTableViewCell.h; sourceTree = "<group>"; };
+		D8E75AC620AA891B008DA479 /* MajorTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MajorTableViewCell.m; sourceTree = "<group>"; };
 		F1C1CD50920F591E08B8475E /* libPods-pe762-ios.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-pe762-ios.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -897,6 +900,8 @@
 				D82DAF1F208F1827004A7EFE /* CourseTableViewCell.m */,
 				D82DAF21208F442C004A7EFE /* NewestTableViewCell.h */,
 				D82DAF22208F442C004A7EFE /* NewestTableViewCell.m */,
+				D8E75AC520AA891B008DA479 /* MajorTableViewCell.h */,
+				D8E75AC620AA891B008DA479 /* MajorTableViewCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1108,6 +1113,7 @@
 				34076D6A2089E855005324AB /* AFAppDotNetAPIClient.m in Sources */,
 				34076D852089E855005324AB /* TZPhotoPickerController.m in Sources */,
 				34076D832089E855005324AB /* TZImageManager.m in Sources */,
+				D8E75AC720AA891B008DA479 /* MajorTableViewCell.m in Sources */,
 				D82DAF19208EE595004A7EFE /* AgentApplyViewController.m in Sources */,
 				34076D562089E855005324AB /* GYChangeTextView.m in Sources */,
 				D857B19820A1CC1B003FF35A /* MyQrCodeViewController.m in Sources */,
