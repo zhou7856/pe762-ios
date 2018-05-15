@@ -128,6 +128,7 @@
 		D8D61CB3208E42C600663054 /* ProblemDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D61CB2208E42C600663054 /* ProblemDetailViewController.m */; };
 		D8D61CB6208E488700663054 /* FeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D61CB5208E488700663054 /* FeedbackViewController.m */; };
 		D8D61CB9208E490500663054 /* ContactServiceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D61CB8208E490500663054 /* ContactServiceViewController.m */; };
+		D8E75AC420AA7D3A008DA479 /* MajorChoiceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E75AC320AA7D3A008DA479 /* MajorChoiceViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -351,6 +352,8 @@
 		D8D61CB5208E488700663054 /* FeedbackViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FeedbackViewController.m; sourceTree = "<group>"; };
 		D8D61CB7208E490500663054 /* ContactServiceViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ContactServiceViewController.h; sourceTree = "<group>"; };
 		D8D61CB8208E490500663054 /* ContactServiceViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ContactServiceViewController.m; sourceTree = "<group>"; };
+		D8E75AC220AA7D3A008DA479 /* MajorChoiceViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MajorChoiceViewController.h; sourceTree = "<group>"; };
+		D8E75AC320AA7D3A008DA479 /* MajorChoiceViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MajorChoiceViewController.m; sourceTree = "<group>"; };
 		F1C1CD50920F591E08B8475E /* libPods-pe762-ios.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-pe762-ios.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -805,6 +808,8 @@
 				34FB77A9208DC84E008E53AA /* AudioPlayViewController.m */,
 				D82DAF24208F5A52004A7EFE /* ListViewController.h */,
 				D82DAF25208F5A52004A7EFE /* ListViewController.m */,
+				D8E75AC220AA7D3A008DA479 /* MajorChoiceViewController.h */,
+				D8E75AC320AA7D3A008DA479 /* MajorChoiceViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1067,6 +1072,7 @@
 				34FB77A4208DBF88008E53AA /* ChangeInfoViewController.m in Sources */,
 				34076D622089E855005324AB /* MSSBrowseModel.m in Sources */,
 				34076D652089E855005324AB /* MSSBrowseZoomScrollView.m in Sources */,
+				D8E75AC420AA7D3A008DA479 /* MajorChoiceViewController.m in Sources */,
 				D82DAF26208F5A52004A7EFE /* ListViewController.m in Sources */,
 				D82DAF13208ED0DF004A7EFE /* MessageViewController.m in Sources */,
 				34076D692089E855005324AB /* Identify.m in Sources */,

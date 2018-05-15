@@ -7,7 +7,8 @@
 //  导航分类
 
 #import "UIViewController+Navigation.h"
-#import "MessageViewController.h"
+#import "MessageViewController.h"//消息
+#import "MajorChoiceViewController.h"//专业
 
 @implementation UIViewController (Navigation)
 
@@ -106,6 +107,8 @@
         
         [view bringSubviewToFront:leftBtn];
         
+        [leftBtn addTarget:self action:@selector(majorBtnAction) forControlEvents:UIControlEventTouchUpInside];
+        
         UIView *lineView = [UIView viewWithFrame:CGRectMake(0, 43, kScreenWidth, 1) backgroundColor:RGB(223, 223, 223)];
         [view addSubview:lineView];
     } else {
@@ -161,6 +164,8 @@
         
         [view bringSubviewToFront:leftBtn];
         
+        [leftBtn addTarget:self action:@selector(majorBtnAction) forControlEvents:UIControlEventTouchUpInside];
+        
         UIView *lineView = [UIView viewWithFrame:CGRectMake(0, 43, kScreenWidth, 1) backgroundColor:RGB(223, 223, 223)];
         [view addSubview:lineView];
         
@@ -186,6 +191,7 @@
         [view addSubview:label];
         
         leftBtn.frame = CGRectMake(0, 0, 100 * kScreenWidthProportion, view.height);
+        [leftBtn addTarget:self action:@selector(majorBtnAction) forControlEvents:UIControlEventTouchUpInside];
         [view addSubview:leftBtn];
         
         //        typeLabel = [[UILabel alloc] init];
@@ -250,6 +256,7 @@
         [view addSubview:label];
         
         leftBtn.frame = CGRectMake(0, 0, 100 * kScreenWidthProportion, view.height);
+        [leftBtn addTarget:self action:@selector(majorBtnAction) forControlEvents:UIControlEventTouchUpInside];
         [view addSubview:leftBtn];
         
 //        typeLabel = [[UILabel alloc] init];
@@ -353,7 +360,8 @@
 - (void) majorBtnAction{
     NSLog(@"专业");
     [self showTabBarView:NO];
-    //[self.navigationController pushViewController:[MessageViewController new] animated:YES];
+    MajorChoiceViewController *pushVC = [[MajorChoiceViewController alloc] init];
+    [self.navigationController pushViewController:pushVC animated:YES];
 }
 
 @end
