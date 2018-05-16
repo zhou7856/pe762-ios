@@ -181,7 +181,10 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    [self.navigationController pushViewController:[AudioPlayViewController new] animated:YES];
+    AudioPlayViewController *apVC=[[AudioPlayViewController alloc] init];
+    apVC.idStr=[listDataArray objectAtIndex:indexPath.row][@"audio_id"];
+    apVC.titleStr=[listDataArray objectAtIndex:indexPath.row][@"audio_title"];
+    [self.navigationController pushViewController:apVC animated:YES];
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
