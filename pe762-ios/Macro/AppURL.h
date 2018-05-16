@@ -89,7 +89,7 @@
 //咨询详情页 Future
 #define kReadInfoDetailURL kBaseURL @"user/infor/detail"
 
-//分享
+//分享 Future
 #define kReadShareURL kBaseURL @"user/infor/shareInfomation"
 
 /*************************设置***********************************/
@@ -115,7 +115,8 @@
 //增加音频播放量 ACE
 #define kPlayNumAddURL kBaseURL @"user/audio/playNumAdd"
 
-//分享音频
+//分享音频 Future
+#define kShareAudioURL kBaseURL @"user/audio/shareAudio"
 
 //音频列表 Future
 #define kSearchAudioURL kBaseURL @"user/audio/"

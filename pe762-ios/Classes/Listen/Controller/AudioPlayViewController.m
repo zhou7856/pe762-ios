@@ -12,6 +12,7 @@
 #import "ListViewController.h"//音频列表
 #import "OpenVipViewController.h"//开通VIP
 #import "PopShareView.h"//分享弹窗
+#import <ShareSDK/ShareSDK.h>//ShareSDK
 
 @interface AudioPlayViewController () <NSURLSessionDownloadDelegate>
 {
@@ -73,6 +74,9 @@
     
     //音频ID
     NSString *audioIDStr;
+    
+    //分享类型
+    NSString *shareType;
 }
 
 @property (nonatomic, strong) FSAudioStream *audioStream;
@@ -874,6 +878,9 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
     NSLog(@"分享");
     [[PopShareView alloc] createViewWithBlock:^(UIView *popView, NSString *typeID) {
         
+        shareType = typeID;
+        [self initShareAudioAPI];
+        
         NSLog(@"typeID -> %@", typeID);
     }];
 }
@@ -1074,6 +1081,267 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
         }];
     }
 }
+
+
+
+#pragma mark - 分享API
+- (void) initShareAudioAPI{
+    
+    NSString *url = [NSString stringWithFormat:@"%@", kShareAudioURL];
+    url = [self stitchingTokenAndPlatformForURL:url];
+    url = [NSString stringWithFormat:@"%@&id=%@", url, self.idStr];
+    
+    [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+    [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
+    [self defaultRequestwithURL:url withParameters:nil withMethod:kGET withBlock:^(NSDictionary *dict, NSError *error) {
+        [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+        //判断有无数据
+        if ([[dict allKeys] containsObject:@"errorCode"]) {
+            NSString *errorCode = [NSString stringWithFormat:@"%@",dict[@"errorCode"]];
+            
+            if ([errorCode isEqualToString:@"0"]) {
+                NSDictionary *dataDict = dict[@"data"];
+                NSDictionary *infoDict = dataDict[@"info"];
+                
+                //1 微博 2 微信 3 QQ 4 朋友圈
+                if ([shareType isEqualToString:@"1"]) {
+                    [self shareToWeibo:infoDict];
+                    
+                } else if ([shareType isEqualToString:@"2"]) {
+                    [self shareToWeiChat:infoDict];
+                    
+                } else if ([shareType isEqualToString:@"3"]) {
+                    //[self showHUDTextOnly:@"功能未开放"];
+                    [self shareToQQ:infoDict];
+                    
+                } else if ([shareType isEqualToString:@"4"]) {
+                    //[self showHUDTextOnly:@"功能未开放"];
+                    [self shareToWechatTimeline:infoDict];
+                    
+                } else if ([shareType isEqualToString:@"5"]) {
+                    //[self showHUDTextOnly:@"功能未开放"];
+                    //[self shareToQZone:infoDict];
+                }
+                
+            }else {
+                [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+                return;
+            }
+        }
+    }];
+}
+
+#pragma mark - 分享
+- (void)shareToQQ:(NSDictionary *)dataDic {
+    //创建分享参数
+    NSMutableDictionary *shareParams = [NSMutableDictionary dictionary];
+    
+    NSString *thumbPath = [NSString stringWithFormat:@"%@%@", kHostURL, dataDic[@"thumb"]];
+    NSString *cachePath = [NSString stringWithFormat:@"%@%@", kHostURL, dataDic[@"cache_path"]];
+    //NSString *introductions = [NSString stringWithFormat:@"%@%@", dataDic[@"introductions"], cachePath];
+    
+    //[shareParams SSDKSetupQQParamsByText:dataDic[@"introductions"] title:dataDic[@"title"] url:[NSURL URLWithString:dataDic[@"url"]] thumbImage:dataDic[@"avath_path"] image:dataDic[@"avath_path"] type:SSDKContentTypeAuto forPlatformSubType:SSDKPlatformSubTypeQQFriend];
+    
+    [shareParams SSDKSetupQQParamsByText:dataDic[@"introductions"] title:dataDic[@"title"] url:[NSURL URLWithString:cachePath] audioFlashURL:[NSURL URLWithString:cachePath] videoFlashURL:nil thumbImage:thumbPath images:thumbPath type:SSDKContentTypeAudio forPlatformSubType:SSDKPlatformSubTypeQQFriend];
+    
+    //进行分享
+    [ShareSDK share:SSDKPlatformSubTypeQQFriend
+         parameters:shareParams
+     onStateChanged:^(SSDKResponseState state, NSDictionary *userData, SSDKContentEntity *contentEntity, NSError *error) {
+         switch (state) {
+             case SSDKResponseStateSuccess:
+             {
+                 [self showHUDTextOnly:@"分享成功"];
+                 break;
+             }
+             case SSDKResponseStateFail:
+             {
+                 /*
+                  UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"分享失败"
+                  message:[NSString stringWithFormat:@"%@",error]
+                  delegate:nil
+                  cancelButtonTitle:@"OK"
+                  otherButtonTitles:nil, nil];
+                  [alert show];
+                  */
+                 [self showHUDTextOnly:@"分享失败"];
+                 break;
+             }
+             case SSDKResponseStateCancel:
+             {
+                 [self showHUDTextOnly:@"分享取消"];
+                 break;
+             }
+             default:
+                 break;
+         }
+     }];
+}
+
+- (void)shareToQZone:(NSDictionary *)dataDic {
+    NSMutableDictionary *shareParams = [NSMutableDictionary dictionary];
+    
+    //NSString *logo = [NSString stringWithFormat:@"%@%@", kHostURL, dataDic[@"logo"]];
+    //NSURL *logoUrl = [NSURL URLWithString:logo];
+    
+    [shareParams SSDKSetupQQParamsByText:dataDic[@"introductions"] title:dataDic[@"title"] url:[NSURL URLWithString:dataDic[@"url"]] thumbImage:dataDic[@"avath_path"] image:dataDic[@"avath_path"] type:SSDKContentTypeAuto forPlatformSubType:SSDKPlatformSubTypeQZone];
+    
+    //进行分享
+    [ShareSDK share:SSDKPlatformSubTypeQZone
+         parameters:shareParams
+     onStateChanged:^(SSDKResponseState state, NSDictionary *userData, SSDKContentEntity *contentEntity, NSError *error) {
+         switch (state) {
+             case SSDKResponseStateSuccess:
+             {
+                 //[self shareSucess];
+                 [self showHUDTextOnly:@"分享成功"];
+                 break;
+             }
+             case SSDKResponseStateFail:
+             {
+                 [self showHUDTextOnly:@"分享失败"];
+                 break;
+             }
+             case SSDKResponseStateCancel:
+             {
+                 [self showHUDTextOnly:@"分享取消"];
+                 break;
+             }
+             default:
+                 break;
+         }
+     }];
+}
+
+//微信
+- (void)shareToWeiChat:(NSDictionary *)dataDic {
+    NSMutableDictionary *shareParams = [NSMutableDictionary dictionary];
+    
+    NSString *thumbPath = [NSString stringWithFormat:@"%@%@", kHostURL, dataDic[@"thumb"]];
+    NSString *cachePath = [NSString stringWithFormat:@"%@%@", kHostURL, dataDic[@"cache_path"]];
+    //NSString *introductions = [NSString stringWithFormat:@"%@%@", dataDic[@"introductions"], cachePath];
+    
+    [shareParams SSDKSetupWeChatParamsByText:dataDic[@"introductions"] title:dataDic[@"title"] url:[NSURL URLWithString:cachePath] thumbImage:thumbPath image:thumbPath musicFileURL:[NSURL URLWithString:cachePath] extInfo:nil fileData:nil emoticonData:nil type:SSDKContentTypeAudio forPlatformSubType:SSDKPlatformSubTypeWechatSession];
+    
+    //进行分享
+    [ShareSDK share:SSDKPlatformSubTypeWechatSession
+         parameters:shareParams
+     onStateChanged:^(SSDKResponseState state, NSDictionary *userData, SSDKContentEntity *contentEntity, NSError *error) {
+         switch (state) {
+             case SSDKResponseStateSuccess:
+             {
+                 
+                 [self showHUDTextOnly:@"分享成功"];
+                 break;
+             }
+             case SSDKResponseStateFail:
+             {
+                 
+                 [self showHUDTextOnly:@"分享失败"];
+                 break;
+             }
+             case SSDKResponseStateCancel:
+             {
+                 
+                 
+             }
+             default:
+                 break;
+         }
+     }];
+}
+
+//微信朋友圈
+- (void)shareToWechatTimeline:(NSDictionary *)dataDic {
+    NSMutableDictionary *shareParams = [NSMutableDictionary dictionary];
+    
+    NSString *thumbPath = [NSString stringWithFormat:@"%@%@", kHostURL, dataDic[@"thumb"]];
+    NSString *cachePath = [NSString stringWithFormat:@"%@%@", kHostURL, dataDic[@"cache_path"]];
+    //NSString *introductions = [NSString stringWithFormat:@"%@%@", dataDic[@"introductions"], cachePath];
+    
+    [shareParams SSDKSetupWeChatParamsByText:dataDic[@"introductions"] title:dataDic[@"title"] url:[NSURL URLWithString:cachePath] thumbImage:thumbPath image:thumbPath musicFileURL:[NSURL URLWithString:cachePath] extInfo:nil fileData:nil emoticonData:nil type:SSDKContentTypeAudio forPlatformSubType:SSDKPlatformSubTypeWechatTimeline];
+    
+    //进行分享
+    [ShareSDK share:SSDKPlatformSubTypeWechatTimeline
+         parameters:shareParams
+     onStateChanged:^(SSDKResponseState state, NSDictionary *userData, SSDKContentEntity *contentEntity, NSError *error) {
+         switch (state) {
+             case SSDKResponseStateSuccess:
+             {
+                 //[self shareSucess];
+                 [self showHUDTextOnly:@"分享成功"];
+                 break;
+             }
+             case SSDKResponseStateFail:
+             {
+                 [self showHUDTextOnly:@"分享失败"];
+                 break;
+             }
+             case SSDKResponseStateCancel:
+             {
+                 [self showHUDTextOnly:@"分享取消"];
+                 break;
+             }
+             default:
+                 break;
+         }
+     }];
+}
+
+//微博
+- (void)shareToWeibo:(NSDictionary *)dataDic {
+    NSMutableDictionary *shareParams = [NSMutableDictionary dictionary];
+    
+    NSString *thumbPath = [NSString stringWithFormat:@"%@%@", kHostURL, dataDic[@"thumb"]];
+    NSString *cachePath = [NSString stringWithFormat:@"%@%@", kHostURL, dataDic[@"cache_path"]];
+    NSString *introductions = [NSString stringWithFormat:@"%@%@", dataDic[@"introductions"], cachePath];
+    
+    [shareParams SSDKSetupSinaWeiboShareParamsByText:introductions title:dataDic[@"title"] images:thumbPath video:nil url:[NSURL URLWithString:cachePath] latitude:0 longitude:0 objectID:nil isShareToStory:NO type:SSDKContentTypeAuto];
+    
+    //进行分享
+    //要显示菜单的视图, iPad版中此参数作为弹出菜单的参照视图，只有传这个才可以弹出我们的分享菜单，可以传分享的按钮对象或者自己创建小的view 对象，iPhone可以传nil不会影响
+    [ShareSDK share:SSDKPlatformTypeSinaWeibo parameters:shareParams onStateChanged:^(SSDKResponseState state, NSDictionary *userData, SSDKContentEntity *contentEntity, NSError *error) {
+        switch (state) {
+            case SSDKResponseStateSuccess:
+            {
+                /*
+                 UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"分享成功"
+                 message:nil
+                 delegate:nil
+                 cancelButtonTitle:@"确定"
+                 otherButtonTitles:nil];
+                 [alertView show];
+                 */
+                [self showHUDTextOnly:@"分享成功"];
+                break;
+            }
+            case SSDKResponseStateFail:
+            {
+                /*
+                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"分享失败"
+                 message:[NSString stringWithFormat:@"%@",error]
+                 delegate:nil
+                 cancelButtonTitle:@"OK"
+                 otherButtonTitles:nil, nil];
+                 [alert show];
+                 */
+                [self showHUDTextOnly:@"分享失败"];
+                break;
+            }
+            case SSDKResponseStateCancel:
+            {
+                [self showHUDTextOnly:@"分享取消"];
+                break;
+            }
+            default:
+                break;
+        }
+    }];
+    
+}
+
+
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

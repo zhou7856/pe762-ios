@@ -7,7 +7,7 @@
 //  资讯详情页面
 
 #import "InformationDetailViewController.h"
-#import "PopShareView.h"
+#import "PopShareView.h"//分享弹窗
 #import <ShareSDK/ShareSDK.h>//ShareSDK
 
 @interface InformationDetailViewController ()<WKUIDelegate>
@@ -528,7 +528,9 @@
 - (void)shareToWeibo:(NSDictionary *)dataDic {
     NSMutableDictionary *shareParams = [NSMutableDictionary dictionary];
     
-    [shareParams SSDKSetupSinaWeiboShareParamsByText:dataDic[@"introductions"] title:dataDic[@"title"] images:dataDic[@"avath_path"] video:nil url:[NSURL URLWithString:dataDic[@"url"]] latitude:0 longitude:0 objectID:nil isShareToStory:NO type:SSDKContentTypeAuto];
+    NSString *introductions = [NSString stringWithFormat:@"%@%@", dataDic[@"introductions"], dataDic[@"url"]];
+    
+    [shareParams SSDKSetupSinaWeiboShareParamsByText:introductions title:dataDic[@"title"] images:dataDic[@"avath_path"] video:nil url:[NSURL URLWithString:dataDic[@"url"]] latitude:0 longitude:0 objectID:nil isShareToStory:NO type:SSDKContentTypeAuto];
     
     //进行分享
     //要显示菜单的视图, iPad版中此参数作为弹出菜单的参照视图，只有传这个才可以弹出我们的分享菜单，可以传分享的按钮对象或者自己创建小的view 对象，iPhone可以传nil不会影响
