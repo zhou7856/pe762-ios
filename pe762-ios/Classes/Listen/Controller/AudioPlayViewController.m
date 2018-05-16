@@ -18,6 +18,9 @@
     UIScrollView *scrollView;
     UIView *mainView;
     
+    UIButton *leftBtn;//专业
+    UILabel *typeLabel;//页面标题
+    
     UIButton *shareBtn;//分享
     UIButton *likeBtn; //喜欢
     
@@ -149,7 +152,14 @@
 - (void)initNav {
     _titleStr = self.titleStr;
     self.view.backgroundColor = kWhiteColor;
-    [self createNavigationTitle:_titleStr];
+    //[self createNavigationTitle:_titleStr];
+    
+    leftBtn = [[UIButton alloc] init];
+    typeLabel = [[UILabel alloc] init];
+    [self createNavigationFeatureAndTitle:_titleStr withLeftBtn:leftBtn andTypeTitle:typeLabel];
+    
+    typeLabel.text = @"专业";
+    
     
     [self createEndBackView];
     
