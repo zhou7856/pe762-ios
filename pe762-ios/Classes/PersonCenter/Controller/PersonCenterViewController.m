@@ -551,10 +551,6 @@
                     NSInteger temp = [num integerValue];
                     redLabel.hidden = (temp == 0) ? YES : NO;
                 }
-                
-            }else {
-                [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
-                return;
             }
         }
     }];
