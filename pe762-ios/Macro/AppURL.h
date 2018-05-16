@@ -90,6 +90,7 @@
 #define kReadInfoDetailURL kBaseURL @"user/infor/detail"
 
 //分享
+#define kReadShareURL kBaseURL @"user/infor/shareInfomation"
 
 /*************************设置***********************************/
 //关于我们 Future
