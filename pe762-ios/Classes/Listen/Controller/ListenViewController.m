@@ -34,6 +34,9 @@
     NSMutableArray *freeHotArray;
     //最新音频
     NSMutableArray *newArray;
+    //分页
+    NSInteger page;
+    NSInteger rows;
 }
 @end
 
@@ -45,6 +48,11 @@
     [self initUI];
     //获得专业
     //[self getProfessionListAPI];
+    
+    //
+    page = 1;
+    rows = 10;
+    [self updataAction];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -398,7 +406,14 @@
 - (void)initData {
     NSString *url = [NSString stringWithFormat:@"%@",kHomeIndexURL];
     url = [self stitchingTokenAndPlatformForURL:url];
+    url = [NSString stringWithFormat:@"%@&page=%ld&rows=%ld", url, page, rows];
     NSLog(@"url-->>%@",url);
+    newArray=[[NSMutableArray alloc] init];
+    [self requestPageHomeIndexURL:url newArrayInfo:newArray];
+}
+#pragma mark -请求页面信息URL
+-(void)requestPageHomeIndexURL:(NSString *)url newArrayInfo:(NSMutableArray *)newArray{
+    //newArray=[[NSMutableArray alloc] init];
     [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
     [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
     [self defaultRequestwithURL:url withParameters:nil withMethod:kGET withBlock:^(NSDictionary *dict, NSError *error) {
@@ -462,7 +477,7 @@
                 [freeHotArray addObject:hotDict];
                 
                 // new
-                newArray = [[NSMutableArray alloc] init];
+              //  newArray = [[NSMutableArray alloc] init];
                 if ([infoDict[@"new"] isKindOfClass:[NSArray class]] && [infoDict[@"new"] count] > 0) {
                     [newArray addObjectsFromArray:infoDict[@"new"]];
                 }
@@ -486,7 +501,6 @@
         }
     }];
 }
-
 #pragma mark - 获取banner图
 - (void) getBannerAPI{
     NSString *url = [NSString stringWithFormat:@"%@",kBannerURL];
@@ -546,6 +560,41 @@
         }
     }];
 }
+- (void) updataAction{
+    // 下拉刷新
+    mainScrollView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        
+        //重置page
+        page = 1;
+        
+        //拼接url
+        NSString *url = [NSString stringWithFormat:@"%@",kHomeIndexURL];
+        url = [self stitchingTokenAndPlatformForURL:url];
+        url = [NSString stringWithFormat:@"%@&page=%ld&rows=%ld", url, page, rows];
+        newArray=[[NSMutableArray alloc] init];
+        [self requestPageHomeIndexURL:url newArrayInfo:newArray];
+        [mainScrollView.mj_header endRefreshing];
+    }];
+    
+    //上啦加载
+    mainScrollView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
+        
+//        if (page == 1) {
+//            [mainScrollView.mj_footer endRefreshing];
+//            return;
+//        }
+        //需要请求的page++
+        page++;
+        //拼接url
+        NSString *url = [NSString stringWithFormat:@"%@",kHomeIndexURL];
+        url = [self stitchingTokenAndPlatformForURL:url];
+        url = [NSString stringWithFormat:@"%@&page=%ld&rows=%ld", url, page, rows];
+        [self requestPageHomeIndexURL:url newArrayInfo:newArray];
+        [mainScrollView.mj_footer endRefreshing];
+        
+    }];
+}
+
 
 /*
 #pragma mark - Navigation
