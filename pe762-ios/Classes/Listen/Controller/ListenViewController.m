@@ -536,7 +536,8 @@
                 NSString *num = [NSString stringWithFormat:@"%@", dataDic[@"num"]];
                 
                 if (![[self stringForNull:num] isEqualToString:@""]) {
-                    redLabel.hidden = NO;
+                    NSInteger temp = [num integerValue];
+                    redLabel.hidden = (temp == 0) ? YES : NO;
                 }
                 
             }else {

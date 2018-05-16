@@ -414,9 +414,8 @@
                 NSString *num = [NSString stringWithFormat:@"%@", dataDic[@"num"]];
                 
                 if (![[self stringForNull:num] isEqualToString:@""]) {
-                    redLabel.hidden = NO;
-                } else {
-                    redLabel.hidden = YES;
+                    NSInteger temp = [num integerValue];
+                    redLabel.hidden = (temp == 0) ? YES : NO;
                 }
                 
             }else {
