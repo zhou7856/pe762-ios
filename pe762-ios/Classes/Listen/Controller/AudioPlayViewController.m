@@ -23,6 +23,8 @@
     
     UIView *vipView;
     UIView *playBackView; //播放页面的图文背景
+    UIImageView *playBackImage;//播放页面的图文背景图片
+    UIImageView *handleImage; //
     UILabel *nowPlayTime; //当前播放时间
     UILabel *allPlayTime; //总时间
 //    UISlider *timeSlider; //时间
@@ -192,8 +194,10 @@
 }
 
 - (void)initUI {
+    
     vipView = [UIView viewWithFrame:CGRectMake(0, 0, kScreenWidth, 40 * kScreenWidthProportion) backgroundColor:kBlackColor];
-    [mainView addSubview:vipView];
+    vipView.alpha=0.5;
+    
     
     UIImageView *iconImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"diamond_2_"]];
     [vipView addSubview:iconImageView];
@@ -221,8 +225,31 @@
     [vipView addGestureRecognizer:tap];
     
     playBackView = [[UIView alloc] initWithFrame:CGRectMake(0, vipView.maxY, kScreenWidth, 285 * kScreenWidthProportion)];
-//    playBackView.backgroundColor = [UIColor greenColor];
+    //playBackView.backgroundColor = [UIColor greenColor];
     [mainView addSubview:playBackView];
+    
+    playBackImage=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"round_bg"]];
+    [playBackView addSubview:playBackImage];
+    [playBackImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.mas_equalTo(playBackView);
+        make.centerY.mas_equalTo(playBackView);
+        make.size.mas_equalTo(CGSizeMake(250 * kScreenWidthProportion, 250 * kScreenWidthProportion));
+    }];
+    
+    //音频把手
+    handleImage=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"group23"]];
+    [mainView addSubview:handleImage];
+  //  handleImage.layer.position=CGPointMake(0.5, 0);
+  //  handleImage.layer.anchorPoint = CGPointMake( 0, 1);
+    [handleImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.mas_equalTo(mainView);
+        make.top.mas_equalTo(mainView);
+        make.size.mas_equalTo(CGSizeMake(88*kScreenWidthProportion, 121*kScreenWidthProportion));
+    }];
+    
+    //添加vipView到界面里
+    [mainView addSubview:vipView];
+    
     
     UIView *playTypeView = [[UIView alloc] initWithFrame:CGRectMake(0, playBackView.maxY, kScreenWidth, 100 * kScreenWidthProportion)];
 //    playTypeView.backgroundColor = kRedColor;
@@ -562,16 +589,21 @@
 
 #pragma mark 播放暂停按钮
 - (void)playAction{
+    //播放情况
     //先将未到时间执行前的任务取消
     [[self class] cancelPreviousPerformRequestsWithTarget:self selector:@selector(theplayAction)object:nil];
+    
     [self performSelector:@selector(theplayAction)withObject:nil afterDelay:0.2f]; // 0.2不可改
 }
 - (void)theplayAction{
+    //暂停情况CGAffineTransformRotate
+   // [handleImage setTransform:CGAffineTransformMakeRotation(-M_PI/7)];
     if (self.play == YES) {
         [self.audioStream pause];
         [self.playerTimer setFireDate:[NSDate distantFuture]];
         playImageView.image = [UIImage imageNamed:@"Group 147"];
-//        [_playButton setImage:[UIImage imageNamed:@"bofang"] forState:UIControlStateNormal];
+       // [handleImage setTransform:CGAffineTransformMakeRotation(0)];
+        //        [_playButton setImage:[UIImage imageNamed:@"bofang"] forState:UIControlStateNormal];
     }else{
         //如果是vip权限问题导致的暂停，则文件从头播放
         if (self.playbackTime >= kGeneralUserPlayTime) {
@@ -583,12 +615,14 @@
             
             [self.playerTimer setFireDate:[NSDate distantPast]];
             playImageView.image = [UIImage imageNamed:@"Group 130"];
-            
+        //    [handleImage setTransform:CGAffineTransformMakeRotation(-M_PI/7)];
+        
         } else {
             //否则正常播放
             [self.audioStream pause];
             [self.playerTimer setFireDate:[NSDate distantPast]];
             playImageView.image = [UIImage imageNamed:@"Group 130"];
+        //    [handleImage setTransform:CGAffineTransformMakeRotation(-M_PI/7)];
         }
     
 //        [_playButton setImage:[UIImage imageNamed:@"audioPause"] forState:UIControlStateNormal];
