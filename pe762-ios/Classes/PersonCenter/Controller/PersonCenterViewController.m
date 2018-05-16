@@ -364,6 +364,7 @@
 - (void)initData {
     NSString *url = [NSString stringWithFormat:@"%@",kGetUserInfoURL];
     url = [self stitchingTokenAndPlatformForURL:url];
+    NSLog(@"url-->%@",url);
     
     [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
     [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
@@ -393,6 +394,8 @@
                 //是否是代理
                 isProxy = [NSString stringWithFormat:@"%@", serverDic[@"is_proxy"]];
                 [[NSUserDefaults standardUserDefaults] setObject:isProxy forKey:@"is_proxy"];
+                //代理商状态码
+                audit_status=[NSString stringWithFormat:@"%@",serverDic[@"audit_status"]];
                 //是否vip
                 isVip = [NSString stringWithFormat:@"%@", serverDic[@"is_vip"]];
                 [[NSUserDefaults standardUserDefaults] setObject:isVip forKey:@"is_vip"];
@@ -436,7 +439,10 @@
             }
         }
     }
-    
+    //如果不是代理商，状态吗为1 --》该同学正在审核中
+    if([isProxy isEqualToString:@"0"]&&[audit_status isEqualToString:@"1"]){
+        reviewView.hidden=NO;
+    }
     if ([isProxy isEqualToString:@"1"]) {
         proxyFeaturesView.hidden = NO;
     } else {
