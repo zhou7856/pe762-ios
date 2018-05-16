@@ -319,7 +319,14 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     if (tableView == courseTableView) {
-        return 242 * kScreenHeightProportion;
+        
+        NSDictionary *dict = freeHotArray[indexPath.row];
+        if ([dict[@"data"] count] > 0) {
+            return 242 * kScreenHeightProportion;
+        } else {
+            return 70 * kScreenHeightProportion;
+        }
+        
     } else {
         return 120 * kScreenHeightProportion;
     }
@@ -343,8 +350,25 @@
         
         // 赋值
         cell.titleLabel.text = [NSString stringWithFormat:@"%@", dict[@"title"]];
-        cell.dataArray = dict[@"data"];
-        [cell.courseCollectionView reloadData];
+        
+        if ([dict[@"data"] count] > 0) {
+            cell.courseCollectionView.hidden = NO;
+            [cell.courseCollectionView mas_updateConstraints:^(MASConstraintMaker *make) {
+                make.height.mas_equalTo(172 * kScreenHeightProportion);
+            }];
+            
+            cell.dataArray = dict[@"data"];
+            [cell.courseCollectionView reloadData];
+        } else {
+            cell.courseCollectionView.hidden = YES;
+            [cell.courseCollectionView mas_updateConstraints:^(MASConstraintMaker *make) {
+                make.height.mas_equalTo(0);
+            }];
+            
+            cell.dataArray = dict[@"data"];
+            [cell.courseCollectionView reloadData];
+        }
+        
         
         return cell;
         
@@ -483,7 +507,12 @@
                 }
                 
                 [courseTableView mas_updateConstraints:^(MASConstraintMaker *make) {
-                    make.height.mas_equalTo(freeHotArray.count * 242 * kScreenHeightProportion);
+
+                    float freeHeight = ([freeDict count] > 1) ? 242 * kScreenHeightProportion : 70 * kScreenHeightProportion;
+                    float hotHeight = ([hotDict count] > 1) ? 242 * kScreenHeightProportion : 70 * kScreenHeightProportion;
+                    float height = freeHeight + hotHeight;
+
+                    make.height.mas_equalTo(height);
                 }];
                 
                 [freshTableView mas_updateConstraints:^(MASConstraintMaker *make) {

@@ -54,12 +54,16 @@
     self.navigationController.navigationBarHidden = YES;
     self.view.backgroundColor = kBackgroundWhiteColor;
     
+    /*
     leftBtn = [[UIButton alloc] init];
     typeLabel = [[UILabel alloc] init];
     [self createNavigationFeatureAndTitle:@"读资讯" withLeftBtn:leftBtn andTypeTitle:typeLabel];
     
     [leftBtn addTarget:self action:@selector(leftBtnAction) forControlEvents:UIControlEventTouchUpInside];
     typeLabel.text = @"专业";
+    */
+    
+    [self createNavigationTitle:@"读资讯"];
     
 #pragma mark - 底部返回、分享、喜欢
     // 返回
