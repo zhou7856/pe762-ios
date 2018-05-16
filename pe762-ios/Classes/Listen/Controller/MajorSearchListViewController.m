@@ -161,11 +161,18 @@
 - (void)initData {
     NSString *url = [NSString stringWithFormat:@"%@",kSearchAudioURL];
     url = [self stitchingTokenAndPlatformForURL:url];
+    
+    self.typeStr = (self.typeStr.length <= 0) ? @"" : self.typeStr;
+    self.titleStr = (self.titleStr.length <= 0) ? @"" : self.titleStr;
+    self.courseIdStr = (self.courseIdStr.length <= 0) ? @"" : self.courseIdStr;
+    self.idStr = (self.idStr.length <= 0) ? @"" : self.idStr;
+    
+    
     NSDictionary *parameter = @{
-                                @"type":@"",
-                                @"title":@"",
+                                @"type":self.typeStr,
+                                @"title":self.titleStr,
                                 @"course_classify_id":self.idStr,
-                                @"course_id":@""
+                                @"course_id":self.courseIdStr
                                 };
     [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
     [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];

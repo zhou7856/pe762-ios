@@ -9,6 +9,7 @@
 #import "SearchViewController.h"
 #import "NewestTableViewCell.h"//上新-列表
 #import "AudioPlayViewController.h"//音频播放
+#import "MajorSearchListViewController.h"
 
 @interface SearchViewController ()<UITableViewDelegate,UITableViewDataSource>
 {
@@ -302,8 +303,12 @@
             if (![titleLabel.text isEqualToString:@""]) {
                 searchTextField.text = titleLabel.text;
                 keyWordStr = titleLabel.text;
+                
+                MajorSearchListViewController *pushVC = [[MajorSearchListViewController alloc] init];
+                pushVC.titleStr = keyWordStr;
+                [self.navigationController pushViewController:pushVC animated:YES];
                 //keyWordStr = [titleLabel.text stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-                [self searchAudioAPI];
+                //[self searchAudioAPI];
             }
             
         }];
@@ -327,8 +332,12 @@
     if (![searchTextField.text isEqualToString:@""]) {
         // 开始请求
         keyWordStr = searchTextField.text;
+        MajorSearchListViewController *pushVC = [[MajorSearchListViewController alloc] init];
+        pushVC.titleStr = keyWordStr;
+        [self.navigationController pushViewController:pushVC animated:YES];
+        
 //        keyWordStr = [searchTextField.text stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-        [self searchAudioAPI];
+        //[self searchAudioAPI];
         
         
     } else {

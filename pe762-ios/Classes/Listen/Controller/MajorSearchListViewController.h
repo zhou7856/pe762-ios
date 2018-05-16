@@ -10,9 +10,13 @@
 
 @interface MajorSearchListViewController : UIViewController
 
-// 专业id
+// 专业id course_classify_id
 @property (nonatomic, copy) NSString *idStr;
 // 专业title
 @property (nonatomic, copy) NSString *titleStr;
+// course_id
+@property (nonatomic, copy) NSString *courseIdStr;
+// type
+@property (nonatomic, copy) NSString *typeStr;
 
 @end
