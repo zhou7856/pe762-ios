@@ -750,6 +750,7 @@
 #pragma mark - 音频下载
 - (void)downLoadBtnAction {
     if (isDownLoad) {
+        [self showHUDTextOnly:@"已下载在本地，无需下载"];
         return;
     }
     
@@ -763,6 +764,7 @@
     NSURLSessionDownloadTask *downloadTask = [session downloadTaskWithURL:url];
     
     // 开始任务
+    [self showHUDTextOnly:@"开始下载"];
     [downloadTask resume];
 }
 
@@ -789,6 +791,7 @@ didFinishDownloadingToURL:(NSURL *)location
     
     //下载完毕
     isDownLoad = YES;
+    [self showHUDTextOnly:@"下载完毕"];
     downLoadImageView.image = [UIImage imageNamed:@"icon_down_blacker"];
     
     [self addDownloadRecAPI];

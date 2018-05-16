@@ -156,22 +156,25 @@
     cell.titleLabel.text = [NSString stringWithFormat:@"%@", infoDic[@"audio_title"]];
     cell.contentLabel.text = [NSString stringWithFormat:@"%@", infoDic[@"audio_introductions"]];
     
+   
+    [cell.collectBtn removeTarget:nil action:nil forControlEvents:UIControlEventAllEvents];
     if (_typeNumber == 0) {
         [cell.collectBtn setTitle:@"取消收藏" forState:0];
         cell.collectBtn.tag = kTagStart + 10000 + indexPath.row;
+        
         [cell.collectBtn addTarget:self action:@selector(deleteFavoriteAudio:) forControlEvents:UIControlEventTouchUpInside];
-    }
-    
-    if (_typeNumber == 1) {
+    } else if (_typeNumber == 1) {
         [cell.collectBtn setTitle:@"删除播放记录" forState:0];
         cell.collectBtn.tag = kTagStart + 12000 + indexPath.row;
         [cell.collectBtn addTarget:self action:@selector(deletePlayRecording:) forControlEvents:UIControlEventTouchUpInside];
-    }
-    
-    if (_typeNumber == 2) {
+    } else if (_typeNumber == 2) {
         [cell.collectBtn setTitle:@"删除下载记录" forState:0];
         cell.collectBtn.tag = kTagStart + 11000 + indexPath.row;
         [cell.collectBtn addTarget:self action:@selector(deleteLocalAudio:) forControlEvents:UIControlEventTouchUpInside];
+    } else {
+        [cell.collectBtn setTitle:@"" forState:0];
+        cell.collectBtn.tag = 0;
+        [cell.collectBtn addTarget:self action:@selector(deleteFavoriteAudio:) forControlEvents:UIControlEventTouchUpInside];
     }
 
     

@@ -50,14 +50,15 @@
     //[self getProfessionListAPI];
     
     //
-    page = 1;
-    rows = 10;
+        rows = 10;
     [self updataAction];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
+    //设置page的值，每次返回该页面
+    page = 1;
+
     // 显示tabbar
     [self showTabBarView:YES];
     
