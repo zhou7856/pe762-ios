@@ -148,6 +148,7 @@
 		D8E75AC420AA7D3A008DA479 /* MajorChoiceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E75AC320AA7D3A008DA479 /* MajorChoiceViewController.m */; };
 		D8E75AC720AA891B008DA479 /* MajorTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E75AC620AA891B008DA479 /* MajorTableViewCell.m */; };
 		D8E75ACA20AAC835008DA479 /* MajorSearchListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E75AC920AAC835008DA479 /* MajorSearchListViewController.m */; };
+		D8FD003920ADA6A3003960BF /* ReadSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8FD003820ADA6A3003960BF /* ReadSearchViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -399,6 +400,8 @@
 		D8E75AC620AA891B008DA479 /* MajorTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MajorTableViewCell.m; sourceTree = "<group>"; };
 		D8E75AC820AAC835008DA479 /* MajorSearchListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MajorSearchListViewController.h; sourceTree = "<group>"; };
 		D8E75AC920AAC835008DA479 /* MajorSearchListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MajorSearchListViewController.m; sourceTree = "<group>"; };
+		D8FD003720ADA6A3003960BF /* ReadSearchViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReadSearchViewController.h; sourceTree = "<group>"; };
+		D8FD003820ADA6A3003960BF /* ReadSearchViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ReadSearchViewController.m; sourceTree = "<group>"; };
 		F1C1CD50920F591E08B8475E /* libPods-pe762-ios.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-pe762-ios.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -884,6 +887,8 @@
 				D8D61C9E208DBDCE00663054 /* InformationDetailViewController.m */,
 				D876794C20A46E5D000D1D70 /* SearchViewController.h */,
 				D876794D20A46E5D000D1D70 /* SearchViewController.m */,
+				D8FD003720ADA6A3003960BF /* ReadSearchViewController.h */,
+				D8FD003820ADA6A3003960BF /* ReadSearchViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1312,6 +1317,7 @@
 				34076D602089E855005324AB /* MSSBrowseLoadingImageView.m in Sources */,
 				34076D862089E855005324AB /* TZPhotoPreviewCell.m in Sources */,
 				34076D5E2089E855005324AB /* MSSBrowseBaseViewController.m in Sources */,
+				D8FD003920ADA6A3003960BF /* ReadSearchViewController.m in Sources */,
 				342E35AE208F1A8700819855 /* ClearingDetailsTableViewCell.m in Sources */,
 				D876794E20A46E5D000D1D70 /* SearchViewController.m in Sources */,
 				34076CD82089E606005324AB /* main.m in Sources */,
