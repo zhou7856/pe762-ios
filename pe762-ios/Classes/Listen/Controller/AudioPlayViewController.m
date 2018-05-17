@@ -81,6 +81,10 @@
     
     //音频类型
     NSString* audioType;
+    
+    //播放记录
+    NSMutableArray *listDataArray;
+    
 }
 
 @property (nonatomic, strong) FSAudioStream *audioStream;
@@ -109,6 +113,7 @@
     // Do any additional setup after loading the view.
     [self initNav];
     [self initUI];
+    [self getPlayRecordingAPI]; //获取播放记录
 //    [self initPlay];
     //根据名称获取本地的播放时间
     vudioNameStr = @"199251943186.mp3";
@@ -143,15 +148,36 @@
     [super viewWillAppear:animated];
     
     [self showTabBarView:NO];
+    
 //    if (isFirstInto) {}
 //    [self initPlay];
 }
+-(void)viewDidAppear:(BOOL)animated{
+    [self delSameInfo];
+    [self getAudioAddressAPI];
 
+}
 - (void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
+    NSLog(@"audio_id-->%@",audioIDStr);
     [self playerItemDealloc];
 }
-
+//删除相同记录
+-(void)delSameInfo{
+    //-->查找audio_id 相同的id-》idArray列表中  audioIDStr
+    NSMutableArray *idArray=[[NSMutableArray alloc] init];
+    for(int iAudio=0;iAudio<listDataArray.count;iAudio++){
+        NSDictionary *dict = [listDataArray objectAtIndex:iAudio];
+        if([dict[@"audio_id"] isEqualToString:audioIDStr]){ //audioIDStr 存在为空值的情况
+            [idArray addObject:dict[@"id"]];
+        }
+    }
+    //依次删除
+    for(int i=0;i<idArray.count;i++){
+        NSString *idNum=[idArray objectAtIndex:i];
+        [self deletePlayRecording:idNum];
+    }
+}
 - (void)dealloc {
     NSLog(@"dealloc");
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -475,6 +501,7 @@
                 NSDictionary *infoDic = dataDic[@"info"];
                 vudioUrlStr = [NSString stringWithFormat:@"%@", infoDic[@"audio_path"]];
                 audioType=[NSString stringWithFormat:@"%@",infoDic[@"type"]];
+                audioIDStr=[NSString stringWithFormat:@"%@",infoDic[@"id"]];
                 NSArray *strArray = [vudioUrlStr componentsSeparatedByString:@"/"];
                 vudioNameStr = [strArray lastObject];
 //                vudioNameStr = [NSString stringWithFormat:@"%@", infoDic[@"title"]];
@@ -515,10 +542,90 @@
                 
                 //处理数据
                 [self initPlay];
-                //每次增加播放记录前做一次删除播放记录
+               
+            }else {
+                [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+                return;
+            }
+        }
+    }];
+}
+#pragma mark - 删除播放记录
+- (void)deletePlayRecording:(NSInteger )audioID {
+    NSString *url = [NSString stringWithFormat:@"%@",kDeletePlayRecordingURL];
+    url = [self stitchingTokenAndPlatformForURL:url];
+    url=[NSString stringWithFormat:@"%@&id=%@",url,audioID];
+    //    NSDictionary *parameter = @{
+    //                                @"id":audioID,
+    //                                };
+    // [listDataArray removeObjectAtIndex:tagNumber];
+    [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+    [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
+    [self defaultRequestwithURL:url withParameters:nil withMethod:kGET withBlock:^(NSDictionary *dict, NSError *error) {
+        [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+        //判断有无数据
+        if ([[dict allKeys] containsObject:@"errorCode"]) {
+            NSString *errorCode = [NSString stringWithFormat:@"%@",dict[@"errorCode"]];
+            if ([errorCode isEqualToString:@"-1"]){
+                //判断当前是不是登陆页面
+                if ([[self.navigationController.viewControllers lastObject] isKindOfClass:[LoginViewController class]]) {
+                    return;
+                }
                 
-                //增加播放记录
-                [self getAudioAddressAPI];
+                //未登陆
+                LoginViewController *loginVC = [[LoginViewController alloc] init];
+                
+                [self.navigationController pushViewController:loginVC animated:YES];
+                return;
+            }
+            
+            if ([errorCode isEqualToString:@"0"]) {
+                //                    NSDictionary *dataDic = dict[@"data"];
+                //处理数据
+                [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+                [self initData];
+            }else {
+                [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+                return;
+            }
+            //如果 errorCode == "-1" ??
+            //            if([errorCode isEqualToString:@"-1"]){
+            //                //数据已被删除
+            //            }
+        }
+    }];
+}
+
+
+#pragma mark - 获得播放记录
+- (void)getPlayRecordingAPI {
+    NSString *url = [NSString stringWithFormat:@"%@",kGetPlayRecordingURL];
+    url = [self stitchingTokenAndPlatformForURL:url];
+    
+    [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+    [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
+    [self defaultRequestwithURL:url withParameters:nil withMethod:kGET withBlock:^(NSDictionary *dict, NSError *error) {
+        [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+        //判断有无数据
+        if ([[dict allKeys] containsObject:@"errorCode"]) {
+            NSString *errorCode = [NSString stringWithFormat:@"%@",dict[@"errorCode"]];
+            if ([errorCode isEqualToString:@"-1"]){
+                //判断当前是不是登陆页面
+                if ([[self.navigationController.viewControllers lastObject] isKindOfClass:[LoginViewController class]]) {
+                    return;
+                }
+                
+                //未登陆
+                LoginViewController *loginVC = [[LoginViewController alloc] init];
+                
+                [self.navigationController pushViewController:loginVC animated:YES];
+                return;
+            }
+            
+            if ([errorCode isEqualToString:@"0"]) {
+                NSDictionary *dataDic = dict[@"data"];
+                //处理数据
+                listDataArray = dataDic[@"info"];
             }else {
                 [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
                 return;
