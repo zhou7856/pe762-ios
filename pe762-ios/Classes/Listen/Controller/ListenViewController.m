@@ -461,7 +461,6 @@
                 
                 //未登陆
                 LoginViewController *loginVC = [[LoginViewController alloc] init];
-                
                 [self.navigationController pushViewController:loginVC animated:YES];
                 return;
             }
