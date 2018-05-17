@@ -921,6 +921,13 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
             if ([[dict allKeys] containsObject:@"errorCode"]) {
                 NSString *errorCode = [NSString stringWithFormat:@"%@",dict[@"errorCode"]];
                 
+                if ([errorCode isEqualToString:@"-1"]){
+                    //未登陆
+                    LoginViewController *loginVC = [[LoginViewController alloc] init];
+                    [self.navigationController pushViewController:loginVC animated:YES];
+                    return;
+                }
+                
                 if ([errorCode isEqualToString:@"0"]) {
                     //                    NSDictionary *dataDic = dict[@"data"];
                     //处理数据
@@ -948,6 +955,13 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
             //判断有无数据
             if ([[dict allKeys] containsObject:@"errorCode"]) {
                 NSString *errorCode = [NSString stringWithFormat:@"%@",dict[@"errorCode"]];
+                
+                if ([errorCode isEqualToString:@"-1"]){
+                    //未登陆
+                    LoginViewController *loginVC = [[LoginViewController alloc] init];
+                    [self.navigationController pushViewController:loginVC animated:YES];
+                    return;
+                }
                 
                 if ([errorCode isEqualToString:@"0"]) {
 //                    NSDictionary *dataDic = dict[@"data"];
@@ -1052,7 +1066,7 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
                     //处理数据
                     isFavorite = NO;
                     collectionImageView.image = [UIImage imageNamed:@"Path 106"];
-                }else {
+                } else {
                     [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
                     return;
                 }
@@ -1091,7 +1105,7 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
                     //处理数据
                     isFavorite = YES;
                     collectionImageView.image = [UIImage imageNamed:@"icon_heart_red"];
-                }else {
+                } else {
                     [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
                     return;
                 }
@@ -1117,6 +1131,13 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
         if ([[dict allKeys] containsObject:@"errorCode"]) {
             NSString *errorCode = [NSString stringWithFormat:@"%@",dict[@"errorCode"]];
             
+            if ([errorCode isEqualToString:@"-1"]){
+                //未登陆
+                LoginViewController *loginVC = [[LoginViewController alloc] init];
+                [self.navigationController pushViewController:loginVC animated:YES];
+                return;
+            }
+            
             if ([errorCode isEqualToString:@"0"]) {
                 NSDictionary *dataDict = dict[@"data"];
                 NSDictionary *infoDict = dataDict[@"info"];
@@ -1141,7 +1162,7 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
                     //[self shareToQZone:infoDict];
                 }
                 
-            }else {
+            } else {
                 [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
                 return;
             }
