@@ -60,11 +60,13 @@
     
     self.view.backgroundColor = kWhiteColor;
     
-    majorBtn = [[UIButton alloc] init];
-    typeLabel = [[UILabel alloc] init];
-    [self createNavigationFeatureAndTitle:@"消息通知" withLeftBtn:majorBtn andTypeTitle:typeLabel];
+    //majorBtn = [[UIButton alloc] init];
+    //typeLabel = [[UILabel alloc] init];
+    //[self createNavigationFeatureAndTitle:@"消息通知" withLeftBtn:majorBtn andTypeTitle:typeLabel];
     
-    typeLabel.text = @"专业";
+    [self createNavigationTitle:@"消息通知"];
+    
+    //typeLabel.text = @"专业";
     
     [self createEndBackView];
     
@@ -176,6 +178,13 @@
         if ([[dict allKeys] containsObject:@"errorCode"]) {
             NSString *errorCode = [NSString stringWithFormat:@"%@",dict[@"errorCode"]];
             
+            if ([errorCode isEqualToString:@"-1"]){
+                //未登陆
+                LoginViewController *loginVC = [[LoginViewController alloc] init];
+                [self.navigationController pushViewController:loginVC animated:YES];
+                return;
+            }
+            
             if ([errorCode isEqualToString:@"0"]) {
                 NSDictionary *dataDic = dict[@"data"];
                 
@@ -194,7 +203,7 @@
                 [messageTabelView reloadData];
                 
             }else {
-                [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+                //[self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
                 return;
             }
         }
@@ -250,7 +259,7 @@
                     [messageTabelView reloadData];
                     
                 } else {
-                    [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+                    //[self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
                     return;
                 }
             }
@@ -306,7 +315,7 @@
                     [messageTabelView reloadData];
                     
                 } else {
-                    [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+                    //[self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
                     return;
                 }
             }

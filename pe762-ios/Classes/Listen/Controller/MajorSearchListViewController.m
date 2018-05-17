@@ -14,7 +14,6 @@
     UIButton *majorBtn;//专业
     UILabel *typeLabel;//页面标题
     UIButton *noticeBtn;//消息通知
-    UILabel *redLabel;//未读消息数
     
     // 音频列表
     UITableView *freshTableView;
@@ -52,14 +51,10 @@
     majorBtn = [[UIButton alloc] init];
     typeLabel = [[UILabel alloc] init];
     [self createNavigationFeatureAndTitle:self.titleStr withLeftBtn:majorBtn andTypeTitle:typeLabel];
-    
+
     typeLabel.text = @"专业";
     
-    redLabel = [[UILabel alloc] initWithFrame:CGRectMake(kScreenWidth - 16 * kScreenWidthProportion, kStatusHeight + 10, 8, 8)];
-    redLabel.backgroundColor = [UIColor redColor];
-    redLabel.hidden = YES;
-    [redLabel setCornerRadius:4];
-    [self.view addSubview:redLabel];
+    //[self createNavigationTitle:self.titleStr];
     
     // 底部
     [self createEndBackView];

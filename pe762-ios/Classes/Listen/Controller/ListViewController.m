@@ -48,7 +48,7 @@
     [self initData];
     
     // 红点
-    [self initNoticeNotReadAPI];
+    //[self initNoticeNotReadAPI];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -64,17 +64,19 @@
     self.view.backgroundColor = kWhiteColor;
     
     majorBtn = [[UIButton alloc] init];
-    noticeBtn = [[UIButton alloc] init];
+    //noticeBtn = [[UIButton alloc] init];
     typeLabel = [[UILabel alloc] init];
-    [self createNavigationFeatureAndTitle:@"知趣大学专业说" withLeftBtn:majorBtn andRightBtn:noticeBtn andTypeTitle:typeLabel];
+    //[self createNavigationFeatureAndTitle:@"知趣大学专业说" withLeftBtn:majorBtn andRightBtn:noticeBtn andTypeTitle:typeLabel];
+    
+    [self createNavigationFeatureAndTitle:@"知趣大学专业说" withLeftBtn:majorBtn andTypeTitle:typeLabel];
     
     typeLabel.text = @"专业";
     
-    redLabel = [[UILabel alloc] initWithFrame:CGRectMake(kScreenWidth - 16 * kScreenWidthProportion, kStatusHeight + 10, 8, 8)];
-    redLabel.backgroundColor = [UIColor redColor];
-    redLabel.hidden = YES;
-    [redLabel setCornerRadius:4];
-    [self.view addSubview:redLabel];
+//    redLabel = [[UILabel alloc] initWithFrame:CGRectMake(kScreenWidth - 16 * kScreenWidthProportion, kStatusHeight + 10, 8, 8)];
+//    redLabel.backgroundColor = [UIColor redColor];
+//    redLabel.hidden = YES;
+//    [redLabel setCornerRadius:4];
+//    [self.view addSubview:redLabel];
     
     // 底部
     [self createEndBackView];
