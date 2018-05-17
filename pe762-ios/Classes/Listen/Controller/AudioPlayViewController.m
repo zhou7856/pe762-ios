@@ -1181,7 +1181,7 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
              }
              case SSDKResponseStateCancel:
              {
-                 [self showHUDTextOnly:@"分享取消"];
+                 //[self showHUDTextOnly:@"分享取消"];
                  break;
              }
              default:
@@ -1216,7 +1216,7 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
              }
              case SSDKResponseStateCancel:
              {
-                 [self showHUDTextOnly:@"分享取消"];
+                 //[self showHUDTextOnly:@"分享取消"];
                  break;
              }
              default:
@@ -1233,7 +1233,11 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
     NSString *cachePath = [NSString stringWithFormat:@"%@%@", kHostURL, dataDic[@"cache_path"]];
     //NSString *introductions = [NSString stringWithFormat:@"%@%@", dataDic[@"introductions"], cachePath];
     
-    [shareParams SSDKSetupWeChatParamsByText:dataDic[@"introductions"] title:dataDic[@"title"] url:[NSURL URLWithString:cachePath] thumbImage:thumbPath image:thumbPath musicFileURL:[NSURL URLWithString:cachePath] extInfo:nil fileData:nil emoticonData:nil type:SSDKContentTypeAudio forPlatformSubType:SSDKPlatformSubTypeWechatSession];
+    //[shareParams SSDKSetupWeChatParamsByText:dataDic[@"introductions"] title:dataDic[@"title"] url:[NSURL URLWithString:cachePath] thumbImage:thumbPath image:thumbPath musicFileURL:[NSURL URLWithString:cachePath] extInfo:nil fileData:nil emoticonData:nil type:SSDKContentTypeAudio forPlatformSubType:SSDKPlatformSubTypeWechatSession];
+    
+    [shareParams SSDKSetupWeChatParamsByText:dataDic[@"introductions"] title:dataDic[@"title"] url:[NSURL URLWithString:cachePath] thumbImage:thumbPath image:thumbPath musicFileURL:[NSURL URLWithString:cachePath] extInfo:nil fileData:nil emoticonData:nil sourceFileExtension:nil sourceFileData:nil type:SSDKContentTypeAudio forPlatformSubType:SSDKPlatformSubTypeWechatSession];
+    
+    
     
     //进行分享
     [ShareSDK share:SSDKPlatformSubTypeWechatSession
@@ -1254,8 +1258,8 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
              }
              case SSDKResponseStateCancel:
              {
-                 
-                 
+                 //[self showHUDTextOnly:@"分享取消"];
+                 break;
              }
              default:
                  break;
@@ -1291,7 +1295,7 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
              }
              case SSDKResponseStateCancel:
              {
-                 [self showHUDTextOnly:@"分享取消"];
+                 //[self showHUDTextOnly:@"分享取消"];
                  break;
              }
              default:
@@ -1342,7 +1346,7 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
             }
             case SSDKResponseStateCancel:
             {
-                [self showHUDTextOnly:@"分享取消"];
+                //[self showHUDTextOnly:@"分享取消"];
                 break;
             }
             default:
