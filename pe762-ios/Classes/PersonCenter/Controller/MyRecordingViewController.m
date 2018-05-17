@@ -362,17 +362,18 @@
 - (void)deletePlayRecording:(UIButton *) sender {
     NSInteger tagNumber = sender.tag - kTagStart - 12000;
     NSDictionary *dictionary = listDataArray[tagNumber];
-        NSString *audioID = [NSString stringWithFormat:@"%@",dictionary[@"audio_id"]];
+    NSString *audioID = [NSString stringWithFormat:@"%@",dictionary[@"id"]];
     
     NSString *url = [NSString stringWithFormat:@"%@",kDeletePlayRecordingURL];
     url = [self stitchingTokenAndPlatformForURL:url];
-    NSDictionary *parameter = @{
-                                @"id":audioID
-                                };
+    url=[NSString stringWithFormat:@"%@&id=%@",url,audioID];
+//    NSDictionary *parameter = @{
+//                                @"id":audioID,
+//                                };
    // [listDataArray removeObjectAtIndex:tagNumber];
     [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
     [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
-    [self defaultRequestwithURL:url withParameters:parameter withMethod:kPOST withBlock:^(NSDictionary *dict, NSError *error) {
+    [self defaultRequestwithURL:url withParameters:nil withMethod:kGET withBlock:^(NSDictionary *dict, NSError *error) {
         [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
         //判断有无数据
         if ([[dict allKeys] containsObject:@"errorCode"]) {
