@@ -13,6 +13,7 @@
 #import "AudioPlayViewController.h"//音频播放
 #import "MessageViewController.h" //消息
 #import "SearchViewController.h"
+#import "InformationDetailViewController.h"//资讯
 
 @interface ListenViewController ()<UITableViewDelegate,UITableViewDataSource,SDCycleScrollViewDelegate>
 {
@@ -289,14 +290,25 @@
     NSDictionary *dict = bannerArray[index];
     
     NSString *style =[NSString stringWithFormat:@"%@",dict[@"style"]];
+    NSString *idStr = [NSString stringWithFormat:@"%@", dict[@"value"]];
     //该banner是音频
     if([style isEqualToString:@"1"]){
-        NSString *idStr = [NSString stringWithFormat:@"%@", dict[@"value"]];
-        // 跳转到资讯详情页面
+        // 跳转到音频详情页面
         [self showTabBarView:NO];
         AudioPlayViewController *pushVC = [[AudioPlayViewController alloc] init];
         pushVC.idStr = idStr;
         [self.navigationController pushViewController:pushVC animated:YES];
+    }else if([style isEqualToString:@"2"]){ //该banner是资讯
+        
+        // 跳转到资讯详情页面
+        [self showTabBarView:NO];
+        InformationDetailViewController *pushVC = [[InformationDetailViewController alloc] init];
+        pushVC.idStr = idStr;
+        [self.navigationController pushViewController:pushVC animated:YES];
+        
+    }else if([style isEqualToString:@"3"]){ //该banner是图片
+        [self showHUDTextOnly:@"这只是张图片"];
+        return ;//无需跳转
     }
     
   
