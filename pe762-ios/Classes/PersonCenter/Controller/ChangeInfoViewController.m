@@ -63,7 +63,7 @@
 
 #pragma mark - 保存点击
 - (void)saveBtnAction {
-    
+    // alipay_no
     NSDictionary *parameter;
     if ([_typeStr isEqualToString:@"1"]) {
         if (changeText.text.length == 0) {
@@ -72,13 +72,20 @@
         }
         //昵称
         parameter = @{@"name":changeText.text};
-    } else {
+    } else if ([_typeStr isEqualToString:@"2"]) {
         if (changeText.text.length == 0) {
             [self showHUDTextOnly:@"请输入邮箱"];
             return;
         }
         //邮箱
         parameter = @{@"e_mail":changeText.text};
+    } else if ([_typeStr isEqualToString:@"3"]) {
+        if (changeText.text.length == 0) {
+            [self showHUDTextOnly:@"请输入账号"];
+            return;
+        }
+        //账号
+        parameter = @{@"alipay_no":changeText.text};
     }
     
     NSString *url = [NSString stringWithFormat:@"%@",kEditInfoURL];
