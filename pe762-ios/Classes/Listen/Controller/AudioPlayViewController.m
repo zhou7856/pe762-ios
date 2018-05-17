@@ -404,7 +404,7 @@
         }];
 
         photoImageView = [[UIImageView alloc] initWithFrame:CGRectMake(15 * kScreenWidthProportion, 35 * kScreenWidthProportion, 72 * kScreenWidthProportion, 105 * kScreenWidthProportion)];
-        photoImageView.backgroundColor = [UIColor blueColor];
+        photoImageView.backgroundColor = [UIColor clearColor];
         [introductionView addSubview:photoImageView];
 
         nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(105 * kScreenWidthProportion, photoImageView.minY, 100 * kScreenWidthProportion, 20 * kScreenWidthProportion)];

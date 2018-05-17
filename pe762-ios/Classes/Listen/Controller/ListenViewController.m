@@ -287,12 +287,19 @@
 #pragma mark - banner代理
 - (void)cycleScrollView:(SDCycleScrollView *)cycleScrollView didSelectItemAtIndex:(NSInteger)index{
     NSDictionary *dict = bannerArray[index];
-    NSString *idStr = [NSString stringWithFormat:@"%@", dict[@"id"]];
-    // 跳转到资讯详情页面
-    [self showTabBarView:NO];
-    AudioPlayViewController *pushVC = [[AudioPlayViewController alloc] init];
-    pushVC.idStr = idStr;
-    [self.navigationController pushViewController:pushVC animated:YES];
+    
+    NSString *style =[NSString stringWithFormat:@"%@",dict[@"style"]];
+    //该banner是音频
+    if([style isEqualToString:@"1"]){
+        NSString *idStr = [NSString stringWithFormat:@"%@", dict[@"value"]];
+        // 跳转到资讯详情页面
+        [self showTabBarView:NO];
+        AudioPlayViewController *pushVC = [[AudioPlayViewController alloc] init];
+        pushVC.idStr = idStr;
+        [self.navigationController pushViewController:pushVC animated:YES];
+    }
+    
+  
 }
 
 #pragma mark - tableView代理
