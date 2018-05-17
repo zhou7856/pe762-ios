@@ -1140,22 +1140,22 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
             
             if ([errorCode isEqualToString:@"0"]) {
                 NSDictionary *dataDict = dict[@"data"];
-                NSDictionary *infoDict = dataDict[@"info"];
+                //NSDictionary *infoDict = dataDict[@"info"];
                 
                 //1 微博 2 微信 3 QQ 4 朋友圈
                 if ([shareType isEqualToString:@"1"]) {
-                    [self shareToWeibo:infoDict];
+                    [self shareToWeibo:dataDict];
                     
                 } else if ([shareType isEqualToString:@"2"]) {
-                    [self shareToWeiChat:infoDict];
+                    [self shareToWeiChat:dataDict];
                     
                 } else if ([shareType isEqualToString:@"3"]) {
                     //[self showHUDTextOnly:@"功能未开放"];
-                    [self shareToQQ:infoDict];
+                    [self shareToQQ:dataDict];
                     
                 } else if ([shareType isEqualToString:@"4"]) {
                     //[self showHUDTextOnly:@"功能未开放"];
-                    [self shareToWechatTimeline:infoDict];
+                    [self shareToWechatTimeline:dataDict];
                     
                 } else if ([shareType isEqualToString:@"5"]) {
                     //[self showHUDTextOnly:@"功能未开放"];
@@ -1175,13 +1175,15 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
     //创建分享参数
     NSMutableDictionary *shareParams = [NSMutableDictionary dictionary];
     
-    NSString *thumbPath = [NSString stringWithFormat:@"%@%@", kHostURL, dataDic[@"thumb"]];
-    NSString *cachePath = [NSString stringWithFormat:@"%@%@", kHostURL, dataDic[@"cache_path"]];
+    NSDictionary *infoDict = dataDic[@"info"];
+    
+    NSString *thumbPath = [NSString stringWithFormat:@"%@%@", kHostURL, infoDict[@"thumb"]];
+    //NSString *cachePath = [NSString stringWithFormat:@"%@%@", kHostURL, dataDic[@"cache_path"]];
     //NSString *introductions = [NSString stringWithFormat:@"%@%@", dataDic[@"introductions"], cachePath];
     
     //[shareParams SSDKSetupQQParamsByText:dataDic[@"introductions"] title:dataDic[@"title"] url:[NSURL URLWithString:dataDic[@"url"]] thumbImage:dataDic[@"avath_path"] image:dataDic[@"avath_path"] type:SSDKContentTypeAuto forPlatformSubType:SSDKPlatformSubTypeQQFriend];
     
-    [shareParams SSDKSetupQQParamsByText:dataDic[@"introductions"] title:dataDic[@"title"] url:[NSURL URLWithString:cachePath] audioFlashURL:[NSURL URLWithString:cachePath] videoFlashURL:nil thumbImage:thumbPath images:thumbPath type:SSDKContentTypeAudio forPlatformSubType:SSDKPlatformSubTypeQQFriend];
+    [shareParams SSDKSetupQQParamsByText:infoDict[@"introductions"] title:infoDict[@"title"] url:[NSURL URLWithString:dataDic[@"H5RegUrl"]] audioFlashURL:nil videoFlashURL:nil thumbImage:thumbPath images:thumbPath type:SSDKContentTypeAuto forPlatformSubType:SSDKPlatformSubTypeQQFriend];
     
     //进行分享
     [ShareSDK share:SSDKPlatformSubTypeQQFriend
@@ -1223,7 +1225,7 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
     //NSString *logo = [NSString stringWithFormat:@"%@%@", kHostURL, dataDic[@"logo"]];
     //NSURL *logoUrl = [NSURL URLWithString:logo];
     
-    [shareParams SSDKSetupQQParamsByText:dataDic[@"introductions"] title:dataDic[@"title"] url:[NSURL URLWithString:dataDic[@"url"]] thumbImage:dataDic[@"avath_path"] image:dataDic[@"avath_path"] type:SSDKContentTypeAuto forPlatformSubType:SSDKPlatformSubTypeQZone];
+    [shareParams SSDKSetupQQParamsByText:dataDic[@"introductions"] title:dataDic[@"title"] url:[NSURL URLWithString:dataDic[@"H5RegUrl"]] thumbImage:dataDic[@"avath_path"] image:dataDic[@"avath_path"] type:SSDKContentTypeAuto forPlatformSubType:SSDKPlatformSubTypeQZone];
     
     //进行分享
     [ShareSDK share:SSDKPlatformSubTypeQZone
@@ -1256,15 +1258,18 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
 - (void)shareToWeiChat:(NSDictionary *)dataDic {
     NSMutableDictionary *shareParams = [NSMutableDictionary dictionary];
     
-    NSString *thumbPath = [NSString stringWithFormat:@"%@%@", kHostURL, dataDic[@"thumb"]];
-    NSString *cachePath = [NSString stringWithFormat:@"%@%@", kHostURL, dataDic[@"cache_path"]];
+    NSDictionary *infoDict = dataDic[@"info"];
+    
+    NSString *thumbPath = [NSString stringWithFormat:@"%@%@", kHostURL, infoDict[@"thumb"]];
+    //NSString *cachePath = [NSString stringWithFormat:@"%@%@", kHostURL, dataDic[@"cache_path"]];
     //NSString *introductions = [NSString stringWithFormat:@"%@%@", dataDic[@"introductions"], cachePath];
     
     //[shareParams SSDKSetupWeChatParamsByText:dataDic[@"introductions"] title:dataDic[@"title"] url:[NSURL URLWithString:cachePath] thumbImage:thumbPath image:thumbPath musicFileURL:[NSURL URLWithString:cachePath] extInfo:nil fileData:nil emoticonData:nil type:SSDKContentTypeAudio forPlatformSubType:SSDKPlatformSubTypeWechatSession];
     
-    [shareParams SSDKSetupWeChatParamsByText:dataDic[@"introductions"] title:dataDic[@"title"] url:[NSURL URLWithString:cachePath] thumbImage:thumbPath image:thumbPath musicFileURL:[NSURL URLWithString:cachePath] extInfo:nil fileData:nil emoticonData:nil sourceFileExtension:nil sourceFileData:nil type:SSDKContentTypeAudio forPlatformSubType:SSDKPlatformSubTypeWechatSession];
+    //[shareParams SSDKSetupWeChatParamsByText:dataDic[@"introductions"] title:dataDic[@"title"] url:[NSURL URLWithString:dataDic[@"H5RegUrl"]] thumbImage:thumbPath image:thumbPath musicFileURL:nil extInfo:nil fileData:nil emoticonData:nil sourceFileExtension:nil sourceFileData:nil type:SSDKContentTypeAuto forPlatformSubType:SSDKPlatformSubTypeWechatSession];
     
-    
+    [shareParams SSDKSetupWeChatParamsByText:infoDict[@"introductions"] title:infoDict[@"title"] url:[NSURL URLWithString:dataDic[@"H5RegUrl"]] thumbImage:thumbPath image:thumbPath musicFileURL:nil extInfo:nil fileData:nil emoticonData:nil type:SSDKContentTypeAuto forPlatformSubType:SSDKPlatformSubTypeWechatSession];
+
     
     //进行分享
     [ShareSDK share:SSDKPlatformSubTypeWechatSession
@@ -1298,11 +1303,15 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
 - (void)shareToWechatTimeline:(NSDictionary *)dataDic {
     NSMutableDictionary *shareParams = [NSMutableDictionary dictionary];
     
-    NSString *thumbPath = [NSString stringWithFormat:@"%@%@", kHostURL, dataDic[@"thumb"]];
-    NSString *cachePath = [NSString stringWithFormat:@"%@%@", kHostURL, dataDic[@"cache_path"]];
+    NSDictionary *infoDict = dataDic[@"info"];
+    
+    NSString *thumbPath = [NSString stringWithFormat:@"%@%@", kHostURL, infoDict[@"thumb"]];
+    //NSString *cachePath = [NSString stringWithFormat:@"%@%@", kHostURL, dataDic[@"cache_path"]];
     //NSString *introductions = [NSString stringWithFormat:@"%@%@", dataDic[@"introductions"], cachePath];
     
-    [shareParams SSDKSetupWeChatParamsByText:dataDic[@"introductions"] title:dataDic[@"title"] url:[NSURL URLWithString:cachePath] thumbImage:thumbPath image:thumbPath musicFileURL:[NSURL URLWithString:cachePath] extInfo:nil fileData:nil emoticonData:nil type:SSDKContentTypeAudio forPlatformSubType:SSDKPlatformSubTypeWechatTimeline];
+    //[shareParams SSDKSetupWeChatParamsByText:dataDic[@"introductions"] title:dataDic[@"title"] url:[NSURL URLWithString:dataDic[@"H5RegUrl"]] thumbImage:thumbPath image:thumbPath musicFileURL:nil extInfo:nil fileData:nil emoticonData:nil type:SSDKContentTypeAuto forPlatformSubType:SSDKPlatformSubTypeWechatTimeline];
+    
+    [shareParams SSDKSetupWeChatParamsByText:infoDict[@"introductions"] title:infoDict[@"title"] url:[NSURL URLWithString:dataDic[@"H5RegUrl"]] thumbImage:thumbPath image:thumbPath musicFileURL:nil extInfo:nil fileData:nil emoticonData:nil type:SSDKContentTypeAuto forPlatformSubType:SSDKPlatformSubTypeWechatTimeline];
     
     //进行分享
     [ShareSDK share:SSDKPlatformSubTypeWechatTimeline
@@ -1335,11 +1344,15 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
 - (void)shareToWeibo:(NSDictionary *)dataDic {
     NSMutableDictionary *shareParams = [NSMutableDictionary dictionary];
     
-    NSString *thumbPath = [NSString stringWithFormat:@"%@%@", kHostURL, dataDic[@"thumb"]];
-    NSString *cachePath = [NSString stringWithFormat:@"%@%@", kHostURL, dataDic[@"cache_path"]];
-    NSString *introductions = [NSString stringWithFormat:@"%@%@", dataDic[@"introductions"], cachePath];
+    NSDictionary *infoDict = dataDic[@"info"];
     
-    [shareParams SSDKSetupSinaWeiboShareParamsByText:introductions title:dataDic[@"title"] images:thumbPath video:nil url:[NSURL URLWithString:cachePath] latitude:0 longitude:0 objectID:nil isShareToStory:NO type:SSDKContentTypeAuto];
+    NSString *thumbPath = [NSString stringWithFormat:@"%@%@", kHostURL, infoDict[@"thumb"]];
+    //NSString *cachePath = [NSString stringWithFormat:@"%@%@", kHostURL, infoDict[@"cache_path"]];
+    NSString *introductions = [NSString stringWithFormat:@"%@%@", infoDict[@"introductions"], dataDic[@"H5RegUrl"]];
+    
+    [shareParams SSDKSetupSinaWeiboShareParamsByText:introductions title:infoDict[@"title"] images:thumbPath video:nil url:[NSURL URLWithString:dataDic[@"H5RegUrl"]] latitude:0 longitude:0 objectID:nil isShareToStory:NO type:SSDKContentTypeAuto];
+    
+    //[shareParams SSDKSetupSinaWeiboShareParamsByText:introductions title:dataDic[@"title"] images:thumbPath video:nil url:[NSURL URLWithString:dataDic[@"H5RegUrl"]] latitude:0 longitude:0 objectID:nil isShareToStory:NO type:SSDKContentTypeAuto];
     
     //进行分享
     //要显示菜单的视图, iPad版中此参数作为弹出菜单的参照视图，只有传这个才可以弹出我们的分享菜单，可以传分享的按钮对象或者自己创建小的view 对象，iPhone可以传nil不会影响
