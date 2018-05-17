@@ -78,6 +78,9 @@
     
     //分享类型
     NSString *shareType;
+    
+    //音频类型
+    NSString* audioType;
 }
 
 @property (nonatomic, strong) FSAudioStream *audioStream;
@@ -471,6 +474,7 @@
                 NSDictionary *dataDic = dict[@"data"];
                 NSDictionary *infoDic = dataDic[@"info"];
                 vudioUrlStr = [NSString stringWithFormat:@"%@", infoDic[@"audio_path"]];
+                audioType=[NSString stringWithFormat:@"%@",infoDic[@"type"]];
                 NSArray *strArray = [vudioUrlStr componentsSeparatedByString:@"/"];
                 vudioNameStr = [strArray lastObject];
 //                vudioNameStr = [NSString stringWithFormat:@"%@", infoDic[@"title"]];
@@ -511,6 +515,8 @@
                 
                 //处理数据
                 [self initPlay];
+                //每次增加播放记录前做一次删除播放记录
+                
                 //增加播放记录
                 [self getAudioAddressAPI];
             }else {
@@ -696,9 +702,9 @@
     
     FSStreamPosition cur = self.audioStream.currentTimePlayed;
     self.playbackTime = cur.playbackTimeInSeconds/1;
-    
-    //判断当前时间 如果>=普通用户播放时间，则停止播放
-    if (self.playbackTime >= kGeneralUserPlayTime && !isVip) {
+#pragma mark 这里需要判断是不是免费视屏
+    //判断当前时间 如果>=普通用户播放时间，则停止播放 这里需要判断是不是免费视屏
+    if (self.playbackTime >= kGeneralUserPlayTime && !isVip&&![audioType isEqualToString:@"5"]) {
         [self.audioStream pause];
         [self.playerTimer setFireDate:[NSDate distantFuture]];
         playImageView.image = [UIImage imageNamed:@"Group 147"];
