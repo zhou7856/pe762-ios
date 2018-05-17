@@ -17,7 +17,8 @@
     UIImageView *headImageView;
     UILabel *nicknameLabel;
     UILabel *emainLabel;
-    
+    UILabel *alipayLabel;
+    UIView *alipayView;
 }
 @end
 
@@ -162,6 +163,39 @@
         }];
         [contentView addGestureRecognizer:tap];
     }
+    
+    {
+        alipayView = [[UIView alloc] initWithFrame:CGRectMake(0, 180 * kScreenWidthProportion + kHeaderHeight, kScreenWidth, 40 * kScreenWidthProportion)];
+        alipayView.hidden = YES;
+        [self.view addSubview:alipayView];
+        
+        UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(22 * kScreenWidthProportion, 0 * kScreenWidthProportion, 100 * kScreenWidthProportion, 40 * kScreenWidthProportion)];
+        [titleLabel setLabelWithTextColor:kGrayLabelColor textAlignment:NSTextAlignmentLeft font:13];
+        titleLabel.text = @"收款账号";
+        [alipayView addSubview:titleLabel];
+        
+        alipayLabel = [[UILabel alloc] initWithFrame:CGRectMake(140 * kScreenWidthProportion, 0, 145 * kScreenWidthProportion, titleLabel.height)];
+        [alipayLabel setLabelWithTextColor:kGrayLabelColor textAlignment:NSTextAlignmentRight font:13];
+        [alipayView addSubview:alipayLabel];
+        
+        UIImageView *iconImageView = [[UIImageView alloc] initWithFrame:CGRectMake(295 * kScreenWidthProportion, 0, 6 * kScreenWidthProportion, 9 * kScreenWidthProportion)];
+        iconImageView.image = [UIImage imageNamed:@"Path 185"];
+        iconImageView.centerY = titleLabel.centerY;
+        [alipayView addSubview:iconImageView];
+        
+        UIView *endLineView = [UIView viewWithFrame:CGRectMake(15 * kScreenWidthProportion, alipayView.height - 1, 290 * kScreenWidthProportion, 1) backgroundColor:kLineGrayColor];
+        [alipayView addSubview:endLineView];
+        
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] init];
+        [[tap rac_gestureSignal] subscribeNext:^(id x) {
+            NSLog(@"收款账号");
+            ChangeInfoViewController *pushVC = [[ChangeInfoViewController alloc] init];
+            pushVC.typeStr = @"3";
+            pushVC.userInfo=alipayLabel.text;
+            [self.navigationController pushViewController:pushVC animated:YES];
+        }];
+        [alipayView addGestureRecognizer:tap];
+    }
 }
 
 //#pragma makr - 设置点击
@@ -265,9 +299,26 @@
                 }
                 [emainLabel fontForLabel:13];
                 
+                if ([infoDic[@"alipay_no"] isKindOfClass:[NSNull class]]) {
+                    alipayLabel.text = @"";
+                } else {
+                    alipayLabel.text = [NSString stringWithFormat:@"%@", infoDic[@"alipay_no"]];
+                }
+                [alipayLabel fontForLabel:13];
+                
                 NSString *headUrlStr = [NSString stringWithFormat:@"%@", infoDic[@"avatar_path"]];
                 headImageView.image = nil;
                 [headImageView setImageWithURL:[NSURL URLWithString:headUrlStr]];
+                
+                //是否是代理
+                NSString *isProxy = [NSString stringWithFormat:@"%@", [[NSUserDefaults standardUserDefaults] objectForKey:@"is_proxy"]];
+                if ([isProxy isEqualToString:@"1"]) {
+                    alipayView.hidden = NO;
+                } else {
+                    alipayView.hidden = YES;
+                }
+                
+                
             }else {
                 [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
                 return;

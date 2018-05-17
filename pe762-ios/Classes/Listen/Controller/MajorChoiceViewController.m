@@ -56,6 +56,8 @@
     [self createNavigationFeatureAndTitle:@"专业" withLeftBtn:majorBtn andTypeTitle:typeLabel];
     typeLabel.text = @"专业";
     
+    //[self createNavigationTitle:@"专业"];
+    
     [self createEndBackView];
     
 #pragma mark - 列表

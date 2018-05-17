@@ -240,13 +240,20 @@
             if ([[dict allKeys] containsObject:@"errorCode"]) {
                 NSString *errorCode = [NSString stringWithFormat:@"%@",dict[@"errorCode"]];
                 
+                if ([errorCode isEqualToString:@"-1"]){
+                    //未登陆
+                    LoginViewController *loginVC = [[LoginViewController alloc] init];
+                    [self.navigationController pushViewController:loginVC animated:YES];
+                    return;
+                }
+                
                 if ([errorCode isEqualToString:@"0"]) {
                     //处理数据
                     [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
                     likeBtn.selected = NO;
                     zanImageView.image = [UIImage imageNamed:@"Group 132"];
                     
-                }else {
+                } else {
                     [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
                     return;
                 }
@@ -264,9 +271,17 @@
         [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
         [self defaultRequestwithURL:url withParameters:parameter withMethod:kPOST withBlock:^(NSDictionary *dict, NSError *error) {
             [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+            
             //判断有无数据
             if ([[dict allKeys] containsObject:@"errorCode"]) {
                 NSString *errorCode = [NSString stringWithFormat:@"%@",dict[@"errorCode"]];
+                
+                if ([errorCode isEqualToString:@"-1"]){
+                    //未登陆
+                    LoginViewController *loginVC = [[LoginViewController alloc] init];
+                    [self.navigationController pushViewController:loginVC animated:YES];
+                    return;
+                }
                 
                 if ([errorCode isEqualToString:@"0"]) {
                     //                    NSDictionary *dataDic = dict[@"data"];
@@ -276,7 +291,7 @@
                     likeBtn.selected = YES;
                     zanImageView.image = [UIImage imageNamed:@"icon_good_red"];
                     
-                }else {
+                } else {
                     [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
                     return;
                 }
@@ -299,6 +314,13 @@
         //判断有无数据
         if ([[dict allKeys] containsObject:@"errorCode"]) {
             NSString *errorCode = [NSString stringWithFormat:@"%@",dict[@"errorCode"]];
+            
+            if ([errorCode isEqualToString:@"-1"]){
+                //未登陆
+                LoginViewController *loginVC = [[LoginViewController alloc] init];
+                [self.navigationController pushViewController:loginVC animated:YES];
+                return;
+            }
             
             if ([errorCode isEqualToString:@"0"]) {
                 NSDictionary *dataDict = dict[@"data"];
@@ -341,6 +363,13 @@
         if ([[dict allKeys] containsObject:@"errorCode"]) {
             NSString *errorCode = [NSString stringWithFormat:@"%@",dict[@"errorCode"]];
             
+            if ([errorCode isEqualToString:@"-1"]){
+                //未登陆
+                LoginViewController *loginVC = [[LoginViewController alloc] init];
+                [self.navigationController pushViewController:loginVC animated:YES];
+                return;
+            }
+            
             if ([errorCode isEqualToString:@"0"]) {
                 NSDictionary *dataDict = dict[@"data"];
                 
@@ -364,7 +393,7 @@
                     //[self shareToQZone:dataDict];
                 }
                 
-            }else {
+            } else {
                 [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
                 return;
             }
