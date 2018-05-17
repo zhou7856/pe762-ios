@@ -377,7 +377,7 @@
                 make.height.mas_equalTo(172 * kScreenHeightProportion);
             }];
             
-            cell.dataArray = dict[@"data"];
+            cell.dataArray = ([dict count] > 1) ? dict[@"data"] : [[NSArray alloc] init];
             [cell.courseCollectionView reloadData];
         } else {
             cell.courseCollectionView.hidden = YES;
@@ -385,7 +385,7 @@
                 make.height.mas_equalTo(0);
             }];
             
-            cell.dataArray = dict[@"data"];
+            cell.dataArray = ([dict count] > 1) ? dict[@"data"] : [[NSArray alloc] init];
             [cell.courseCollectionView reloadData];
         }
         
@@ -505,7 +505,7 @@
                 NSMutableDictionary *freeDict = [[NSMutableDictionary alloc] init];
                 [freeDict setObject:@"免费试听" forKey:@"title"];
                 
-                if ([infoDict[@"free"] isKindOfClass:[NSArray class]]) {
+                if ([infoDict[@"free"] isKindOfClass:[NSArray class]] && [infoDict[@"free"] count] > 0) {
                     [freeDict setObject:infoDict[@"free"] forKey:@"data"];
                 }
                 [freeHotArray addObject:freeDict];
@@ -514,7 +514,7 @@
                 NSMutableDictionary *hotDict = [[NSMutableDictionary alloc] init];
                 [hotDict setObject:@"热门课程" forKey:@"title"];
                 
-                if ([infoDict[@"hot"] isKindOfClass:[NSArray class]]) {
+                if ([infoDict[@"hot"] isKindOfClass:[NSArray class]] && [infoDict[@"hot"] count] > 0) {
                     [hotDict setObject:infoDict[@"hot"] forKey:@"data"];
                 }
                 [freeHotArray addObject:hotDict];
