@@ -133,7 +133,7 @@
     [self.view addSubview:centerView];
     
     headImageVIew = [[UIImageView alloc] init];
-    headImageVIew.backgroundColor = [UIColor greenColor];
+    headImageVIew.backgroundColor = [UIColor clearColor];
     [self.view addSubview:headImageVIew];
     
     [headImageVIew mas_makeConstraints:^(MASConstraintMaker *make) {

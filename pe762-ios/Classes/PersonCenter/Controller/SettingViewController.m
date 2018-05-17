@@ -57,6 +57,7 @@
         
         UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(22 * kScreenWidthProportion, 0 * kScreenWidthProportion, 100 * kScreenWidthProportion, 40 * kScreenWidthProportion)];
         [titleLabel setLabelWithTextColor:kGrayLabelColor textAlignment:NSTextAlignmentLeft font:13];
+        
         titleLabel.text = @"清空下载缓存";
         [contentView addSubview:titleLabel];
         
@@ -70,7 +71,16 @@
         
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] init];
         [[tap rac_gestureSignal] subscribeNext:^(id x) {
-            NSLog(@"清空下载缓存");
+            
+            
+            //计算缓存大小
+            NSUInteger size = [SDImageCache sharedImageCache].getSize;
+            double displaySize = size/ 1000.0 /1000.0;
+            NSLog(@"%.2f-------",displaySize);
+            
+            [[SDImageCache sharedImageCache] clearDiskOnCompletion:nil];
+            [self showHUDTextOnly:@"缓存已清空"];
+            
         }];
         [contentView addGestureRecognizer:tap];
     }

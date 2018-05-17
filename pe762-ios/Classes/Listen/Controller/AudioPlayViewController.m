@@ -28,6 +28,7 @@
     UIView *vipView;
     UIView *playBackView; //播放页面的图文背景
     UIImageView *playBackImage;//播放页面的图文背景图片
+    UIImageView *playCenterImage; //播放页面中心图片
     UIImageView *handleImage; //
     UILabel *nowPlayTime; //当前播放时间
     UILabel *allPlayTime; //总时间
@@ -241,7 +242,7 @@
     playBackView = [[UIView alloc] initWithFrame:CGRectMake(0, vipView.maxY, kScreenWidth, 285 * kScreenWidthProportion)];
     //playBackView.backgroundColor = [UIColor greenColor];
     [mainView addSubview:playBackView];
-    
+    //播放背景图片1
     playBackImage=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"round_bg"]];
     [playBackView addSubview:playBackImage];
     [playBackImage mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -249,7 +250,17 @@
         make.centerY.mas_equalTo(playBackView);
         make.size.mas_equalTo(CGSizeMake(250 * kScreenWidthProportion, 250 * kScreenWidthProportion));
     }];
-    
+     //播放背景图片2
+    playCenterImage=[[UIImageView alloc] init];
+    [playBackView addSubview:playCenterImage];
+    playCenterImage.backgroundColor=[UIColor clearColor];
+    [playCenterImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.mas_equalTo(playBackView);
+        make.centerY.mas_equalTo(playBackView);
+        make.size.mas_equalTo(CGSizeMake(150 * kScreenWidthProportion, 150 * kScreenWidthProportion));
+    }];
+    [playCenterImage setCornerRadius: 75 * kScreenWidthProportion];
+   // playCenterImage.layer.cornerRadius= 75 * kScreenWidthProportion;
     //音频把手
     handleImage=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"group23"]];
     [mainView addSubview:handleImage];
@@ -463,7 +474,8 @@
                 NSArray *strArray = [vudioUrlStr componentsSeparatedByString:@"/"];
                 vudioNameStr = [strArray lastObject];
 //                vudioNameStr = [NSString stringWithFormat:@"%@", infoDic[@"title"]];
-                
+                NSString *playcenterImageURL=[NSString stringWithFormat:@"%@%@",kHostURL,infoDic[@"thumb"]];
+                [playCenterImage setImageWithURL:[NSURL URLWithString:playcenterImageURL]];
                 //收藏与否
                 NSInteger is_favorite = [infoDic[@"is_favorite"] integerValue];
                 if (is_favorite == 1) {

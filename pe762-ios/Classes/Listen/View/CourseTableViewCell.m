@@ -100,6 +100,8 @@
     // 跳转到资讯详情页面
 //    [self showTabBarView:NO];
     AudioPlayViewController *pushVC = [[AudioPlayViewController alloc] init];
+    //需要有个信息说明它传过去的信息是免费的。
+//    pushVC.free=
     pushVC.idStr = idStr;
     pushVC.titleStr = [NSString stringWithFormat:@"%@", dict[@"title"]];
     [self.superVC.navigationController pushViewController:pushVC animated:YES];

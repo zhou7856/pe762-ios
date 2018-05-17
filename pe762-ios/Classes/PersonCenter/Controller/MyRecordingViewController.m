@@ -18,7 +18,7 @@
     NSInteger type;
     
     UITableView *listTableView;
-    NSArray *listDataArray;
+    NSMutableArray *listDataArray;
 }
 @end
 
@@ -362,14 +362,14 @@
 - (void)deletePlayRecording:(UIButton *) sender {
     NSInteger tagNumber = sender.tag - kTagStart - 12000;
     NSDictionary *dictionary = listDataArray[tagNumber];
-    
-    NSString *audioID = [NSString stringWithFormat:@"%@",dictionary[@"audio_id"]];
+        NSString *audioID = [NSString stringWithFormat:@"%@",dictionary[@"audio_id"]];
     
     NSString *url = [NSString stringWithFormat:@"%@",kDeletePlayRecordingURL];
     url = [self stitchingTokenAndPlatformForURL:url];
     NSDictionary *parameter = @{
                                 @"id":audioID
                                 };
+   // [listDataArray removeObjectAtIndex:tagNumber];
     [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
     [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
     [self defaultRequestwithURL:url withParameters:parameter withMethod:kPOST withBlock:^(NSDictionary *dict, NSError *error) {
@@ -399,6 +399,10 @@
                 [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
                 return;
             }
+            //如果 errorCode == "-1" ??
+//            if([errorCode isEqualToString:@"-1"]){
+//                //数据已被删除
+//            }
         }
     }];
 }

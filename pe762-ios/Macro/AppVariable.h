@@ -56,7 +56,7 @@
  */
 #define kChangeTime 15.0
 //非VIP用户可用时间
-#define kGeneralUserPlayTime 50.f
+#define kGeneralUserPlayTime 180.f
 //统计播放次数时间
 #define kStatisticsTime 100.f
 

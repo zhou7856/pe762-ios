@@ -157,6 +157,7 @@
             NSLog(@"邮箱修改");
             ChangeInfoViewController *pushVC = [[ChangeInfoViewController alloc] init];
             pushVC.typeStr = @"2";
+            pushVC.userInfo=emainLabel.text;
             [self.navigationController pushViewController:pushVC animated:YES];
         }];
         [contentView addGestureRecognizer:tap];

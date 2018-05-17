@@ -16,4 +16,6 @@
 
 @property (nonatomic, copy) NSString *idStr;
 
+// (nonatomic,weak) NSInteger free;
+
 @end

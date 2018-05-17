@@ -56,7 +56,7 @@
     if ([_typeStr isEqualToString:@"1"]) {
         changeText.placeholder = _userInfo;
     } else {
-        changeText.placeholder = @"User Email";
+        changeText.placeholder = _userInfo;
     }
     
 }
