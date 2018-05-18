@@ -418,6 +418,7 @@
                 NSDictionary *dataDic = dict[@"data"];
                 NSString *saltStr = dataDic[@"salt"];
                 NSLog(@"saltStr%@",saltStr);
+                /*
                 if (saltStr.length >0) {
                     [self showHUDTextOnly:saltStr];
                 }
@@ -425,6 +426,10 @@
                 {
                     [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
                 }
+                */
+                
+                [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+                return;
             }else {
                 [self onClickImage];
                 [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
