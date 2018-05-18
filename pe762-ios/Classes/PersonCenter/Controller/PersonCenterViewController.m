@@ -198,6 +198,7 @@
     }];
     
     isVipView = [[UIView alloc] init];
+  //  isVipView.backgroundColor=[UIColor redColor];
     [centerView addSubview:isVipView];
     [isVipView mas_makeConstraints:^(MASConstraintMaker *make) {
 //        make.size.mas_equalTo(CGSizeMake(33 * kScreenWidthProportion, 12 * kScreenWidthProportion));
@@ -232,6 +233,7 @@
     [renewalsBtn setTitle:@"续费" forState:0];
     [renewalsBtn setTitleColor:kWhiteColor forState:0];
     renewalsBtn.backgroundColor = kRedColor;
+    renewalsBtn.hidden=YES;
     [renewalsBtn setCornerRadius:3.f];
     renewalsBtn.titleLabel.font = FONT(12 * kFontProportion);
     [isVipView addSubview:renewalsBtn];
@@ -407,9 +409,10 @@
                 
                 nameLabel.text = [NSString stringWithFormat:@"%@", infoDic[@"name"]];
                 vipTimeLabel.text = [NSString stringWithFormat:@"剩余%@天", infoDic[@"days"]];
-                
+                //infoDic[@"days"];
                 //根据vip状态切换
-                [self changeView];
+                [self changeView:[infoDic[@"days"] integerValue]];
+              //   [self changeView:[@"29" integerValue]];
                 
             }else {
                 [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
@@ -420,14 +423,33 @@
 }
 
 #pragma mark - 根据vip状态修改页面
-- (void)changeView {
+- (void)changeView :(NSInteger)day{
     if ([isVip isEqualToString:@"0"]) {
         vipView.hidden = NO;
         isVipView.hidden = YES;
     } else {
         vipView.hidden = YES;
         isVipView.hidden = NO;
-        
+        //判断续费是否应当隐藏
+        if(day>=1&&day<=30){
+            renewalsBtn.hidden=NO;
+            [vipTimeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.top.bottom.mas_equalTo(isVipView);
+                //        make.left.mas_equalTo(vipImageView.mas_right).offset(5 * kScreenWidthProportion);
+                make.centerX.mas_equalTo(isVipView);
+            }];
+
+        }else{
+            renewalsBtn.hidden=YES;
+//            renewalsBtn.width=0;
+            //CGSize size=vipTimeLabel.size;
+            [vipTimeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.left.mas_equalTo(isVipView.centerX);
+                make.top.bottom.mas_equalTo(isVipView);
+                //make.size.mas_equalTo(size);
+                make.right.mas_equalTo(isVipView);
+            }];
+        }
         if ([isProxy isEqualToString:@"1"]) {
             if ([audit_status isEqualToString:@"1"]) {
                 //审核中

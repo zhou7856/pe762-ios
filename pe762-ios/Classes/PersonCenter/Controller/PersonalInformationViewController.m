@@ -76,7 +76,7 @@
         [contentView addSubview:titleLabel];
         
         headImageView = [[UIImageView alloc] initWithFrame:CGRectMake(230 * kScreenWidthProportion, 15 * kScreenWidthProportion, 50 * kScreenWidthProportion, 50 * kScreenWidthProportion)];
-        headImageView.backgroundColor = [UIColor greenColor];
+        headImageView.backgroundColor = [UIColor clearColor];
         [headImageView setCornerRadius:25 * kScreenWidthProportion];
         [contentView addSubview:headImageView];
         

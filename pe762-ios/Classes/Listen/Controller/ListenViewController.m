@@ -291,26 +291,30 @@
     
     NSString *style =[NSString stringWithFormat:@"%@",dict[@"style"]];
     NSString *idStr = [NSString stringWithFormat:@"%@", dict[@"value"]];
-    //该banner是音频
-    if([style isEqualToString:@"1"]){
-        // 跳转到音频详情页面
-        [self showTabBarView:NO];
-        AudioPlayViewController *pushVC = [[AudioPlayViewController alloc] init];
-        pushVC.idStr = idStr;
-        [self.navigationController pushViewController:pushVC animated:YES];
-    }else if([style isEqualToString:@"2"]){ //该banner是资讯
-        
-        // 跳转到资讯详情页面
-        [self showTabBarView:NO];
-        InformationDetailViewController *pushVC = [[InformationDetailViewController alloc] init];
-        pushVC.idStr = [NSString stringWithFormat:@"%@",dict[@"id"]];
-        [self.navigationController pushViewController:pushVC animated:YES];
-        
-    }else if([style isEqualToString:@"3"]){ //该banner是图片
-        [self showHUDTextOnly:@"这只是张图片"];
-        return ;//无需跳转
+    NSString *isEnabled=[NSString stringWithFormat:@"%@",dict[@"is_enable"]];
+    if([isEnabled isEqualToString:@"0"]){
+        [self showHUDTextOnly:@"该模块已禁用"];
+    }else if([isEnabled isEqualToString:@"1"]){
+        //该banner是音频
+        if([style isEqualToString:@"1"]){
+            // 跳转到音频详情页面
+            [self showTabBarView:NO];
+            AudioPlayViewController *pushVC = [[AudioPlayViewController alloc] init];
+            pushVC.idStr = idStr;
+            [self.navigationController pushViewController:pushVC animated:YES];
+        }else if([style isEqualToString:@"2"]){ //该banner是资讯
+            
+            // 跳转到资讯详情页面
+            [self showTabBarView:NO];
+            InformationDetailViewController *pushVC = [[InformationDetailViewController alloc] init];
+            pushVC.idStr = [NSString stringWithFormat:@"%@",dict[@"id"]];
+            [self.navigationController pushViewController:pushVC animated:YES];
+            
+        }else if([style isEqualToString:@"3"]){ //该banner是图片
+            [self showHUDTextOnly:@"这只是张图片"];
+            return ;//无需跳转
+        }
     }
-    
   
 }
 
