@@ -27,7 +27,7 @@
 //返回的数据
 #define kData @"data"
 
-#define kBuild @"1.0.0.5"
+#define kBuild @"1.0.0.7"
 
 #define kVersion @"?platform=Ios&version=" kBuild
 

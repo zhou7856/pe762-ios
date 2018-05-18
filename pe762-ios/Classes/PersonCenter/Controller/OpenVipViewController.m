@@ -19,6 +19,7 @@
     UILabel *vipMoneyLabel;
     // 会员权益简介
     UILabel *powerDetailLabel;
+    UITextView *powerDetailTextView;
     // 会员金额
     NSString *vipmoney;
     // 支付方式
@@ -188,11 +189,17 @@
     twoContenView.backgroundColor = RGB(234, 234, 234);
     [oneContenView addSubview:twoContenView];
     
-    powerDetailLabel = [[UILabel alloc] init];
-    powerDetailLabel.textColor = kBlackLabelColor;
-    powerDetailLabel.textAlignment = NSTextAlignmentLeft;
-    powerDetailLabel.font = FONT(13 * kFontProportion);
-    [twoContenView addSubview:powerDetailLabel];
+    //powerDetailLabel = [[UILabel alloc] init];
+    //powerDetailLabel.textColor = kBlackLabelColor;
+    //powerDetailLabel.textAlignment = NSTextAlignmentLeft;
+    //powerDetailLabel.font = FONT(13 * kFontProportion);
+    //[twoContenView addSubview:powerDetailLabel];
+    
+    powerDetailTextView = [[UITextView alloc] init];
+    powerDetailTextView.textColor = kBlackLabelColor;
+    powerDetailTextView.backgroundColor = RGB(234, 234, 234);
+    powerDetailTextView.font = FONT(13 * kFontProportion);
+    [twoContenView addSubview:powerDetailTextView];
     
     [vipTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(oneContenView).offset(17 * kScreenHeightProportion);
@@ -235,7 +242,7 @@
     }];
     
     
-    [powerDetailLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+    [powerDetailTextView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(twoContenView).offset(18 * kScreenHeightProportion);
         make.left.mas_equalTo(twoContenView).offset(20 * kScreenWidthProportion);
         make.right.mas_equalTo(twoContenView).offset(-20 * kScreenWidthProportion);
@@ -284,10 +291,8 @@
                 
                 // 会员权益
                 NSAttributedString *detailsAttrStr = [[NSAttributedString alloc] initWithData:[vip_introduction dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute:NSHTMLTextDocumentType } documentAttributes:nil error:nil];
-                powerDetailLabel.attributedText = detailsAttrStr;
-                //[powerDetailLabel setLineSpacing:5.0f];
-                powerDetailLabel.numberOfLines = 0;
-                //powerDetailLabel.lineBreakMode = NSLineBreakByTruncatingTail;
+                //powerDetailLabel.attributedText = detailsAttrStr;
+                powerDetailTextView.attributedText = detailsAttrStr;
                 
                 
             }else {

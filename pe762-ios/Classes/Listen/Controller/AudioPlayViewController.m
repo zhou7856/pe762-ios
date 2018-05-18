@@ -484,6 +484,7 @@
         //判断有无数据
         if ([[dict allKeys] containsObject:@"errorCode"]) {
             NSString *errorCode = [NSString stringWithFormat:@"%@",dict[@"errorCode"]];
+            /*
             if ([errorCode isEqualToString:@"-1"]){
                 //判断当前是不是登陆页面
                 if ([[self.navigationController.viewControllers lastObject] isKindOfClass:[LoginViewController class]]) {
@@ -496,6 +497,7 @@
                 [self.navigationController pushViewController:loginVC animated:YES];
                 return;
             }
+            */
             
             if ([errorCode isEqualToString:@"0"]) {
                 NSDictionary *dataDic = dict[@"data"];
@@ -610,6 +612,7 @@
         //判断有无数据
         if ([[dict allKeys] containsObject:@"errorCode"]) {
             NSString *errorCode = [NSString stringWithFormat:@"%@",dict[@"errorCode"]];
+            /*
             if ([errorCode isEqualToString:@"-1"]){
                 //判断当前是不是登陆页面
                 if ([[self.navigationController.viewControllers lastObject] isKindOfClass:[LoginViewController class]]) {
@@ -622,6 +625,7 @@
                 [self.navigationController pushViewController:loginVC animated:YES];
                 return;
             }
+            */
             
             if ([errorCode isEqualToString:@"0"]) {
                 NSDictionary *dataDic = dict[@"data"];
