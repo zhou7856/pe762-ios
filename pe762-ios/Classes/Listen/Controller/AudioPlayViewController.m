@@ -599,8 +599,9 @@
                 //处理数据
                 [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
                 [self initData];
-            }else {
+            }else if([errorCode isEqualToString:@"1"]){
                 [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+                [self.navigationController popViewControllerAnimated:YES];
                 return;
             }
             //如果 errorCode == "-1" ??
