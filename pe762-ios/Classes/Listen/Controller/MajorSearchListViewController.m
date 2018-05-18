@@ -50,7 +50,7 @@
     
     majorBtn = [[UIButton alloc] init];
     typeLabel = [[UILabel alloc] init];
-    [self createNavigationFeatureAndTitle:self.titleStr withLeftBtn:majorBtn andTypeTitle:typeLabel];
+    [self createNavigationFeatureAndTitle:self.viewTitleStr withLeftBtn:majorBtn andTypeTitle:typeLabel];
 
     typeLabel.text = @"专业";
     
@@ -157,16 +157,16 @@
     NSString *url = [NSString stringWithFormat:@"%@",kSearchAudioURL];
     url = [self stitchingTokenAndPlatformForURL:url];
     
-    self.typeStr = (self.typeStr.length <= 0) ? @"" : self.typeStr;
+    self.typeStr = (self.typeStr.length <= 0) ? @"1" : self.typeStr;
     self.titleStr = (self.titleStr.length <= 0) ? @"" : self.titleStr;
     self.courseIdStr = (self.courseIdStr.length <= 0) ? @"" : self.courseIdStr;
-    self.idStr = (self.idStr.length <= 0) ? @"" : self.idStr;
+    self.courseClassifyIdStr = (self.courseClassifyIdStr.length <= 0) ? @"" : self.courseClassifyIdStr;
     
     
     NSDictionary *parameter = @{
                                 @"type":self.typeStr,
                                 @"title":self.titleStr,
-                                @"course_classify_id":self.idStr,
+                                @"course_classify_id":self.courseClassifyIdStr,
                                 @"course_id":self.courseIdStr
                                 };
     [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
