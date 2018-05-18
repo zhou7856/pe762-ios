@@ -303,7 +303,7 @@
         // 跳转到资讯详情页面
         [self showTabBarView:NO];
         InformationDetailViewController *pushVC = [[InformationDetailViewController alloc] init];
-        pushVC.idStr = idStr;
+        pushVC.idStr = [NSString stringWithFormat:@"%@",dict[@"id"]];
         [self.navigationController pushViewController:pushVC animated:YES];
         
     }else if([style isEqualToString:@"3"]){ //该banner是图片

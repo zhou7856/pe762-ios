@@ -475,6 +475,7 @@
     NSString *url = [NSString stringWithFormat:@"%@",kGetAudioDetailURL];
     url = [self stitchingTokenAndPlatformForURL:url];
     url = [NSString stringWithFormat:@"%@&id=%@", url, self.idStr];
+    NSLog(@"url--》%@",url);
     
     [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
     [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
