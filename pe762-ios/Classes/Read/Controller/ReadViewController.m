@@ -11,7 +11,7 @@
 #import "InformationDetailViewController.h"//资讯详情
 #import "LoginViewController.h"//登录
 #import "MessageViewController.h"//消息
-#import "SearchViewController.h"
+#import "ReadSearchViewController.h"
 
 
 @interface ReadViewController ()<UITableViewDelegate,UITableViewDataSource>
@@ -252,7 +252,7 @@
     //[self showTabBarView:NO];
     //[self.navigationController pushViewController:[MessageViewController new] animated:YES];
     [self showTabBarView:NO];
-    SearchViewController *pushVC = [[SearchViewController alloc] init];
+    ReadSearchViewController *pushVC = [[ReadSearchViewController alloc] init];
     [self.navigationController pushViewController:pushVC animated:YES];
 }
 
@@ -331,14 +331,19 @@
     //拼接url
     NSString *url = [NSString stringWithFormat:@"%@", kReadInformationHomeURL];
     url = [self stitchingTokenAndPlatformForURL:url];
-    url = [NSString stringWithFormat:@"%@&page=%ld&rows=%ld", url, page, rows];
 
+    NSDictionary *parameters = @{
+                                 @"title":@"",
+                                 @"page":[NSString stringWithFormat:@"%ld", page],
+                                 @"rows":[NSString stringWithFormat:@"%ld", rows]
+                                 };
+    
     // 添加菊花
     [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
     [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
     
     // 开始请求
-    [self defaultRequestwithURL:url withParameters:nil withMethod:kGET withBlock:^(NSDictionary *dict, NSError *error) {
+    [self defaultRequestwithURL:url withParameters:parameters withMethod:kPOST withBlock:^(NSDictionary *dict, NSError *error) {
         // 隐藏菊花
         [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
         
@@ -387,14 +392,19 @@
         //拼接url
         NSString *url = [NSString stringWithFormat:@"%@", kReadInformationHomeURL];
         url = [self stitchingTokenAndPlatformForURL:url];
-        url = [NSString stringWithFormat:@"%@&page=%ld&rows=%ld", url, page, rows];
+        
+        NSDictionary *parameters = @{
+                                     @"title":@"",
+                                     @"page":[NSString stringWithFormat:@"%ld", page],
+                                     @"rows":[NSString stringWithFormat:@"%ld", rows]
+                                     };
         
         // 添加菊花
         [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
         [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
         
         // 开始请求
-        [self defaultRequestwithURL:url withParameters:nil withMethod:kGET withBlock:^(NSDictionary *dict, NSError *error) {
+        [self defaultRequestwithURL:url withParameters:parameters withMethod:kPOST withBlock:^(NSDictionary *dict, NSError *error) {
             // 隐藏菊花
             [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
             [informationTabelView.mj_header endRefreshing];
@@ -444,14 +454,19 @@
         //拼接url
         NSString *url = [NSString stringWithFormat:@"%@", kReadInformationHomeURL];
         url = [self stitchingTokenAndPlatformForURL:url];
-        url = [NSString stringWithFormat:@"%@&page=%ld&rows=%ld", url, page, rows];
+        
+        NSDictionary *parameters = @{
+                                     @"title":@"",
+                                     @"page":[NSString stringWithFormat:@"%ld", page],
+                                     @"rows":[NSString stringWithFormat:@"%ld", rows]
+                                     };
         
         // 添加菊花
         [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
         [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
         
         // 开始请求
-        [self defaultRequestwithURL:url withParameters:nil withMethod:kGET withBlock:^(NSDictionary *dict, NSError *error) {
+        [self defaultRequestwithURL:url withParameters:parameters withMethod:kPOST withBlock:^(NSDictionary *dict, NSError *error) {
             // 隐藏菊花
             [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
             [informationTabelView.mj_footer endRefreshing];
