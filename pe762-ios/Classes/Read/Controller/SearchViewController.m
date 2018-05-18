@@ -270,10 +270,10 @@
         UILabel *titleLabel = [[UILabel alloc] init];
         if (tempView == classTypeView) {
             rendomStr = [NSString stringWithFormat:@"%@", tempDict[@"course_name"]];
-            titleLabel.tag = kTagStart + 10000 + [tempDict[@"id"] integerValue];
+            titleLabel.tag = kTagStart + 20000 + [tempDict[@"id"] integerValue];
         } else {
             rendomStr = [NSString stringWithFormat:@"%@", tempDict[@"case_value"]];
-            titleLabel.tag = kTagStart + 20000 + [tempDict[@"id"] integerValue];
+            titleLabel.tag = kTagStart + 10000 + [tempDict[@"id"] integerValue];
         }
         titleLabel.textAlignment = NSTextAlignmentCenter;
         titleLabel.backgroundColor = RGB(241.0, 241.0, 241.0);
@@ -305,7 +305,20 @@
                 keyWordStr = titleLabel.text;
                 
                 MajorSearchListViewController *pushVC = [[MajorSearchListViewController alloc] init];
-                pushVC.titleStr = keyWordStr;
+                
+                //分类记录
+                if (tempView == classTypeView) {
+                    // 专业id course_classify_id
+                    NSInteger classId = titleLabel.tag - kTagStart - 20000;
+                    pushVC.courseIdStr = [self stringForNull:[NSString stringWithFormat:@"%ld", (long)classId]];
+                    
+                } else {
+                    // course_id
+                    NSInteger courseId = titleLabel.tag - kTagStart - 10000;
+                    pushVC.courseClassifyIdStr = [self stringForNull:[NSString stringWithFormat:@"%ld", (long)courseId]];
+                }
+                pushVC.typeStr = @"1";
+                pushVC.viewTitleStr = keyWordStr;
                 [self.navigationController pushViewController:pushVC animated:YES];
                 //keyWordStr = [titleLabel.text stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
                 //[self searchAudioAPI];
@@ -334,6 +347,8 @@
         keyWordStr = searchTextField.text;
         MajorSearchListViewController *pushVC = [[MajorSearchListViewController alloc] init];
         pushVC.titleStr = keyWordStr;
+        pushVC.typeStr = @"1";
+        pushVC.viewTitleStr = keyWordStr;
         [self.navigationController pushViewController:pushVC animated:YES];
         
 //        keyWordStr = [searchTextField.text stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];

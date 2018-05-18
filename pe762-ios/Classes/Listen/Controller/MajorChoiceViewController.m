@@ -145,7 +145,7 @@
         
         [cell.typeView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
         
-        [self initLogTitleLabel:cell.typeView andHistory:course[@"course_classify"]];
+        [self initLogTitleLabel:cell.typeView andHistory:course[@"course_classify"] andIndexPath:indexPath.row];
         
         NSInteger typeHeight = [heightDic[@"lableHeight"] integerValue];
         
@@ -167,8 +167,6 @@
         
     }
     
-    
-    
     return cell;
     
 }
@@ -177,22 +175,32 @@
     
     NSLog(@"你点击了第%ld行", indexPath.row);
     
-    NSString *type = [dataArray[indexPath.row] objectForKey:@"clickType"];
-    if ([type isEqualToString:@"NO"]) {
-        [dataArray[indexPath.row] setObject:@"YES" forKey:@"clickType"];
-    } else {
-        [dataArray[indexPath.row] setObject:@"NO" forKey:@"clickType"];
-    }
+    // 获取数据
+    NSDictionary *dict = dataArray[indexPath.row];
+    NSDictionary *course = dict[@"course"];
     
-    // 刷新
-    NSIndexPath *indexPathA = [NSIndexPath indexPathForRow:indexPath.row inSection:indexPath.section]; //刷新第0段第2行
-    [tableView reloadRowsAtIndexPaths:@[indexPathA] withRowAnimation:UITableViewRowAnimationNone];
+    // 如果标签数组大于零，才可以点击
+    if ([course[@"course_classify"] isKindOfClass:[NSArray class]] && [course[@"course_classify"] count] > 0) {
+        NSString *type = [dict objectForKey:@"clickType"];
+        if ([type isEqualToString:@"NO"]) {
+            [dataArray[indexPath.row] setObject:@"YES" forKey:@"clickType"];
+        } else {
+            [dataArray[indexPath.row] setObject:@"NO" forKey:@"clickType"];
+        }
+        
+        // 刷新
+        NSIndexPath *indexPathA = [NSIndexPath indexPathForRow:indexPath.row inSection:indexPath.section]; //刷新第0段第2行
+        [tableView reloadRowsAtIndexPaths:@[indexPathA] withRowAnimation:UITableViewRowAnimationNone];
+    } else {
+        [self showHUDTextOnly:@"该专业没有标签"];
+    }
     
 }
 
 // 历史标签
-- (void) initLogTitleLabel:(UIView *)tempView andHistory:(NSMutableArray *)historyArray{
+- (void) initLogTitleLabel:(UIView *)tempView andHistory:(NSMutableArray *)historyArray andIndexPath:(NSInteger)indexPath{
     //[tempView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    
     
     // 历史记录标签view
     NSInteger lineNumber = 0;
@@ -230,22 +238,21 @@
             
             NSLog(@"%@ %ld", titleLabel.text, titleLabel.tag);
             
-            NSString *idStr = [NSString stringWithFormat:@"%ld", titleLabel.tag - kTagStart];
+            // 获取数据
+            NSDictionary *dict = dataArray[indexPath];
+            NSDictionary *course = dict[@"course"];
+            
+            NSString *courseClassifyIdStr = [NSString stringWithFormat:@"%ld", (titleLabel.tag - kTagStart)];
             MajorSearchListViewController *pushVC = [[MajorSearchListViewController alloc] init];
-            pushVC.titleStr = titleLabel.text;
-            pushVC.idStr = idStr;
+            pushVC.viewTitleStr = titleLabel.text;
+            pushVC.courseClassifyIdStr = courseClassifyIdStr;
+            pushVC.courseIdStr = [self stringForNull:course[@"id"]];
+            pushVC.typeStr = @"1";
             [self.navigationController pushViewController:pushVC animated:YES];
             
         }];
         [titleLabel addGestureRecognizer:tap];
     }
-    
-//    // 跟新高度
-//    lineNumber += 1;
-//    [tempView mas_updateConstraints:^(MASConstraintMaker *make) {
-//        make.height.mas_equalTo(lineNumber * height);
-//    }];
-    
 }
 
 - (NSMutableDictionary *)cellHeightWithData :(NSDictionary *)dic {
@@ -287,7 +294,9 @@
     }
     
     // 标签view的高度
-    lineNumber += 1;
+    if (course_classify.count > 0) {
+        lineNumber += 1;
+    }
     NSInteger lableHeight = lineNumber * height;
     
     [heightDic setObject:[NSString stringWithFormat:@"%ld", lableHeight] forKey:@"lableHeight"];
