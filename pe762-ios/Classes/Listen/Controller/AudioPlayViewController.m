@@ -85,6 +85,8 @@
     //播放记录
     NSMutableArray *listDataArray;
     
+    NSString* isVIP;
+    
 }
 
 @property (nonatomic, strong) FSAudioStream *audioStream;
@@ -502,6 +504,16 @@
             if ([errorCode isEqualToString:@"0"]) {
                 NSDictionary *dataDic = dict[@"data"];
                 NSDictionary *infoDic = dataDic[@"info"];
+                NSDictionary *server = dataDic[@"server"];
+                //获得isVIP的信息
+                if([[NSString stringWithFormat:@"%@",server[@"is_vip"]] isEqualToString:@"1"]){
+                    isVip=YES;
+                    vipView.hidden=YES;
+                }else {
+                    isVip=NO;
+                    vipView.hidden=NO;
+                }
+                
                 vudioUrlStr = [NSString stringWithFormat:@"%@", infoDic[@"audio_path"]];
                 audioType=[NSString stringWithFormat:@"%@",infoDic[@"type"]];
                 audioIDStr=[NSString stringWithFormat:@"%@",infoDic[@"id"]];
