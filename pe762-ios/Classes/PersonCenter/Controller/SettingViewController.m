@@ -13,6 +13,7 @@
 @interface SettingViewController ()
 {
 //    UIButton *messageBtn; //消息按钮
+    NSMutableArray *listDataArray; //下载记录信息
 }
 @end
 
@@ -20,7 +21,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    [self getDownloadRecordingAPI];  //获取所有下载记录，为了用于删除
     [self initNav];
     [self initUI];
 }
@@ -73,14 +74,23 @@
         [[tap rac_gestureSignal] subscribeNext:^(id x) {
             
             
-            //计算缓存大小
-            NSUInteger size = [SDImageCache sharedImageCache].getSize;
-            double displaySize = size/ 1000.0 /1000.0;
-            NSLog(@"%.2f-------",displaySize);
+//            //计算缓存大小
+//            NSUInteger size = [SDImageCache sharedImageCache].getSize;
+//            double displaySize = size/ 1000.0 /1000.0;
+//            NSLog(@"%.2f-------",displaySize);
+//            
+//            [[SDImageCache sharedImageCache] clearDiskOnCompletion:nil];
+//            [self showHUDTextOnly:@"缓存已清空"];
+            //删除所有下载记录
+            [self deleteAllLocalAudio];
             
-            [[SDImageCache sharedImageCache] clearDiskOnCompletion:nil];
-            [self showHUDTextOnly:@"缓存已清空"];
-            
+//            for(int i=0;i<listDataArray.count;i++){
+//                [self deleteLocalAudio:i];
+//            }
+
+           // [self deleteLocalAudio:@1];
+            //删除所有缓存
+            [self delAllDownLoadInfo];
         }];
         [contentView addGestureRecognizer:tap];
     }
@@ -153,7 +163,159 @@
     [self.view addSubview:quitBtn];
     [quitBtn addTarget:self action:@selector(quitBtnAction) forControlEvents:UIControlEventTouchUpInside];
 }
+#pragma mark - 获得下载记录
+- (void)getDownloadRecordingAPI {
+    NSString *url = [NSString stringWithFormat:@"%@",kGetDownloadRecordingURL];
+    url = [self stitchingTokenAndPlatformForURL:url];
+    
+    [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+    [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
+    [self defaultRequestwithURL:url withParameters:nil withMethod:kGET withBlock:^(NSDictionary *dict, NSError *error) {
+        [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+        //判断有无数据
+        if ([[dict allKeys] containsObject:@"errorCode"]) {
+            NSString *errorCode = [NSString stringWithFormat:@"%@",dict[@"errorCode"]];
+            if ([errorCode isEqualToString:@"-1"]){
+                //判断当前是不是登陆页面
+                if ([[self.navigationController.viewControllers lastObject] isKindOfClass:[LoginViewController class]]) {
+                    return;
+                }
+                
+                //未登陆
+                LoginViewController *loginVC = [[LoginViewController alloc] init];
+                
+                [self.navigationController pushViewController:loginVC animated:YES];
+                return;
+            }
+            
+            if ([errorCode isEqualToString:@"0"]) {
+                NSDictionary *dataDic = dict[@"data"];
+                //处理数据
+                listDataArray = dataDic[@"info"];
+            
+            }else {
+                [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+                return;
+            }
+        }
+    }];
+}
+//删除所有记录
+-(void)delAllDownLoadInfo{
+    //NSMutableArray *fileNameArray=[[NSMutableArray alloc] init];
+    for(int i=0;i<listDataArray.count;i++){
+        NSDictionary *dictionary=[listDataArray objectAtIndex:i];
+        NSString *fileName = [NSString stringWithFormat:@"%@",dictionary[@"audio_name"]];
+        //删除本地文件
+        [self deleteLocalFile:fileName];
+    }
+}
+#pragma mark 删除记录
+- (void)deleteLocalAudio:(NSInteger) row{
+    NSDictionary *dictionary = listDataArray[row];
 
+    NSString *audioID = [NSString stringWithFormat:@"%@",dictionary[@"id"]];
+    NSString *fileName = [NSString stringWithFormat:@"%@",dictionary[@"audio_name"]];
+    NSString *url = [NSString stringWithFormat:@"%@",kDeleteDownloadRecordingURL];
+    url = [self stitchingTokenAndPlatformForURL:url];
+    NSDictionary *parameter = @{
+                                @"id":audioID
+                                };
+    [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+    [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
+    [self defaultRequestwithURL:url withParameters:parameter withMethod:kPOST withBlock:^(NSDictionary *dict, NSError *error) {
+        [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+        //判断有无数据
+        if ([[dict allKeys] containsObject:@"errorCode"]) {
+            NSString *errorCode = [NSString stringWithFormat:@"%@",dict[@"errorCode"]];
+            if ([errorCode isEqualToString:@"-1"]){
+                //判断当前是不是登陆页面
+                if ([[self.navigationController.viewControllers lastObject] isKindOfClass:[LoginViewController class]]) {
+                    return;
+                }
+                
+                //未登陆
+                LoginViewController *loginVC = [[LoginViewController alloc] init];
+                
+                [self.navigationController pushViewController:loginVC animated:YES];
+                return;
+            }
+            
+            if ([errorCode isEqualToString:@"0"]) {
+                //                    NSDictionary *dataDic = dict[@"data"];
+                //处理数据
+                //                [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+                
+                //删除本地文件
+                [self deleteLocalFile:fileName];
+            }else {
+//                [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+                [self showHUDTextOnly:@"已清空"];
+                return;
+            }
+        }
+    }];
+}
+#pragma mark 删除所有记录
+- (void)deleteAllLocalAudio{
+    NSString *url = [NSString stringWithFormat:@"%@",kDeleteDownloadRecordingURL];
+    url = [self stitchingTokenAndPlatformForURL:url];
+    url =[url stringByAppendingString:@"&type=1"];
+    [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+    [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
+    [self defaultRequestwithURL:url withParameters:nil withMethod:kGET withBlock:^(NSDictionary *dict, NSError *error) {
+        [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+        //判断有无数据
+        if ([[dict allKeys] containsObject:@"errorCode"]) {
+            NSString *errorCode = [NSString stringWithFormat:@"%@",dict[@"errorCode"]];
+            if ([errorCode isEqualToString:@"-1"]){
+                //判断当前是不是登陆页面
+                if ([[self.navigationController.viewControllers lastObject] isKindOfClass:[LoginViewController class]]) {
+                    return;
+                }
+                
+                //未登陆
+                LoginViewController *loginVC = [[LoginViewController alloc] init];
+                
+                [self.navigationController pushViewController:loginVC animated:YES];
+                return;
+            }
+            
+            if ([errorCode isEqualToString:@"0"]) {
+                //                    NSDictionary *dataDic = dict[@"data"];
+                //处理数据
+                //                [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+                [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+                [self showHUDTextOnly:@"已清空下载"];
+            }else {
+                //                [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+                [self showHUDTextOnly:@"已清空"];
+                return;
+            }
+        }
+    }];
+}
+#pragma mark - 删除本地文件
+- (void)deleteLocalFile:(NSString *)fileName {
+    NSFileManager* fileManager=[NSFileManager defaultManager];
+    //获取到Document 目录
+    NSString *documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
+    NSString *filePath = [NSString stringWithFormat:@"%@/%@", documentsPath, fileName];
+    BOOL blHave=[[NSFileManager defaultManager] fileExistsAtPath:filePath];
+    if (!blHave) {
+        NSLog(@"no  have");
+        return ;
+    }else {
+        NSLog(@" have");
+        BOOL blDele= [fileManager removeItemAtPath:filePath error:nil];
+        if (blDele) {
+            [self showHUDTextOnly:@"删除成功"];
+            NSLog(@"dele success");
+        }else {
+            NSLog(@"dele fail");
+        }
+    }
+}
 //#pragma makr - 消息点击
 //- (void)messageBtnAction {
 //
