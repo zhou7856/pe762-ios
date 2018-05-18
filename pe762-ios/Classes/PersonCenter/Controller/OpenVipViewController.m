@@ -10,6 +10,7 @@
 #import "PayVipPopView.h"
 // 充值
 #import "WXApi.h"
+#import <AlipaySDK/AlipaySDK.h>
 
 @interface OpenVipViewController ()
 {
@@ -311,11 +312,6 @@
     
     NSString *payment = [self stringForNull:[NSString stringWithFormat:@"%ld", (long)paymentType]];
     
-    if ([payment isEqualToString:@"1"]) {
-        [self showHUDTextOnly:@"支付宝支付未开通"];
-        return ;
-    }
-    
     NSDictionary *parameters = @{
                                  @"payment_method":payment
                                  };
@@ -343,18 +339,17 @@
                 //NSDictionary *infoDict = dataDict[@"info"];
                 
                 //[支付方式 1支付宝 2微信]
-                [self weChatPay:dataDict];
-                /*
-                 if (payType == 1) {
-                 
-                 [self alipay:infoDict];
-                 
-                 } else {
-                 
-                 [self weChatPay:infoDict];
-                 
-                 }
-                 */
+                //[self weChatPay:dataDict];
+                
+                if (paymentType == 1) {
+                    
+                    [self alipay:dataDict];
+                    
+                } else if (paymentType == 2) {
+                    
+                    [self weChatPay:dataDict];
+                    
+                }
             }
             
         }
@@ -377,6 +372,45 @@
     req.package = [self stringForNull:payDict[@"package"]];
     req.sign = [self stringForNull:payDict[@"sign"]];
     [WXApi sendReq:req];
+}
+
+// 支付宝支付
+- (void) alipay:(NSDictionary *)data {
+    // NOTE: 调用支付结果开始支付
+    NSString *payStr = [self stringForNull:data[@"pay"]];
+    
+    [[AlipaySDK defaultService] payOrder:payStr fromScheme:@"知趣大学专业shuo" callback:^(NSDictionary *resultDic) {
+        NSLog(@"reslut = %@",resultDic);
+        NSString *strMsg;
+        switch ([resultDic[@"resultStatus"]intValue]) {
+                //成功
+            case 9000:{
+                strMsg = @"支付成功";
+            }
+                break;
+                
+            case 6001: {
+                strMsg = @"取消支付";
+                [self showHUDTextOnly:strMsg];
+            }
+                break;
+                
+            case 6002: {
+                strMsg = @"网络错误";
+                [self showHUDTextOnly:strMsg];
+            }
+                break;
+                
+            case 4000:{
+                strMsg = @"支付失败";
+                [self showHUDTextOnly:strMsg];
+            }
+                break;
+                
+            default:
+                break;
+        }
+    }];
 }
 
 // 字符串转字典
