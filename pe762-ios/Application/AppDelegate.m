@@ -86,10 +86,13 @@ UIBackgroundTaskIdentifier _bgTaskId;
                                           appSecret:@"46a420dbb44f8ab266ac8c8ad2676b60"
                                         redirectUri:@"http://www.weibo.com"
                                            authType:SSDKAuthTypeBoth];
-//                [appInfo SSDKSetupSinaWeiboByAppKey:@"568898243"
-//                                          appSecret:@"38a4f8204cc784f81f9f0daaf31e02e3"
-//                                        redirectUri:@"http://www.weibo.com"
-//                                           authType:SSDKAuthTypeBoth];
+                /*
+                //ShareSDK的官方测试账号
+                [appInfo SSDKSetupSinaWeiboByAppKey:@"568898243"
+                                          appSecret:@"38a4f8204cc784f81f9f0daaf31e02e3"
+                                        redirectUri:@"http://www.weibo.com"
+                                           authType:SSDKAuthTypeBoth];
+                 */
                 break;
                 
             default:
