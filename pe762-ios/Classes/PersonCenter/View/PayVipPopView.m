@@ -203,10 +203,14 @@
             selectedWCImageView.selected = NO;
             selectedALImageView.selected = YES;
             popView.type = 1;
+            [openBtn setTitle:[NSString stringWithFormat:@"使用支付宝支付 ¥ %@", money] forState:UIControlStateNormal];
+            [openBtn.titleLabel rangeTextStringFont:FONT(28 * kFontProportion) range:NSMakeRange(openBtn.titleLabel.text.length - money.length, money.length)];
         } else {
             selectedWCImageView.selected = YES;
             selectedALImageView.selected = NO;
             popView.type = 2;
+            [openBtn setTitle:[NSString stringWithFormat:@"使用微信支付 ¥ %@", money] forState:UIControlStateNormal];
+            [openBtn.titleLabel rangeTextStringFont:FONT(28 * kFontProportion) range:NSMakeRange(openBtn.titleLabel.text.length - money.length, money.length)];
         }
     }];
     
@@ -215,10 +219,14 @@
             selectedWCImageView.selected = YES;
             selectedALImageView.selected = NO;
             popView.type = 2;
+            [openBtn setTitle:[NSString stringWithFormat:@"使用微信支付 ¥ %@", money] forState:UIControlStateNormal];
+            [openBtn.titleLabel rangeTextStringFont:FONT(28 * kFontProportion) range:NSMakeRange(openBtn.titleLabel.text.length - money.length, money.length)];
         } else {
             selectedWCImageView.selected = NO;
             selectedALImageView.selected = YES;
             popView.type = 1;
+            [openBtn setTitle:[NSString stringWithFormat:@"使用支付宝支付 ¥ %@", money] forState:UIControlStateNormal];
+            [openBtn.titleLabel rangeTextStringFont:FONT(28 * kFontProportion) range:NSMakeRange(openBtn.titleLabel.text.length - money.length, money.length)];
         }
     }];
 }
@@ -235,11 +243,11 @@
 }
 
 /*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
-}
-*/
+ // Only override drawRect: if you perform custom drawing.
+ // An empty implementation adversely affects performance during animation.
+ - (void)drawRect:(CGRect)rect {
+ // Drawing code
+ }
+ */
 
 @end

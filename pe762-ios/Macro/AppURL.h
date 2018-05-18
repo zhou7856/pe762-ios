@@ -204,8 +204,8 @@
 //会员充值支付页面 Future
 #define kRechargeVipTwigURL kBaseURL @"user/userIndex/rechargeVipTwig"
 
-//会员充值操作
-
+//会员充值操作 Future
+#define kRechargeVipURL kBaseURL @"user/userIndex/rechargeVip"
 
 /*************************广告***********************************/
 //获取广告图
