@@ -437,7 +437,7 @@
              }
              case SSDKResponseStateCancel:
              {
-                 [self showHUDTextOnly:@"分享取消"];
+                 //[self showHUDTextOnly:@"分享取消"];
                  break;
              }
              default:
@@ -472,7 +472,7 @@
              }
              case SSDKResponseStateCancel:
              {
-                 [self showHUDTextOnly:@"分享取消"];
+                 //[self showHUDTextOnly:@"分享取消"];
                  break;
              }
              default:
@@ -509,8 +509,8 @@
              }
              case SSDKResponseStateCancel:
              {
-                 
-                 
+                 //[self showHUDTextOnly:@"分享取消"];
+                 break;
              }
              default:
                  break;
@@ -545,7 +545,7 @@
              }
              case SSDKResponseStateCancel:
              {
-                 [self showHUDTextOnly:@"分享取消"];
+                 //[self showHUDTextOnly:@"分享取消"];
                  break;
              }
              default:
@@ -594,7 +594,7 @@
             }
             case SSDKResponseStateCancel:
             {
-                [self showHUDTextOnly:@"分享取消"];
+                //[self showHUDTextOnly:@"分享取消"];
                 break;
             }
             default:
