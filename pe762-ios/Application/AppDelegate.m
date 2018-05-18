@@ -18,6 +18,8 @@
 //腾讯开放平台（对应QQ和QQ空间）SDK头文件
 #import <TencentOpenAPI/TencentOAuth.h>
 #import <TencentOpenAPI/QQApiInterface.h>
+//支付宝SDK
+#import <AlipaySDK/AlipaySDK.h>
 
 @interface AppDelegate ()<WXApiDelegate>
 
@@ -178,6 +180,50 @@ UIBackgroundTaskIdentifier _bgTaskId;
         //返回支付结果 支付成功9000 支付失败 6001
         [[NSNotificationCenter defaultCenter] postNotificationName:@"payResult" object:resultCode];
     }
+}
+
+#pragma mark - 支付宝回调
+- (BOOL)application:(UIApplication *)application
+            openURL:(NSURL *)url
+  sourceApplication:(NSString *)sourceApplication
+         annotation:(id)annotation {
+    
+    if ([url.host isEqualToString:@"safepay"]) {
+        //跳转支付宝钱包进行支付，处理支付结果
+        [[AlipaySDK defaultService] processOrderWithPaymentResult:url standbyCallback:^(NSDictionary *resultDic) {
+            NSLog(@"result = %@",resultDic);
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"payResult" object:resultDic[@"resultStatus"]];
+        }];
+    }
+    
+    return YES;
+}
+
+// NOTE: 9.0以后使用新API接口
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString*, id> *)options
+{
+    
+    if ([url.host isEqualToString:@"safepay"]) {
+        //跳转支付宝钱包进行支付，处理支付结果
+        [[AlipaySDK defaultService] processOrderWithPaymentResult:url standbyCallback:^(NSDictionary *resultDic) {
+            NSLog(@"result = %@",resultDic);
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"payResult" object:resultDic[@"resultStatus"]];
+        }];
+    }
+    //支付宝钱包快登授权返回 authCode
+    if ([url.host isEqualToString:@"platformapi"]){
+        [[AlipaySDK defaultService] processAuth_V2Result:url standbyCallback:^(NSDictionary *resultDic) {
+            //            NSLog(@"qwer result2 = %@",resultDic);
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"payResult" object:resultDic[@"resultStatus"]];
+        }];
+    };
+    
+    [[AlipaySDK defaultService] processAuth_V2Result:url standbyCallback:^(NSDictionary *resultDic) {
+        //        NSLog(@"qwer result2 = %@",resultDic);
+    }];
+    
+    return [WXApi handleOpenURL:url delegate:self];
 }
 
 @end

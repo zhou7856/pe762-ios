@@ -27,7 +27,7 @@
 //返回的数据
 #define kData @"data"
 
-#define kBuild @"1.0.0.7"
+#define kBuild @"1.0.0.8"
 
 #define kVersion @"?platform=Ios&version=" kBuild
 
@@ -42,9 +42,9 @@
 #pragma mark - URL
 
 //线上
-//#define kHostURL @"http://www.unjz.cn"
-//#define kBaseURL @"http://www.unjz.cn/api/"
-//#define kBaseImageURL @"http://www.unjz.cn/upload/"
+//#define kHostURL @"http://app.izhiqu.com.cn"
+//#define kBaseURL @"http://app.izhiqu.com.cn/api/"
+//#define kBaseImageURL @"http://app.izhiqu.com.cn/upload/"
 //
 //线下
 #define kHostURL @"http://www.b.izhiqu.com.cn/"
