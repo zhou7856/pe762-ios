@@ -19,7 +19,7 @@
 #import <TencentOpenAPI/TencentOAuth.h>
 #import <TencentOpenAPI/QQApiInterface.h>
 
-@interface AppDelegate ()
+@interface AppDelegate ()<WXApiDelegate>
 
 @end
 
@@ -48,9 +48,10 @@ UIBackgroundTaskIdentifier _bgTaskId;
     [session setCategory:AVAudioSessionCategoryPlayback error:nil];
     
     
-    // 分享
-    //[WXApi registerApp:@"wxd8b2392d926276b4"];
+    // 支付
+    [WXApi registerApp:@"wxd61341e8421db6aa"];
     
+    // 分享
     NSArray *activePlatforms = @[@(SSDKPlatformSubTypeWechatSession),@(SSDKPlatformSubTypeWechatTimeline),@(SSDKPlatformTypeWechat),@(SSDKPlatformTypeSinaWeibo),@(SSDKPlatformTypeQQ)];
     [ShareSDK registerActivePlatforms:activePlatforms onImport:^(SSDKPlatformType platformType) {
         switch (platformType)
@@ -85,10 +86,13 @@ UIBackgroundTaskIdentifier _bgTaskId;
                                           appSecret:@"46a420dbb44f8ab266ac8c8ad2676b60"
                                         redirectUri:@"http://www.weibo.com"
                                            authType:SSDKAuthTypeBoth];
-//                [appInfo SSDKSetupSinaWeiboByAppKey:@"568898243"
-//                                          appSecret:@"38a4f8204cc784f81f9f0daaf31e02e3"
-//                                        redirectUri:@"http://www.weibo.com"
-//                                           authType:SSDKAuthTypeBoth];
+                /*
+                //ShareSDK的官方测试账号
+                [appInfo SSDKSetupSinaWeiboByAppKey:@"568898243"
+                                          appSecret:@"38a4f8204cc784f81f9f0daaf31e02e3"
+                                        redirectUri:@"http://www.weibo.com"
+                                           authType:SSDKAuthTypeBoth];
+                 */
                 break;
                 
             default:
@@ -149,5 +153,31 @@ UIBackgroundTaskIdentifier _bgTaskId;
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
+#pragma mark - 微信回调
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
+{
+    return [WXApi handleOpenURL:url delegate:self];
+}
+
+- (void)onResp:(BaseResp *)resp {
+    //微信支付 PayResp
+    if ([resp isKindOfClass:[PayResp class]]) {
+        NSString *resultCode;
+        switch (resp.errCode) {
+            case WXSuccess:
+                //支付成功
+                resultCode = @"9000";
+                
+                break;
+            default:
+                //支付失败
+                resultCode = @"6001";
+                
+                break;
+        }
+        //返回支付结果 支付成功9000 支付失败 6001
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"payResult" object:resultCode];
+    }
+}
 
 @end

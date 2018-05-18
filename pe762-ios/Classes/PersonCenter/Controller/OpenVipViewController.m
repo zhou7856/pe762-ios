@@ -8,6 +8,8 @@
 
 #import "OpenVipViewController.h"
 #import "PayVipPopView.h"
+// 充值
+#import "WXApi.h"
 
 @interface OpenVipViewController ()
 {
@@ -17,8 +19,10 @@
     UILabel *vipMoneyLabel;
     // 会员权益简介
     UILabel *powerDetailLabel;
-    //
+    // 会员金额
     NSString *vipmoney;
+    // 支付方式
+    NSInteger paymentType;
 }
 @end
 
@@ -27,15 +31,68 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    [self initUI];
     
+    // 默认支付方式1 支付宝
+    paymentType = 1;
+    // 充值金额
     vipmoney = @"0.00";
+    // 监听支付
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getPayResultAction:) name:@"payResult" object:nil];
+    
+    // 初始化界面
+    [self initUI];
 }
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     
     [self initRechargeVipTwigAPI];
+}
+
+// 支付宝的回调使用
+- (void)getPayResultAction:(NSNotification *)noti
+{
+    NSString *result = noti.object;
+    NSString *strMsg;
+    switch (result.intValue) {
+        {
+            //成功
+        case 9000:{
+            strMsg = @"支付成功";
+            [self showHUDTextOnly:strMsg];
+        }
+            break;
+            
+        case 6001: {
+            strMsg = @"取消支付";
+            [self showHUDTextOnly:strMsg];
+        }
+            break;
+            
+        case 6002: {
+            strMsg = @"网络错误";
+            [self showHUDTextOnly:strMsg];
+        }
+            break;
+            
+        case 4000:{
+            strMsg = @"支付失败";
+            [self showHUDTextOnly:strMsg];
+        }
+            break;
+            
+        default:
+            break;
+        }
+    }
+    
+    //取消支付，再次选择去支付后，这个通知已经被移除了，就不会再走这个通知方法了
+    //    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"payResult" object:nil];
+}
+
+- (void)dealloc {
+    NSLog(@"释放了所有内存");
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"payResult" object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -192,7 +249,9 @@
     
     [[PayVipPopView alloc] createViewWithBlock:^(UIView *popView, NSInteger payType) {
         
-        NSLog(@"typeID -> %ld", payType);
+        paymentType = payType;
+        
+        [self initRechargeAPI];
         
     } andMoney:vipmoney];
     
@@ -239,14 +298,110 @@
     }];
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+#pragma mark - 充值VIP-API
+- (void) initRechargeAPI{
+    
+    NSString *url = [NSString stringWithFormat:@"%@", kRechargeVipURL];
+    url = [self stitchingTokenAndPlatformForURL:url];
+    
+    NSString *payment = [self stringForNull:[NSString stringWithFormat:@"%ld", (long)paymentType]];
+    
+    if ([payment isEqualToString:@"1"]) {
+        [self showHUDTextOnly:@"支付宝支付未开通"];
+        return ;
+    }
+    
+    NSDictionary *parameters = @{
+                                 @"payment_method":payment
+                                 };
+    
+    
+    [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+    [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
+    
+    [self defaultRequestwithURL:url withParameters:parameters withMethod:kPOST withBlock:^(NSDictionary *dict, NSError *error) {
+        [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+        
+        //判断有无数据
+        if ([[dict allKeys] containsObject:@"errorCode"]) {
+            NSString *errorCode = [NSString stringWithFormat:@"%@",dict[@"errorCode"]];
+            if ([errorCode isEqualToString:@"-1"]){
+                //未登陆
+                [self showTabBarView:NO];
+                LoginViewController *loginVC = [[LoginViewController alloc] init];
+                [self.navigationController pushViewController:loginVC animated:YES];
+                return;
+            }
+            
+            if ([errorCode isEqualToString:@"0"]) {
+                NSDictionary *dataDict = dict[@"data"];
+                //NSDictionary *infoDict = dataDict[@"info"];
+                
+                //[支付方式 1支付宝 2微信]
+                [self weChatPay:dataDict];
+                /*
+                 if (payType == 1) {
+                 
+                 [self alipay:infoDict];
+                 
+                 } else {
+                 
+                 [self weChatPay:infoDict];
+                 
+                 }
+                 */
+            }
+            
+        }
+        
+    }];
 }
-*/
+
+// 微信支付
+- (void) weChatPay:(NSDictionary *)data {
+    
+    //NSDictionary *payDict = data[@"pay"];
+    
+    NSDictionary *payDict = [self dictionaryWithJsonString:[self stringForNull:data[@"pay"]]];
+    
+    PayReq* req = [PayReq new];
+    req.partnerId = [self stringForNull:payDict[@"partnerid"]];
+    req.prepayId = [self stringForNull:payDict[@"prepayid"]];
+    req.nonceStr = [self stringForNull:payDict[@"noncestr"]];
+    req.timeStamp = [[self stringForNull:payDict[@"timestamp"]] intValue];
+    req.package = [self stringForNull:payDict[@"package"]];
+    req.sign = [self stringForNull:payDict[@"sign"]];
+    [WXApi sendReq:req];
+}
+
+// 字符串转字典
+- (NSDictionary *)dictionaryWithJsonString:(NSString *)jsonString
+{
+    if (jsonString == nil) {
+        return nil;
+    }
+    
+    NSData *jsonData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
+    NSError *err;
+    NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:jsonData
+                                                        options:NSJSONReadingMutableContainers
+                                                          error:&err];
+    if(err)
+    {
+        NSLog(@"json解析失败：%@",err);
+        return nil;
+    }
+    return dic;
+}
+
+/*
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end

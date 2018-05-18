@@ -66,9 +66,17 @@
         make.left.mas_equalTo(self.view).mas_offset(10 * kScreenWidthProportion);
     }];
     
+    UIButton *shadowLeftBtn = [[UIButton alloc] init];
+    shadowLeftBtn.backgroundColor = [UIColor clearColor];
+    [self.view addSubview:shadowLeftBtn];
+    [shadowLeftBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(self.view).mas_offset(kStatusHeight);
+        make.left.mas_equalTo(self.view);
+        make.size.mas_equalTo(CGSizeMake(80, kNavigationBarHeight));
+    }];
     
     // 点击返回到首页
-    [[leftBtn rac_signalForControlEvents:UIControlEventTouchUpInside] subscribeNext:^(id x) {
+    [[shadowLeftBtn rac_signalForControlEvents:UIControlEventTouchUpInside] subscribeNext:^(id x) {
         
         //登录成功，跳转到案例界面
         [self.navigationController popViewControllerAnimated:YES];
@@ -410,6 +418,7 @@
                 NSDictionary *dataDic = dict[@"data"];
                 NSString *saltStr = dataDic[@"salt"];
                 NSLog(@"saltStr%@",saltStr);
+                /*
                 if (saltStr.length >0) {
                     [self showHUDTextOnly:saltStr];
                 }
@@ -417,6 +426,10 @@
                 {
                     [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
                 }
+                */
+                
+                [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
+                return;
             }else {
                 [self onClickImage];
                 [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
