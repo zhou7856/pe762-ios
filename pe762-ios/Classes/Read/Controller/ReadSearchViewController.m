@@ -23,6 +23,7 @@
     //分页
     NSInteger page;
     NSInteger rows;
+    
 }
 @end
 
@@ -34,9 +35,9 @@
     [self initUI];
     
     keyWordStr = @"";
-    
+    [self updataAction];
     page = 1;
-    page = 10;
+    rows = 10;
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -283,7 +284,9 @@
                 }
                 
                 [dataArray addObjectsFromArray:tempArray];
-                
+                if(dataArray.count == 0){
+                    [self showHUDTextOnly:@"搜索不到任何信息"];
+                }
                 [informationTabelView reloadData];
                 
             } else {
