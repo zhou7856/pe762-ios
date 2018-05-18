@@ -1251,7 +1251,8 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
                 
                 //1 微博 2 微信 3 QQ 4 朋友圈
                 if ([shareType isEqualToString:@"1"]) {
-                    [self shareToWeibo:dataDict];
+                    [self showHUDTextOnly:@"功能未开放"];
+                    //[self shareToWeibo:dataDict];
                     
                 } else if ([shareType isEqualToString:@"2"]) {
                     [self shareToWeiChat:dataDict];

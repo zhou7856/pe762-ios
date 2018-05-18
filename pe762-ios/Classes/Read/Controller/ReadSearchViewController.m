@@ -1,60 +1,46 @@
 //
-//  ReadViewController.m
+//  ReadSearchViewController.m
 //  pe762-ios
 //
-//  Created by wsy on 2018/4/20.
+//  Created by Future on 2018/5/17.
 //  Copyright © 2018年 zmit. All rights reserved.
-//
+//  读咨询搜索页面
 
-#import "ReadViewController.h"
+#import "ReadSearchViewController.h"
 #import "informationTableViewCell.h"//资讯cell
 #import "InformationDetailViewController.h"//资讯详情
-#import "LoginViewController.h"//登录
-#import "MessageViewController.h"//消息
-#import "ReadSearchViewController.h"
 
-
-@interface ReadViewController ()<UITableViewDelegate,UITableViewDataSource>
+@interface ReadSearchViewController ()<UITableViewDelegate,UITableViewDataSource>
 {
-    UITableView *informationTabelView;//资讯列表
-    UIButton *searchBtn;//搜索按钮
-    
-    // 无网络页面
-    UIView *notNetView;
-    
+    // 最新
+    UITableView *informationTabelView;
+    // 搜索的数据
+    NSMutableArray *dataArray;
+    // 搜索文本
+    NSString *keyWordStr;
+    // 搜索输入框
+    UITextField *searchTextField;
     //分页
     NSInteger page;
     NSInteger rows;
-    //数据
-    NSMutableArray *dataArray;
 }
 @end
 
-@implementation ReadViewController
+@implementation ReadSearchViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
-    // 创建页面
     [self initUI];
-    // 数据刷新
-    [self updataAction];
-    // 无网络
-    [self initNotNetView];
     
-    // 设置rows
-    rows = 10;
+    keyWordStr = @"";
     
-    //notNetView.hidden = NO;
+    page = 1;
+    page = 10;
 }
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    // 显示底部tabbar
-    [self showTabBarView:YES];
-    // 加在数据
-    [self initReadInformationAPI];
     
 }
 
@@ -63,93 +49,79 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - UI
+#pragma mark - initUI
 - (void) initUI{
-#pragma mark - 头部
+    
     self.navigationController.navigationBarHidden = YES;
+    self.view.backgroundColor = kBackgroundWhiteColor;
     
-    self.view.backgroundColor = kWhiteColor;
+    [self createEndBackView];
     
-    // 标题
-    [self createNavigationTitle:@"读资讯"];
+#pragma mark - 搜索框
+    UIView *searchView = [[UIView alloc] init];
+    searchView.backgroundColor = kWhiteColor;
+    [self.view addSubview:searchView];
     
-    // 搜索按钮
-    searchBtn = [[UIButton alloc] initWithFrame:CGRectMake(285 * kScreenWidthProportion, kStatusHeight, 30, 44)];
-    [searchBtn addTarget:self action:@selector(searchBtnAction) forControlEvents:UIControlEventTouchUpInside];
+    // 12 12
+    UIImageView *searchImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Layer_-1"]];
+    [searchView addSubview:searchImageView];
+    
+    searchTextField = [[UITextField alloc] init];
+    searchTextField.placeholder = @"哲学类";
+    searchTextField.font = FONT(12 * kFontProportion);
+    searchTextField.textColor = kBlackLabelColor;
+    [searchView addSubview:searchTextField];
+    
+    UIButton *searchBtn = [[UIButton alloc] init];
+    [searchBtn setTitle:@"搜索" forState:UIControlStateNormal];
+    [searchBtn setTitleColor:kBlackLabelColor forState:UIControlStateNormal];
+    searchBtn.titleLabel.font = FONT(13 * kFontProportion);
     [self.view addSubview:searchBtn];
     
-    UIImageView *searchImageView = [[UIImageView alloc] initWithFrame:CGRectMake(291 * kScreenWidthProportion, kStatusHeight + 12.5, 19, 19)];
-    searchImageView.image = [UIImage imageNamed:@"Layer_1_1_1"];
-    [self.view addSubview:searchImageView];
+    [searchView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(self.view).offset(kStatusHeight + 10 * kScreenHeightProportion);
+        make.left.mas_equalTo(self.view).offset(13 * kScreenWidthProportion);
+        make.size.mas_equalTo(CGSizeMake(246 * kScreenWidthProportion, 20 * kScreenHeightProportion));
+        [searchView setCornerRadius:2.0f];
+    }];
     
-#pragma mark - 内容
-    informationTabelView = [[UITableView alloc] initWithFrame:CGRectMake(0, kHeaderHeight, kScreenWidth, kScreenHeight - kHeaderHeight - kTabBarHeight) style:UITableViewStylePlain];
+    [searchImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.mas_equalTo(searchView);
+        make.left.mas_equalTo(searchView).offset(9 * kScreenWidthProportion);
+        make.size.mas_equalTo(CGSizeMake(12 * kScreenWidthProportion, 12 * kScreenWidthProportion));
+    }];
+    
+    [searchTextField mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.mas_equalTo(searchView);
+        make.left.mas_equalTo(searchImageView.mas_right).offset(6 * kScreenWidthProportion);
+        make.size.mas_equalTo(CGSizeMake(210 * kScreenWidthProportion, 12 * kScreenWidthProportion));
+    }];
+    
+    [searchBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.mas_equalTo(searchView);
+        make.left.mas_equalTo(searchView.mas_right).offset(14 * kScreenWidthProportion);
+        make.size.mas_equalTo(CGSizeMake(30 * kScreenWidthProportion, 20 * kScreenWidthProportion));
+    }];
+    
+#pragma mark - 搜索
+    informationTabelView = [[UITableView alloc] init];
+    informationTabelView.hidden = NO;
     informationTabelView.backgroundColor = kBackgroundWhiteColor;
     informationTabelView.delegate = self;
     informationTabelView.dataSource = self;
     informationTabelView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    informationTabelView.scrollEnabled = YES;
     informationTabelView.estimatedRowHeight = 0;
     informationTabelView.estimatedSectionHeaderHeight = 0;
     informationTabelView.estimatedSectionFooterHeight = 0;
     [self.view addSubview:informationTabelView];
-}
-
-- (void) initNotNetView{
-    notNetView = [[UIView alloc] initWithFrame:CGRectMake(0, kHeaderHeight, kScreenWidth, kScreenHeight - kHeaderHeight - kTabBarHeight)];
-    notNetView.backgroundColor = kWhiteColor;
-    notNetView.hidden = YES;
-    [self.view addSubview:notNetView];
-    
-    UIImageView *netImageView = [[UIImageView alloc] init];
-    netImageView.image = [UIImage imageNamed:@"Group 182"];
-    [notNetView addSubview:netImageView];
-    
-    UILabel *mainTitleLabel = [[UILabel alloc] init];
-    mainTitleLabel.text = @"当前无网络";
-    mainTitleLabel.textColor = kBlackLabelColor;
-    mainTitleLabel.font = FONT(14 * kFontProportion);
-    mainTitleLabel.textAlignment = NSTextAlignmentCenter;
-    [notNetView addSubview:mainTitleLabel];
-    
-    UILabel *subTitleLabel = [[UILabel alloc] init];
-    subTitleLabel.text = @"请打开手机网络";
-    subTitleLabel.textColor = RGB(192, 192, 192);
-    subTitleLabel.font = FONT(12 * kFontProportion);
-    subTitleLabel.textAlignment = NSTextAlignmentCenter;
-    [notNetView addSubview:subTitleLabel];
-    
-    UIButton *refreshBtn = [[UIButton alloc] init];
-    refreshBtn.backgroundColor = RGB(122, 37, 188);
-    [refreshBtn setTitleColor:kWhiteColor forState:UIControlStateNormal];
-    [refreshBtn setTitle:@"刷新" forState:UIControlStateNormal];
-    refreshBtn.titleLabel.font = FONT(13 * kFontProportion);
-    [notNetView addSubview:refreshBtn];
-    
-    [netImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(notNetView).offset(80 * kScreenHeightProportion);
-        make.centerX.mas_equalTo(notNetView);
-        make.size.mas_equalTo(CGSizeMake(189 * kScreenHeightProportion, 128 * kScreenWidthProportion));
+    [informationTabelView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(searchView.mas_bottom).offset(10 * kScreenHeightProportion);
+        make.left.right.mas_equalTo(self.view);
+        make.bottom.mas_equalTo(self.view).offset(-kEndBackViewHeight);
     }];
     
-    [mainTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(netImageView.mas_bottom).offset(13 * kScreenHeightProportion);
-        make.left.right.with.equalTo(notNetView);
-        make.height.mas_equalTo(22 * kScreenHeightProportion);
-    }];
-    
-    [subTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(mainTitleLabel.mas_bottom).offset(4 * kScreenHeightProportion);
-        make.left.right.with.equalTo(mainTitleLabel);
-        make.height.mas_equalTo(18 * kScreenHeightProportion);
-    }];
-    
-    [refreshBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(subTitleLabel.mas_bottom).offset(76 * kScreenHeightProportion);
-        make.left.mas_equalTo(subTitleLabel).offset(10 * kScreenWidthProportion);
-        make.right.mas_equalTo(subTitleLabel).offset(-10 * kScreenWidthProportion);
-        make.height.mas_equalTo(45 * kScreenHeightProportion);
-        [refreshBtn setCornerRadius:(45 * kScreenHeightProportion / 2)];
-    }];
+    [searchBtn addTarget:self action:@selector(searchBtnAction) forControlEvents:UIControlEventTouchUpInside];
 }
 
 #pragma mark - tableView代理
@@ -201,7 +173,7 @@
     cell.sourceAndTimeLabel.text = [NSString stringWithFormat:@"%@ %@", classifyNameStr, hmStr];
     cell.zanNumberLabel.text = [NSString stringWithFormat:@"%@", dict[@"like_num"]];
     cell.authorLabel.text = [NSString stringWithFormat:@"作者:%@", dict[@"author"]];
-
+    
     // 作者
     CGFloat authorLabelWidth = [cell.authorLabel getTitleTextWidth:cell.authorLabel.text font:FONT(9 * kFontProportion)];
     [cell.authorLabel mas_updateConstraints:^(MASConstraintMaker *make) {
@@ -225,16 +197,13 @@
         
     }];
     
-//    cell.likeBtn.tag = kTagStart + 10000 + [dict[@"id"] integerValue];
-//    [cell.likeBtn addTarget:self action:@selector(likeBtnAction:) forControlEvents:UIControlEventTouchUpInside];
-    
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-
+    
     NSLog(@"你点击了第%ld行", indexPath.row);
-
+    
     NSDictionary *dict = dataArray[indexPath.row];
     NSString *idStr = [NSString stringWithFormat:@"%@", dict[@"id"]];
     
@@ -246,81 +215,24 @@
     
 }
 
-#pragma mark - 搜索
+
+#pragma mark - 搜索点击事件
 - (void) searchBtnAction{
-    NSLog(@"搜索");
-    //[self showTabBarView:NO];
-    //[self.navigationController pushViewController:[MessageViewController new] animated:YES];
-    [self showTabBarView:NO];
-    ReadSearchViewController *pushVC = [[ReadSearchViewController alloc] init];
-    [self.navigationController pushViewController:pushVC animated:YES];
-}
-
-#pragma mark - 点赞
-- (void) likeBtnAction:(UIButton *)likeBtn{
-    NSString *readIdStr = [NSString stringWithFormat:@"%ld", likeBtn.tag - kTagStart - 10000];
+    NSLog(@"%@", searchTextField.text);
+    // 收起键盘
+    [[[UIApplication sharedApplication] keyWindow] endEditing:YES];
     
-    if (likeBtn.isSelected) {
-        //目前喜欢 点击取消点赞
-        NSString *url = [NSString stringWithFormat:@"%@",kLikeDeleteURL];
-        url = [self stitchingTokenAndPlatformForURL:url];
-        NSDictionary *parameter = @{
-                                    @"id":readIdStr,
-                                    @"type":@"2"
-                                    };
-        [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
-        [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
-        [self defaultRequestwithURL:url withParameters:parameter withMethod:kPOST withBlock:^(NSDictionary *dict, NSError *error) {
-            [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
-            //判断有无数据
-            if ([[dict allKeys] containsObject:@"errorCode"]) {
-                NSString *errorCode = [NSString stringWithFormat:@"%@",dict[@"errorCode"]];
-
-                if ([errorCode isEqualToString:@"0"]) {
-                    //                    NSDictionary *dataDic = dict[@"data"];
-                    //处理数据
-                    [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
-                    likeBtn.selected = NO;
-                    [self initReadInformationAPI];
-                }else {
-                    [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
-                    return;
-                }
-            }
-        }];
+    // 搜索内容不为空 则搜索
+    if (![searchTextField.text isEqualToString:@""]) {
+        // 开始请求
+        keyWordStr = searchTextField.text;
+        
+        [self initReadInformationAPI];
     } else {
-        //目前不喜欢 点击则点赞
-        NSString *url = [NSString stringWithFormat:@"%@",kLikeAddURL];
-        url = [self stitchingTokenAndPlatformForURL:url];
-        NSDictionary *parameter = @{
-                                    @"id":readIdStr,
-                                    @"type":@"2"
-                                    };
-        [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
-        [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
-        [self defaultRequestwithURL:url withParameters:parameter withMethod:kPOST withBlock:^(NSDictionary *dict, NSError *error) {
-            [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
-            //判断有无数据
-            if ([[dict allKeys] containsObject:@"errorCode"]) {
-                NSString *errorCode = [NSString stringWithFormat:@"%@",dict[@"errorCode"]];
-
-                if ([errorCode isEqualToString:@"0"]) {
-                    //                    NSDictionary *dataDic = dict[@"data"];
-                    //处理数据
-                    [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
-
-                    likeBtn.selected = YES;
-
-                    [self initReadInformationAPI];
-
-                }else {
-                    [self showHUDTextOnly:[dict[kMessage] objectForKey:kMessage]];
-                    return;
-                }
-            }
-        }];
+        dataArray = nil;
+        keyWordStr = @"";
+        [informationTabelView reloadData];
     }
-    
 }
 
 #pragma mark - 读资讯API
@@ -331,9 +243,9 @@
     //拼接url
     NSString *url = [NSString stringWithFormat:@"%@", kReadInformationHomeURL];
     url = [self stitchingTokenAndPlatformForURL:url];
-
+    
     NSDictionary *parameters = @{
-                                 @"title":@"",
+                                 @"title":keyWordStr,
                                  @"page":[NSString stringWithFormat:@"%ld", page],
                                  @"rows":[NSString stringWithFormat:@"%ld", rows]
                                  };
@@ -394,7 +306,7 @@
         url = [self stitchingTokenAndPlatformForURL:url];
         
         NSDictionary *parameters = @{
-                                     @"title":@"",
+                                     @"title":keyWordStr,
                                      @"page":[NSString stringWithFormat:@"%ld", page],
                                      @"rows":[NSString stringWithFormat:@"%ld", rows]
                                      };
@@ -456,7 +368,7 @@
         url = [self stitchingTokenAndPlatformForURL:url];
         
         NSDictionary *parameters = @{
-                                     @"title":@"",
+                                     @"title":keyWordStr,
                                      @"page":[NSString stringWithFormat:@"%ld", page],
                                      @"rows":[NSString stringWithFormat:@"%ld", rows]
                                      };

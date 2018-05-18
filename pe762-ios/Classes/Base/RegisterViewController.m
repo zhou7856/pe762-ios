@@ -49,13 +49,31 @@
     self.navigationController.navigationBarHidden = YES;
     self.view.backgroundColor = kWhiteColor;
     
-    leftBtn = [[UIButton alloc] init];
+    //leftBtn = [[UIButton alloc] init];
     typeLabel = [[UILabel alloc] init];
     [self createNavigationTitle:@"注册"];
 //    [self createNavigationFeatureAndTitle:@"登录" withLeftBtn:leftBtn andTypeTitle:typeLabel];
     
 //    [leftBtn addTarget:self action:@selector(leftBtnAction) forControlEvents:UIControlEventTouchUpInside];
 //    typeLabel.text = @"专业";
+    
+    leftBtn = [[UIButton alloc] init];
+    leftBtn.backgroundColor = [UIColor clearColor];
+    [leftBtn setBackgroundImage:[UIImage imageNamed:@"Path 164"] forState:0];
+    [self.view addSubview:leftBtn];
+    [leftBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(self.view).mas_offset(kStatusHeight + 11);
+        make.left.mas_equalTo(self.view).mas_offset(10 * kScreenWidthProportion);
+    }];
+    
+    
+    // 点击返回到首页
+    [[leftBtn rac_signalForControlEvents:UIControlEventTouchUpInside] subscribeNext:^(id x) {
+        
+        //登录成功，跳转到案例界面
+        [self.navigationController popViewControllerAnimated:YES];
+        
+    }];
     
 #pragma mark - 头像、背景图片、背景阴影
     // 背景图片
