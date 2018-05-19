@@ -442,12 +442,12 @@
         [nameLabel setLabelWithTextColor:kBlackLabelColor textAlignment:NSTextAlignmentLeft font:15];
         nameLabel.text = @"";
         [introductionView addSubview:nameLabel];
-
+        
         introductionLabel = [[UILabel alloc] init];
         [introductionLabel setLabelWithTextColor:kGrayLabelColor textAlignment:NSTextAlignmentLeft font:12];
         [introductionView addSubview:introductionLabel];
         introductionLabel.numberOfLines = 0;
-
+        
         [introductionLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.mas_equalTo(105 * kScreenWidthProportion);
             make.top.mas_equalTo(60 * kScreenWidthProportion);
@@ -457,12 +457,9 @@
         [introductionView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.right.mas_equalTo(mainView);
             make.top.mas_equalTo(contentView.mas_bottom).offset(35 * kScreenWidthProportion);
-            make.bottom.mas_equalTo(introductionLabel.mas_bottom);
         }];
 
     }
-    
-    //introductionView.backgroundColor = kRedColor;
     
     [mainView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.mas_equalTo(introductionView.mas_bottom).offset(40 * kScreenWidthProportion);
@@ -546,8 +543,12 @@
                 photoImageView.image = nil;
                 [photoImageView setImageWithURL:[NSURL URLWithString:lecturer_avatar_path]];
                 
+                // 计算简介内容的高度
+                UILabel *tempLabel = introductionLabel;
+                [tempLabel sizeToFit];
+                // 跟新简介模块的高度
                 [introductionView mas_updateConstraints:^(MASConstraintMaker *make) {
-                    if (photoImageView.maxY > introductionLabel.maxY) {
+                    if (tempLabel.height + introductionLabel.minY <= photoImageView.maxY) {
                         make.bottom.mas_equalTo(photoImageView.mas_bottom);
                     } else {
                         make.bottom.mas_equalTo(introductionLabel.mas_bottom);
