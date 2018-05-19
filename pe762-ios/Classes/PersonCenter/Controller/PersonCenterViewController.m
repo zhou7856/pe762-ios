@@ -465,6 +465,7 @@
     //如果不是代理商，状态吗为1 --》该同学正在审核中
     if([isProxy isEqualToString:@"0"]&&[audit_status isEqualToString:@"1"]){
         reviewView.hidden=NO;
+        isVipView.hidden=YES;//代理商审核 -- 这里vip就关闭了显示
     }
     if ([isProxy isEqualToString:@"1"]) {
         proxyFeaturesView.hidden = NO;
