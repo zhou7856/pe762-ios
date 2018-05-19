@@ -433,12 +433,13 @@
         //判断续费是否应当隐藏
         if(day>=1&&day<=30){
             renewalsBtn.hidden=NO;
-            [vipTimeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        
+            [vipTimeLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
                 make.top.bottom.mas_equalTo(isVipView);
                 //        make.left.mas_equalTo(vipImageView.mas_right).offset(5 * kScreenWidthProportion);
                 make.centerX.mas_equalTo(isVipView);
-            }];
 
+            }];
         }else{
             renewalsBtn.hidden=YES;
 //            renewalsBtn.width=0;
