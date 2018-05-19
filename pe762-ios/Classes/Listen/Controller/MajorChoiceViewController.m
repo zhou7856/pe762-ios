@@ -205,7 +205,7 @@
     // 历史记录标签view
     NSInteger lineNumber = 0;
     int width = (int)(kScreenWidth - 20 * kScreenWidthProportion);
-    int height = (int)(20 * kScreenHeightProportion);
+    int height = (int)(24 * kScreenHeightProportion);
     for (int i = 0; i < historyArray.count; i++) {
         NSDictionary *tempDict = historyArray[i];
         NSString *rendomStr = [[NSString alloc] init];
@@ -268,7 +268,7 @@
     // 标签view
     NSInteger lineNumber = 0;
     int width = (int)(tempView.width);
-    int height = (int)(32 * kScreenHeightProportion);
+    int height = (int)(24 * kScreenHeightProportion);
     for (int i = 0; i < course_classify.count; i++) {
         NSDictionary *tempDict = course_classify[i];
         NSString *rendomStr = [[NSString alloc] init];
@@ -288,7 +288,7 @@
         }
         titleLabel.text = rendomStr;
         titleLabel.font = FONT(12 * kFontProportion);
-        titleLabel.frame = CGRectMake(tempView.width - width, (int)(lineNumber * height), labelWidth, (int)(24 * kScreenHeightProportion));
+        titleLabel.frame = CGRectMake(tempView.width - width, (int)(lineNumber * height), labelWidth, (int)(18 * kScreenHeightProportion));
         [tempView addSubview:titleLabel];
         width = (int)(width - labelWidth - 10 * kScreenWidthProportion);
     }
