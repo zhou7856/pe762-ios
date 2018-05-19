@@ -68,7 +68,7 @@
     [searchView addSubview:searchImageView];
     
     searchTextField = [[UITextField alloc] init];
-    searchTextField.placeholder = @"哲学类";
+    searchTextField.placeholder = @"请填写您要搜索的内容";
     searchTextField.font = FONT(12 * kFontProportion);
     searchTextField.textColor = kBlackLabelColor;
     [searchView addSubview:searchTextField];
@@ -82,26 +82,26 @@
     [searchView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(self.view).offset(kStatusHeight + 10 * kScreenHeightProportion);
         make.left.mas_equalTo(self.view).offset(13 * kScreenWidthProportion);
-        make.size.mas_equalTo(CGSizeMake(246 * kScreenWidthProportion, 20 * kScreenHeightProportion));
+        make.size.mas_equalTo(CGSizeMake(246 * kScreenWidthProportion, 30 * kScreenHeightProportion));
         [searchView setCornerRadius:2.0f];
     }];
     
     [searchImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.mas_equalTo(searchView);
         make.left.mas_equalTo(searchView).offset(9 * kScreenWidthProportion);
-        make.size.mas_equalTo(CGSizeMake(12 * kScreenWidthProportion, 12 * kScreenWidthProportion));
+        make.size.mas_equalTo(CGSizeMake(16 * kScreenWidthProportion, 16 * kScreenWidthProportion));
     }];
     
     [searchTextField mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.mas_equalTo(searchView);
         make.left.mas_equalTo(searchImageView.mas_right).offset(6 * kScreenWidthProportion);
-        make.size.mas_equalTo(CGSizeMake(210 * kScreenWidthProportion, 12 * kScreenWidthProportion));
+        make.size.mas_equalTo(CGSizeMake(210 * kScreenWidthProportion, 16 * kScreenWidthProportion));
     }];
     
     [searchBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.mas_equalTo(searchView);
         make.left.mas_equalTo(searchView.mas_right).offset(14 * kScreenWidthProportion);
-        make.size.mas_equalTo(CGSizeMake(30 * kScreenWidthProportion, 20 * kScreenWidthProportion));
+        make.size.mas_equalTo(CGSizeMake(30 * kScreenWidthProportion, 30 * kScreenWidthProportion));
     }];
     
 #pragma mark - 搜索
