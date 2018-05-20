@@ -31,6 +31,8 @@
     NSString *keyWordStr;
     // 搜索输入框
     UITextField *searchTextField;
+    // 无网络页面
+    UIView *notNetView;
 }
 @end
 
@@ -40,13 +42,21 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [self initUI];
+    [self initNotNetView];
     keyWordStr = @"";
 }
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     
-    [self initSearchDataAPI];
+    if ([self isExistenceNetwork]) {
+        // 加载数据
+        [self initSearchDataAPI];
+        notNetView.hidden = YES;
+    } else {
+        [self showHUDTextOnly:@"当前无网络"];
+        notNetView.hidden = NO;
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -181,6 +191,86 @@
     }];
     
     [searchBtn addTarget:self action:@selector(searchBtnAction) forControlEvents:UIControlEventTouchUpInside];
+}
+
+#pragma mark - 无网络页面
+- (void) initNotNetView{
+    notNetView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight - kEndBackViewHeight)];
+    notNetView.backgroundColor = kWhiteColor;
+    notNetView.hidden = YES;
+    [self.view addSubview:notNetView];
+    
+    UIImageView *netImageView = [[UIImageView alloc] init];
+    netImageView.image = [UIImage imageNamed:@"Group 182"];
+    [notNetView addSubview:netImageView];
+    
+    UILabel *mainTitleLabel = [[UILabel alloc] init];
+    mainTitleLabel.text = @"当前无网络";
+    mainTitleLabel.textColor = kBlackLabelColor;
+    mainTitleLabel.font = FONT(14 * kFontProportion);
+    mainTitleLabel.textAlignment = NSTextAlignmentCenter;
+    [notNetView addSubview:mainTitleLabel];
+    
+    UILabel *subTitleLabel = [[UILabel alloc] init];
+    subTitleLabel.text = @"请打开手机网络";
+    subTitleLabel.textColor = RGB(192, 192, 192);
+    subTitleLabel.font = FONT(12 * kFontProportion);
+    subTitleLabel.textAlignment = NSTextAlignmentCenter;
+    [notNetView addSubview:subTitleLabel];
+    
+    UIButton *refreshBtn = [[UIButton alloc] init];
+    refreshBtn.backgroundColor = RGB(122, 37, 188);
+    [refreshBtn setTitleColor:kWhiteColor forState:UIControlStateNormal];
+    [refreshBtn setTitle:@"刷新" forState:UIControlStateNormal];
+    refreshBtn.titleLabel.font = FONT(13 * kFontProportion);
+    [notNetView addSubview:refreshBtn];
+    
+    [netImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(notNetView).offset(80 * kScreenHeightProportion);
+        make.centerX.mas_equalTo(notNetView);
+        make.size.mas_equalTo(CGSizeMake(189 * kScreenHeightProportion, 128 * kScreenWidthProportion));
+    }];
+    
+    [mainTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(netImageView.mas_bottom).offset(13 * kScreenHeightProportion);
+        make.left.right.with.equalTo(notNetView);
+        make.height.mas_equalTo(22 * kScreenHeightProportion);
+    }];
+    
+    [subTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(mainTitleLabel.mas_bottom).offset(4 * kScreenHeightProportion);
+        make.left.right.with.equalTo(mainTitleLabel);
+        make.height.mas_equalTo(18 * kScreenHeightProportion);
+    }];
+    
+    [refreshBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(subTitleLabel.mas_bottom).offset(76 * kScreenHeightProportion);
+        make.left.mas_equalTo(subTitleLabel).offset(10 * kScreenWidthProportion);
+        make.right.mas_equalTo(subTitleLabel).offset(-10 * kScreenWidthProportion);
+        make.height.mas_equalTo(45 * kScreenHeightProportion);
+        [refreshBtn setCornerRadius:(45 * kScreenHeightProportion / 2)];
+    }];
+    
+    [[refreshBtn rac_signalForControlEvents:UIControlEventTouchUpInside] subscribeNext:^(id x) {
+        if ([self isExistenceNetwork]) {
+            // 加载数据
+            [self initSearchDataAPI];
+            notNetView.hidden = YES;
+        } else {
+            [self showHUDTextOnly:@"当前无网络"];
+            notNetView.hidden = NO;
+        }
+    }];
+    
+    /*
+     if ([self isExistenceNetwork]) {
+     [self initReadInfoDetailAPI];
+     notNetView.hidden = YES;
+     } else {
+     [self showHUDTextOnly:@"当前无网络"];
+     notNetView.hidden = NO;
+     }
+     */
 }
 
 #pragma mark - tableView代理
@@ -429,6 +519,15 @@
 
 #pragma mark - 搜索API
 - (void) searchAudioAPI{
+    
+    if ([self isExistenceNetwork]) {
+        notNetView.hidden = YES;
+    } else {
+        [self showHUDTextOnly:@"当前无网络"];
+        notNetView.hidden = NO;
+        return ;
+    }
+    
     //目前不喜欢 点击则点赞
     NSString *url = [NSString stringWithFormat:@"%@", kSearchAudioURL];
     url = [self stitchingTokenAndPlatformForURL:url];
