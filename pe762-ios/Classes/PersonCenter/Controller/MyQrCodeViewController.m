@@ -20,7 +20,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    [self initUI];
+    //[self initUI];
+    [self initChunBackgroundView];
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -108,6 +109,39 @@
         make.centerX.mas_equalTo(boderView);
     }];
 }
+
+#pragma mark - 纯背景的界面
+- (void) initChunBackgroundView{
+    // 背景
+    self.navigationController.navigationBarHidden = YES;
+    self.view.backgroundColor = kWhiteColor;
+    
+    // 背景图片
+    UIImageView *bgImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bg"]];
+    [self.view addSubview:bgImageView];
+    bgImageView.userInteractionEnabled = YES;
+    [bgImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.right.bottom.equalTo(self.view);
+    }];
+    
+    // 点击背景返回上一页
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] init];
+    [[tap rac_gestureSignal] subscribeNext:^(id x) {
+        [self.navigationController popViewControllerAnimated:YES];
+    }];
+    [bgImageView addGestureRecognizer:tap];
+    
+    // 二维码
+    qrCodeImageView = [[UIImageView alloc] init];
+    qrCodeImageView.backgroundColor = [UIColor clearColor];
+    [bgImageView addSubview:qrCodeImageView];
+    [qrCodeImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.mas_equalTo(bgImageView);
+        make.centerY.mas_equalTo(bgImageView);
+        make.size.mas_equalTo(CGSizeMake(115 * kScreenWidthProportion, 115 * kScreenWidthProportion));
+    }];
+}
+
 
 #pragma mark - 生成二维码API
 - (void) initQrCodeAPI:(NSString *) urlStr{
