@@ -23,6 +23,8 @@
     //分页
     NSInteger page;
     NSInteger rows;
+    // 无数据页面
+    UIView *notDataView;
     
 }
 @end
@@ -33,6 +35,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [self initUI];
+    [self initNotDataView];
+    
     
     keyWordStr = @"";
     [self updataAction];
@@ -123,6 +127,40 @@
     }];
     
     [searchBtn addTarget:self action:@selector(searchBtnAction) forControlEvents:UIControlEventTouchUpInside];
+}
+
+#pragma mark - 无数据页面
+- (void) initNotDataView{
+    notDataView = [[UIView alloc] init];
+    notDataView.backgroundColor = kBackgroundWhiteColor;
+    notDataView.hidden = YES;
+    [self.view addSubview:notDataView];
+    
+    UIImageView *netImageView = [[UIImageView alloc] init];
+    netImageView.image = [UIImage imageNamed:@"icon_nothing_page"];
+    [notDataView addSubview:netImageView];
+    
+    UILabel *mainTitleLabel = [[UILabel alloc] init];
+    mainTitleLabel.text = @"暂无数据";
+    mainTitleLabel.textColor = kBlackLabelColor;
+    mainTitleLabel.font = FONT(14 * kFontProportion);
+    mainTitleLabel.textAlignment = NSTextAlignmentCenter;
+    [notDataView addSubview:mainTitleLabel];
+    
+    [notDataView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.top.bottom.mas_equalTo(informationTabelView);
+    }];
+    
+    [netImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.mas_equalTo(notDataView).offset(-25 * kScreenHeightProportion);
+        make.centerX.mas_equalTo(notDataView);
+    }];
+    
+    [mainTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(netImageView.mas_bottom).offset(13 * kScreenHeightProportion);
+        make.left.right.with.equalTo(notDataView);
+        make.height.mas_equalTo(22 * kScreenHeightProportion);
+    }];
 }
 
 #pragma mark - tableView代理
@@ -232,6 +270,7 @@
     } else {
         dataArray = nil;
         keyWordStr = @"";
+        notDataView.hidden = YES;
         [informationTabelView reloadData];
     }
 }
@@ -285,7 +324,10 @@
                 
                 [dataArray addObjectsFromArray:tempArray];
                 if(dataArray.count == 0){
+                    notDataView.hidden = NO;
                     [self showHUDTextOnly:@"搜索不到任何信息"];
+                } else {
+                    notDataView.hidden = YES;
                 }
                 [informationTabelView reloadData];
                 
@@ -300,6 +342,11 @@
 - (void) updataAction{
     // 下拉刷新
     informationTabelView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        
+        if ([keyWordStr isEqualToString:@""]) {
+            [informationTabelView.mj_header endRefreshing];
+            return ;
+        }
         
         //重置page
         page = 1;
@@ -364,6 +411,11 @@
         if (page == 1) {
             [informationTabelView.mj_footer endRefreshing];
             return;
+        }
+        
+        if ([keyWordStr isEqualToString:@""]) {
+            [informationTabelView.mj_footer endRefreshing];
+            return ;
         }
         
         //拼接url

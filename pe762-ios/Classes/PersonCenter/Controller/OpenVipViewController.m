@@ -62,6 +62,7 @@
         case 9000:{
             strMsg = @"支付成功";
             [self showHUDTextOnly:strMsg];
+            [self.navigationController popViewControllerAnimated:YES];
         }
             break;
             
@@ -379,13 +380,14 @@
     // NOTE: 调用支付结果开始支付
     NSString *payStr = [self stringForNull:data[@"pay"]];
     
-    [[AlipaySDK defaultService] payOrder:payStr fromScheme:@"知趣大学专业shuo" callback:^(NSDictionary *resultDic) {
+    [[AlipaySDK defaultService] payOrder:payStr fromScheme:@"pe762user" callback:^(NSDictionary *resultDic) {
         NSLog(@"reslut = %@",resultDic);
         NSString *strMsg;
         switch ([resultDic[@"resultStatus"]intValue]) {
                 //成功
             case 9000:{
                 strMsg = @"支付成功";
+                [self.navigationController popViewControllerAnimated:YES];
             }
                 break;
                 

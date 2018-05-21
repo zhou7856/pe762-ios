@@ -33,6 +33,8 @@
     UITextField *searchTextField;
     // 无网络页面
     UIView *notNetView;
+    // 无数据页面
+    UIView *notDataView;
 }
 @end
 
@@ -42,6 +44,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [self initUI];
+    [self initNotDataView];
     [self initNotNetView];
     keyWordStr = @"";
 }
@@ -57,6 +60,7 @@
         [self showHUDTextOnly:@"当前无网络"];
         notNetView.hidden = NO;
     }
+
 }
 
 - (void)didReceiveMemoryWarning {
@@ -68,7 +72,7 @@
 - (void) initUI{
     
     self.navigationController.navigationBarHidden = YES;
-    self.view.backgroundColor = kDefaultBackgroundColor;
+    self.view.backgroundColor = kBackgroundWhiteColor;
     
     [self createEndBackView];
     
@@ -120,7 +124,7 @@
     
     
     historyView = [[UIView alloc] init];
-    historyView.backgroundColor = kDefaultBackgroundColor;
+    historyView.backgroundColor = kBackgroundWhiteColor;
     [self.view addSubview:historyView];
     [historyView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(searchView.mas_bottom).offset(10 * kScreenHeightProportion);
@@ -196,7 +200,7 @@
 #pragma mark - 无网络页面
 - (void) initNotNetView{
     notNetView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight - kEndBackViewHeight)];
-    notNetView.backgroundColor = kWhiteColor;
+    notNetView.backgroundColor = kBackgroundWhiteColor;
     notNetView.hidden = YES;
     [self.view addSubview:notNetView];
     
@@ -271,6 +275,40 @@
      notNetView.hidden = NO;
      }
      */
+}
+
+#pragma mark - 无数据页面
+- (void) initNotDataView{
+    notDataView = [[UIView alloc] init];
+    notDataView.backgroundColor = kBackgroundWhiteColor;
+    notDataView.hidden = YES;
+    [self.view addSubview:notDataView];
+    
+    UIImageView *netImageView = [[UIImageView alloc] init];
+    netImageView.image = [UIImage imageNamed:@"icon_nothing_page"];
+    [notDataView addSubview:netImageView];
+    
+    UILabel *mainTitleLabel = [[UILabel alloc] init];
+    mainTitleLabel.text = @"暂无数据";
+    mainTitleLabel.textColor = kBlackLabelColor;
+    mainTitleLabel.font = FONT(14 * kFontProportion);
+    mainTitleLabel.textAlignment = NSTextAlignmentCenter;
+    [notDataView addSubview:mainTitleLabel];
+    
+    [notDataView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.top.bottom.mas_equalTo(historyView);
+    }];
+    
+    [netImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.mas_equalTo(notDataView).offset(-25 * kScreenHeightProportion);
+        make.centerX.mas_equalTo(notDataView);
+    }];
+    
+    [mainTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(netImageView.mas_bottom).offset(13 * kScreenHeightProportion);
+        make.left.right.with.equalTo(notDataView);
+        make.height.mas_equalTo(22 * kScreenHeightProportion);
+    }];
 }
 
 #pragma mark - tableView代理
@@ -557,6 +595,7 @@
                     [freshTableView reloadData];
                 } else {
                     freshTableView.hidden = YES;
+                    //notDataView.hidden = NO;
                     historyView.hidden = NO;
                     [self initSearchDataAPI];
                 }
