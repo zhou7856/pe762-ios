@@ -45,9 +45,9 @@
         self.subTitleLabel.textAlignment = NSTextAlignmentCenter;
         [baseView addSubview:self.subTitleLabel];
         [self.subTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.mas_equalTo(0);
+            make.left.mas_equalTo(10 * kScreenWidthProportion);
             make.top.mas_equalTo(self.mainTitleLabel.mas_bottom).offset(3 * kScreenHeightProportion);
-            make.size.mas_equalTo(CGSizeMake(baseView.width, 11 * kScreenHeightProportion));
+            make.size.mas_equalTo(CGSizeMake(baseView.width - 20 * kScreenWidthProportion, 11 * kScreenHeightProportion));
         }];
         
         // 图片

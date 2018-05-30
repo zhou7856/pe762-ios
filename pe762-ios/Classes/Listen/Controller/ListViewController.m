@@ -18,9 +18,9 @@
     UIButton *noticeBtn;//消息通知
     UILabel *redLabel;//未读消息数
     
-    UILabel *professionLabel;//讲专业
-    UILabel *pressureLabel;//降学压
-    UILabel *intentLabel;//填志愿
+    UILabel *professionLabel;//讲专业 1
+    UILabel *pressureLabel;//降学压 3
+    UILabel *intentLabel;//填志愿 2
     
     // 音频列表
     UITableView *freshTableView;
@@ -405,15 +405,15 @@
     if (temp.tag == 1) {
         
         NSLog(@"讲专业");
-        type = @"2";
+        type = @"1";
     } else if (temp.tag == 2) {
         
         NSLog(@"填志愿");
-        type = @"3";
+        type = @"2";
     } else {
         
         NSLog(@"降学压");
-        type = @"4";
+        type = @"3";
     }
     
     [self changeTitleColor:type];
@@ -421,19 +421,19 @@
 }
 
 - (void) changeTitleColor:(NSString *)type{
-    if ([type isEqualToString:@"2"]) {
+    if ([type isEqualToString:@"1"]) {
         
         professionLabel.textColor = RGB(130, 34, 194);
         intentLabel.textColor = kBlackLabelColor;
         pressureLabel.textColor = kBlackLabelColor;
         
-    } else if ([type isEqualToString:@"3"]) {
+    } else if ([type isEqualToString:@"2"]) {
         
         professionLabel.textColor = kBlackLabelColor;
         intentLabel.textColor = RGB(130, 34, 194);
         pressureLabel.textColor = kBlackLabelColor;
         
-    } else if ([type isEqualToString:@"4"]) {
+    } else if ([type isEqualToString:@"3"]) {
         
         professionLabel.textColor = kBlackLabelColor;
         intentLabel.textColor = kBlackLabelColor;

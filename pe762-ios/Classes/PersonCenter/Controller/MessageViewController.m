@@ -18,6 +18,7 @@
     
     UITableView *messageTabelView;//消息列表
     NSMutableArray *dataArray; //数据
+    UIButton *delSelectInfo;  //删除选定信息
     
     NSInteger page;
     NSInteger rows;
@@ -69,7 +70,24 @@
     //typeLabel.text = @"专业";
     
     [self createEndBackView];
+#pragma mark - 删除
     
+    UIButton *delAndFinBtn = [[UIButton alloc] initWithFrame: CGRectMake(270 * kScreenWidthProportion, 20, 50 * kScreenWidthProportion, 44)];
+    //delAndFinBtn.backgroundColor = kBlackColor;
+    [delAndFinBtn setTitle:@"删除" forState:UIControlStateNormal];
+    [[delAndFinBtn rac_signalForControlEvents:UIControlEventTouchDown] subscribeNext:^(id x) {
+        if([delAndFinBtn.titleLabel.text isEqualToString: @"删除"]){
+            [delAndFinBtn setTitle:@"完成" forState:UIControlStateNormal];
+            
+        }
+        
+        if([delAndFinBtn.titleLabel.text isEqualToString: @"完成"]){
+            [delAndFinBtn setTitle:@"删除" forState:UIControlStateNormal];
+        }
+    }];
+    [self.view addSubview:delAndFinBtn];
+
+    delSelectInfo = [[UIButton alloc] initWithFrame:CGRectMake( 270 * kScreenWidthProportion, kHeaderHeight, 50 * kScreenWidthProportion, 44)];
 #pragma mark - 内容
     messageTabelView = [[UITableView alloc] initWithFrame:CGRectMake(0, kHeaderHeight, kScreenWidth, kScreenHeight - kHeaderHeight - kEndBackViewHeight) style:UITableViewStylePlain];
     messageTabelView.backgroundColor = kBackgroundWhiteColor;

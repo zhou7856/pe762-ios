@@ -890,8 +890,8 @@
 				34076DD72089EC07005324AB /* ReadViewController.m */,
 				D8D61C9D208DBDCE00663054 /* InformationDetailViewController.h */,
 				D8D61C9E208DBDCE00663054 /* InformationDetailViewController.m */,
-				D876794C20A46E5D000D1D70 /* SearchViewController.h */,
 				D876794D20A46E5D000D1D70 /* SearchViewController.m */,
+				D876794C20A46E5D000D1D70 /* SearchViewController.h */,
 				D8FD003720ADA6A3003960BF /* ReadSearchViewController.h */,
 				D8FD003820ADA6A3003960BF /* ReadSearchViewController.m */,
 			);
