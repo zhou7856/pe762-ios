@@ -67,29 +67,46 @@
     
     [self createNavigationTitle:@"消息通知"];
     
+    self.view.backgroundColor = kBackgroundWhiteColor;
     //typeLabel.text = @"专业";
     
     [self createEndBackView];
 #pragma mark - 删除
     
-    UIButton *delAndFinBtn = [[UIButton alloc] initWithFrame: CGRectMake(270 * kScreenWidthProportion, 20, 50 * kScreenWidthProportion, 44)];
-    //delAndFinBtn.backgroundColor = kBlackColor;
-    [delAndFinBtn setTitle:@"删除" forState:UIControlStateNormal];
-    [[delAndFinBtn rac_signalForControlEvents:UIControlEventTouchDown] subscribeNext:^(id x) {
-        if([delAndFinBtn.titleLabel.text isEqualToString: @"删除"]){
+    UIButton *delAndFinBtn = [[UIButton alloc] initWithFrame: CGRectMake(270 * kScreenWidthProportion, kStatusHeight, 50 * kScreenWidthProportion, kNavigationBarHeight)];
+    //delAndFinBtn.backgroundColor = kProgressColor;
+//    label.textColor = kBlackLabelColor;
+
+    [delAndFinBtn setTitle:@"编辑" forState:UIControlStateNormal];
+    delAndFinBtn.font = FONT(16);
+    [delAndFinBtn setTitleColor:kBlackLabelColor forState:UIControlStateNormal];
+    [[delAndFinBtn rac_signalForControlEvents:UIControlEventTouchUpInside] subscribeNext:^(id x) {
+        if([delAndFinBtn.titleLabel.text isEqualToString: @"编辑"]){
             [delAndFinBtn setTitle:@"完成" forState:UIControlStateNormal];
+            delSelectInfo.height = kNavigationBarHeight;
+            [delSelectInfo setTitle:@"删除" forState:UIControlStateNormal];
+            messageTabelView.minY = delSelectInfo.maxY;
             
-        }
-        
-        if([delAndFinBtn.titleLabel.text isEqualToString: @"完成"]){
-            [delAndFinBtn setTitle:@"删除" forState:UIControlStateNormal];
+        }else if([delAndFinBtn.titleLabel.text isEqualToString: @"完成"]){
+            [delAndFinBtn setTitle:@"编辑" forState:UIControlStateNormal];
+            delSelectInfo.height = 0;
+            [delSelectInfo setTitle:@"" forState:UIControlStateNormal];
+            messageTabelView.minY = delSelectInfo.maxY;
         }
     }];
     [self.view addSubview:delAndFinBtn];
-
-    delSelectInfo = [[UIButton alloc] initWithFrame:CGRectMake( 270 * kScreenWidthProportion, kHeaderHeight, 50 * kScreenWidthProportion, 44)];
+//删除选中cell 对象
+    delSelectInfo = [[UIButton alloc] initWithFrame:CGRectMake( 270 * kScreenWidthProportion, kHeaderHeight, 50 * kScreenWidthProportion,0)];
+    //[delSelectInfo setTitle:@"删除所有信息" forState:UIControlStateNormal];
+    delSelectInfo.font = FONT(16);
+    [delSelectInfo setTitleColor:kBlackLabelColor forState:UIControlStateNormal];
+    [[delSelectInfo rac_signalForControlEvents:UIControlEventTouchDown] subscribeNext:^(id x) {
+        NSLog(@"删除成功");
+    }];
+    [self.view addSubview:delSelectInfo];
+    
 #pragma mark - 内容
-    messageTabelView = [[UITableView alloc] initWithFrame:CGRectMake(0, kHeaderHeight, kScreenWidth, kScreenHeight - kHeaderHeight - kEndBackViewHeight) style:UITableViewStylePlain];
+    messageTabelView = [[UITableView alloc] initWithFrame:CGRectMake(0, delSelectInfo.maxY, kScreenWidth, kScreenHeight - kHeaderHeight - kEndBackViewHeight) style:UITableViewStylePlain];
     messageTabelView.backgroundColor = kBackgroundWhiteColor;
     messageTabelView.delegate = self;
     messageTabelView.dataSource = self;
