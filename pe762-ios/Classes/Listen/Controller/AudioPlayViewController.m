@@ -79,9 +79,10 @@
     //分享类型
     NSString *shareType;
     
-    //音频类型
+    //音频的type 1 => '讲专业', 2 => '填志愿', 3 => '降学压' 音频
     NSString* audioType;
-    
+    //status 1 => '普通', //普通可看 2 => 'vip',
+    NSString* audioStatus;
     //播放记录
     NSMutableArray *listDataArray;
     
@@ -125,6 +126,8 @@
     
     // 判断网络
     if ([self isExistenceNetwork]) {
+        //获取音频信息
+        [self GetAudioPlayInfoURL];
         // 获取播放记录
         [self getPlayRecordingAPI];
         // 页面数据
@@ -629,11 +632,11 @@
                     vipView.hidden=NO;
                 }
                 
-                vudioUrlStr = [NSString stringWithFormat:@"%@", infoDic[@"audio_path"]];
-                audioType=[NSString stringWithFormat:@"%@",infoDic[@"type"]];
-                audioIDStr=[NSString stringWithFormat:@"%@",infoDic[@"id"]];
-                NSArray *strArray = [vudioUrlStr componentsSeparatedByString:@"/"];
-                vudioNameStr = [strArray lastObject];
+                //音频的type 1 => '讲专业', 2 => '填志愿', 3 => '降学压'
+                audioType = [NSString stringWithFormat:@"%@",infoDic[@"type"]];
+                //音频status 1 => '普通', //普通可看 2 => 'vip',
+                audioStatus = [NSString stringWithFormat:@"%@",infoDic[@"status"]];
+                audioIDStr = [NSString stringWithFormat:@"%@",infoDic[@"id"]];
 //                vudioNameStr = [NSString stringWithFormat:@"%@", infoDic[@"title"]];
                 NSString *playcenterImageURL=[NSString stringWithFormat:@"%@%@",kHostURL,infoDic[@"thumb"]];
                 //需要裁剪图片
@@ -1083,11 +1086,29 @@
     NSString *url = [NSString stringWithFormat:@"%@",kGetAudioAddressURL];
     url = [self stitchingTokenAndPlatformForURL:url];
     url = [NSString stringWithFormat:@"%@&id=%@", url, self.idStr];
+    NSLog(@"url --> %@",url);
     
+    [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+    [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
     [self defaultRequestwithURL:url withParameters:nil withMethod:kGET withBlock:^(NSDictionary *dict, NSError *error) {
         //判断有无数据
+        [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
         if ([[dict allKeys] containsObject:@"errorCode"]) {
             
+            NSString *errorCode = [NSString stringWithFormat:@"%@",dict[@"errorCode"]];
+            
+            if([errorCode isEqualToString:@"0"] ){
+                NSDictionary *infoDic = dict[@"data"];
+                
+                vudioUrlStr = [NSString stringWithFormat:@"%@", infoDic[@"audio_path"]];
+                NSArray *strArray = [vudioUrlStr componentsSeparatedByString:@"/"];
+                vudioNameStr = [strArray lastObject];
+
+            }else if([errorCode isEqualToString:@"1"]){
+                
+            }else if([errorCode isEqualToString:@"-1"]){
+                
+            }
         }
     }];
 }
@@ -1134,19 +1155,31 @@
     self.playbackTime = cur.playbackTimeInSeconds/1;
 #pragma mark 这里需要判断是不是免费视屏
     //判断当前时间 如果>=普通用户播放时间，则停止播放 这里需要判断是不是免费视屏
-    if (self.playbackTime >= kGeneralUserPlayTime && !isVip && ![audioType isEqualToString:@"5"]) {
-        [self showHUDTextOnly:@"VIP音频仅可以收听前50s时间，请开通会员"];
-        [self.audioStream pause];
-        [self.playerTimer setFireDate:[NSDate distantFuture]];
-        playImageView.image = [UIImage imageNamed:@"Group 147"];
-        self.play = !self.play;
-//        return;
-    } else {
+//    if (self.playbackTime >= kGeneralUserPlayTime){// && !isVip && ![audioType isEqualToString:@"5"]) {
+//      //  [self showHUDTextOnly:@"VIP音频仅可以收听前50s时间，请开通会员"];
 //        [self.audioStream pause];
-//        [self.playerTimer setFireDate:[NSDate distantPast]];
-//        playImageView.image = [UIImage imageNamed:@"Group 130"];
+//        [self.playerTimer setFireDate:[NSDate distantFuture]];
+//        playImageView.image = [UIImage imageNamed:@"Group 147"];
+//        self.play = !self.play;
+////        return;
+//    } else {
+////        [self.audioStream pause];
+////        [self.playerTimer setFireDate:[NSDate distantPast]];
+////        playImageView.image = [UIImage imageNamed:@"Group 130"];
+//    }
+    if([audioStatus isEqualToString:@"2"]){ //VIP音频
+        if(!isVip){ //不是VIP用户
+            if(self.playbackTime >= kGeneralUserPlayTime){
+                [self showHUDTextOnly:@"VIP音频仅可以收听前50s时间，请开通会员"];
+                [self.audioStream pause];
+                [self.playerTimer setFireDate:[NSDate distantFuture]];
+                playImageView.image = [UIImage imageNamed:@"Group 147"];
+                self.play = !self.play;
+                [self theplayAction];
+//              return;
+            }
+        }
     }
-    
     //判断是否已经统计过次数
     if (!isNumberAdd) {
         //判断当前时间 是否等于统计次数时间
@@ -1210,7 +1243,7 @@
         return ;
     }
     //需要判断用户需不需要下载VIP视频
-    if (![audioType isEqualToString:@"5"] && !isVip ){
+    if (![audioStatus isEqualToString:@"1"] && !isVip ){
         [self showHUDTextOnly:@"用户不是VIP,请开通会员再来下载"];
         return ;
     }
@@ -1477,6 +1510,12 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
 
 #pragma mark - 收藏
 - (void)collectionButtonAction {
+    NSString *token = [NSString stringWithFormat:@"%@", [[NSUserDefaults standardUserDefaults] objectForKey:@"token"]];
+    if([token isEqualToString: @""]||[token isEqualToString: @"(null)"]){
+        LoginViewController *LogVC = [[LoginViewController alloc] init];
+        [self.navigationController pushViewController:LogVC animated:YES];
+        return ;
+    }
     if (isFavorite) {
         //喜欢 取消收藏
         NSString *url = [NSString stringWithFormat:@"%@",kDeleteFavoriteURL];
