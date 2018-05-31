@@ -10,6 +10,8 @@
 
 @interface MessageTableViewCell : UITableViewCell
 
+//cell 控件集合
+@property (nonatomic, strong) UIView *pageContent;
 // 头像
 @property (nonatomic, strong) UIImageView *headImageView;
 // 红点
@@ -23,4 +25,6 @@
 // 副标题
 @property (nonatomic, strong) UILabel *subtitleLabel;
 
+//选中区域
+@property (nonatomic, strong) UIButton *selectZone;
 @end

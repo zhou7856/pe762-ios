@@ -18,8 +18,9 @@
     
     UITableView *messageTabelView;//消息列表
     NSMutableArray *dataArray; //数据
+    NSMutableArray *selectCellArray; //选中的cell
     UIButton *delSelectInfo;  //删除选定信息
-    
+    UIButton *delAndFinBtn; //删除和完成按钮
     NSInteger page;
     NSInteger rows;
 }
@@ -34,7 +35,7 @@
     // 初始化分页数据
     rows = 10;
     page = 1;
-    
+    selectCellArray = [[NSMutableArray alloc] init];
     // 创建页面
     [self initUI];
     // 刷新数据
@@ -73,7 +74,7 @@
     [self createEndBackView];
 #pragma mark - 删除
     
-    UIButton *delAndFinBtn = [[UIButton alloc] initWithFrame: CGRectMake(270 * kScreenWidthProportion, kStatusHeight, 50 * kScreenWidthProportion, kNavigationBarHeight)];
+    delAndFinBtn = [[UIButton alloc] initWithFrame: CGRectMake(270 * kScreenWidthProportion, kStatusHeight, 50 * kScreenWidthProportion, kNavigationBarHeight)];
     //delAndFinBtn.backgroundColor = kProgressColor;
 //    label.textColor = kBlackLabelColor;
 
@@ -87,12 +88,14 @@
             [delSelectInfo setTitle:@"删除" forState:UIControlStateNormal];
             messageTabelView.minY = delSelectInfo.maxY;
             
+            
         }else if([delAndFinBtn.titleLabel.text isEqualToString: @"完成"]){
             [delAndFinBtn setTitle:@"编辑" forState:UIControlStateNormal];
             delSelectInfo.height = 0;
             [delSelectInfo setTitle:@"" forState:UIControlStateNormal];
             messageTabelView.minY = delSelectInfo.maxY;
         }
+        [messageTabelView reloadData];
     }];
     [self.view addSubview:delAndFinBtn];
 //删除选中cell 对象
@@ -102,6 +105,22 @@
     [delSelectInfo setTitleColor:kBlackLabelColor forState:UIControlStateNormal];
     [[delSelectInfo rac_signalForControlEvents:UIControlEventTouchDown] subscribeNext:^(id x) {
         NSLog(@"删除成功");
+        //首先获取所有被选择的cell对象
+//        selectCellArray
+        for(int selecti = 0; selecti < selectCellArray.count; selecti++){
+//            NSDictionary *dataDic = dataArray[]
+            NSDictionary *dict = [selectCellArray objectAtIndex:selecti];
+            for(int datai = 0; datai < dataArray.count; datai++){
+                NSDictionary *dataDic = [dataArray objectAtIndex:datai];
+                if([dataDic[@"id"] isEqualToString: dict[@"id"]]){
+                    [dataArray removeObjectAtIndex:datai];
+                    break;
+                }
+            }
+        }
+        //所有都删除后初始化数组
+        selectCellArray = [[NSMutableArray alloc] init];
+        [messageTabelView reloadData];
     }];
     [self.view addSubview:delSelectInfo];
     
@@ -146,12 +165,45 @@
     if (!cell) {
         cell = [[MessageTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
     }
+    
+    
     // 取消点击cell的效果
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
+    //更改selectCell 的约束
+    if([delAndFinBtn.titleLabel.text isEqualToString: @"编辑"]){
+        cell.pageContent.minX = 0;
+        
+    }else if([delAndFinBtn.titleLabel.text isEqualToString: @"完成"]){
+        cell.pageContent.minX = 30 * kScreenWidthProportion;
+    }
+    [[cell.selectZone rac_signalForControlEvents:UIControlEventTouchUpInside] subscribeNext:^(id x) {
+        [self selectObjZone:cell];
+    }];
+    
     // 取数据
     NSDictionary *dict = dataArray[indexPath.row];
+    
+    NSString *idStr = [NSString stringWithFormat:@"%@",dict[@"id"]];
+    
+    //每次重读需要刷新cell,所以更新cell数组,判断cell 是不是在selectCellArray
+    {
+        int i = 0;
+        for (i = 0; i < selectCellArray.count; i++){
+            NSDictionary *selectDic = [selectCellArray objectAtIndex:i];
+            if([selectDic[@"id"] isEqualToString:idStr]){
+                cell.selectZone.tag = 1;
+                [cell.selectZone setImage:[UIImage imageNamed:@"icon_yes"] forState:UIControlStateNormal];
+            }
+        }
+        if( i == selectCellArray.count){ //没有找到这种情况
+            cell.selectZone.tag = 0;
+            [cell.selectZone setImage:[UIImage imageNamed:@"icon_no"] forState:UIControlStateNormal];
+        }
+    }
 
+    
+    cell.tag = [idStr integerValue];
     // 赋值
     NSString *creatTimeStr = [NSString stringWithFormat:@"%@", dict[@"created_at"]];
     NSString *hmStr = [creatTimeStr substringWithRange:NSMakeRange(0, 10)];
@@ -179,20 +231,58 @@
     
     return cell;
 }
+-(void)selectObjZone:(MessageTableViewCell *)cell{
+    if(cell.selectZone.tag == 0){  //未选中
+        cell.selectZone.tag = 1;
+        [cell.selectZone setImage:[UIImage imageNamed:@"icon_yes"] forState:UIControlStateNormal];
+     //   cell.tag = 1;
+        //选中就加对象
+        NSString *idstr = [NSString stringWithFormat:@"%d",cell.tag]; // cell.tag放上每个cell的对象的id
+        NSString *type = @"1";  //表示已经选中
+        NSDictionary *dict = @{
+                               @"id":idstr,
+                              // @"type":type
+                               };
+        [selectCellArray addObject:dict];
+        NSLog(@"selectCellArray --> %@",selectCellArray);
+        
+    }else if(cell.selectZone.tag == 1){
+        cell.selectZone.tag = 0;
+        [cell.selectZone setImage:[UIImage imageNamed:@"icon_no"] forState:UIControlStateNormal];
+     //   cell.tag = 0;
+        //去掉就去对象
+        for (int i = 0; i < selectCellArray.count ; i++){
+            NSDictionary *dict = [selectCellArray objectAtIndex:i]; //一般找到就可以跳出循环
+            if([dict[@"id"] integerValue] == cell.tag){
+                [selectCellArray removeObjectAtIndex:i];
+                break;
+            }
+        }
+        NSLog(@"selectCellArray --> %@",selectCellArray);
 
+        
+    }
+
+}
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
     NSLog(@"你点击了第%ld行", indexPath.row);
-    // 取数据
-    NSDictionary *dict = dataArray[indexPath.row];
-    NSString *idStr = [NSString stringWithFormat:@"%@", dict[@"id"]];
-    
-    // 跳转到详情页面
-    ProblemDetailViewController *pushVC = [[ProblemDetailViewController alloc] init];
-    pushVC.idStr = idStr;
-    pushVC.type = @"1";
-    [self.navigationController pushViewController:pushVC animated:YES];
-    
+    if([delAndFinBtn.titleLabel.text isEqualToString: @"完成"]){
+        //获取选中的cell对象
+        MessageTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+        [self selectObjZone:cell];
+            }else {
+        // 取数据
+        NSDictionary *dict = dataArray[indexPath.row];
+        NSString *idStr = [NSString stringWithFormat:@"%@", dict[@"id"]];
+        
+        // 跳转到详情页面
+        ProblemDetailViewController *pushVC = [[ProblemDetailViewController alloc] init];
+        pushVC.idStr = idStr;
+        pushVC.type = @"1";
+        [self.navigationController pushViewController:pushVC animated:YES];
+
+    }
 }
 
 #pragma mark - 按钮点击方法
