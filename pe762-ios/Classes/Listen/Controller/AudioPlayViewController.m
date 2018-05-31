@@ -90,7 +90,8 @@
     
     // 无网络页面
     UIView *notNetView;
-    
+    //判断音频获取是否正确
+    BOOL playErrorCode;
 }
 
 @property (nonatomic, strong) FSAudioStream *audioStream;
@@ -166,6 +167,7 @@
 //    [self playerInit:[NSURL URLWithString:@"http://sc1.111ttt.cn/2016/1/06/25/199251943186.mp3"]];
     //audioIDStr = self.idStr;
      //[self initData];
+    playErrorCode = NO;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -304,6 +306,7 @@
         make.centerY.mas_equalTo(playBackView);
         make.size.mas_equalTo(CGSizeMake(250 * kScreenWidthProportion, 250 * kScreenWidthProportion));
     }];
+    
      //播放背景图片2
     playCenterImage=[[UIImageView alloc] init];
     [playBackView addSubview:playCenterImage];
@@ -318,6 +321,8 @@
     //音频把手
     handleImage=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"group23"]];
     [mainView addSubview:handleImage];
+    //handleImage.layer.anchorPoint = CGPointMake(1, 1);
+   //  handleImage.layer.position = CGPointMake(10, 10);
   //  handleImage.layer.position=CGPointMake(0.5, 0);
   //  handleImage.layer.anchorPoint = CGPointMake( 0, 1);
     [handleImage mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -975,6 +980,7 @@
         if ([description isEqualToString:@"The stream startup watchdog activated: stream didn't start to play in 30 seconds"]) {
             NSLog(@"播放出现问题");
         }
+        playErrorCode = YES;
     };
     __weak NSString *weakVudioUrlStr = vudioUrlStr;
     _audioStream.onCompletion=^(){
@@ -1043,6 +1049,7 @@
 - (void)playAction{
     //播放情况
     //先将未到时间执行前的任务取消
+    
     [[self class] cancelPreviousPerformRequestsWithTarget:self selector:@selector(theplayAction)object:nil];
     
     [self performSelector:@selector(theplayAction)withObject:nil afterDelay:0.2f]; // 0.2不可改
@@ -1122,8 +1129,19 @@
 
 #pragma mark 音频缓存和播放进度提示
 - (void)playProgressAction{
+    if (self.play == YES && !playErrorCode) {
+
+        [UIView animateWithDuration:1.5 animations:^{
+            //   CGFloat angle = M_PI/180 * 360/arr.count;
+            playBackImage.transform = CGAffineTransformRotate(playBackImage.transform, -M_PI/40);
+            playCenterImage.transform = CGAffineTransformRotate(playCenterImage.transform, -M_PI /40);
+        }];
+
+    }
+    
     if (playNumber) {
-        if ([playNumber doubleValue] >= kGeneralUserPlayTime && !isVip) {
+        
+            if ([playNumber doubleValue] >= kGeneralUserPlayTime && !isVip) {
             //如果不是VIP，并且播放时间 >=可播放时间，则返回头重新播放
             FSStreamPosition cur = self.audioStream.currentTimePlayed;
             self.playbackTime = 0;
