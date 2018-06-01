@@ -79,9 +79,10 @@
     //分享类型
     NSString *shareType;
     
-    //音频类型
+    //音频的type 1 => '讲专业', 2 => '填志愿', 3 => '降学压' 音频
     NSString* audioType;
-    
+    //status 1 => '普通', //普通可看 2 => 'vip',
+    NSString* audioStatus;
     //播放记录
     NSMutableArray *listDataArray;
     
@@ -89,7 +90,8 @@
     
     // 无网络页面
     UIView *notNetView;
-    
+    //判断音频获取是否正确
+    BOOL playErrorCode;
 }
 
 @property (nonatomic, strong) FSAudioStream *audioStream;
@@ -125,6 +127,8 @@
     
     // 判断网络
     if ([self isExistenceNetwork]) {
+        //获取音频信息
+        [self GetAudioPlayInfoURL];
         // 获取播放记录
         [self getPlayRecordingAPI];
         // 页面数据
@@ -163,11 +167,13 @@
 //    [self playerInit:[NSURL URLWithString:@"http://sc1.111ttt.cn/2016/1/06/25/199251943186.mp3"]];
     //audioIDStr = self.idStr;
      //[self initData];
+    playErrorCode = NO;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
+  //  [self GetAudioPlayInfoURL];
+
     [self showTabBarView:NO];
     
 //    if (isFirstInto) {}
@@ -293,13 +299,18 @@
     //playBackView.backgroundColor = [UIColor greenColor];
     [mainView addSubview:playBackView];
     //播放背景图片1
-    playBackImage=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"round_bg"]];
+    playBackImage=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"round_bg2"]];
+   // playBackImage.backgroundColor = [UIColor greenColor];
+  //  UIImage *image = [UIImage imageNamed:@"round_bg2"];
+    
     [playBackView addSubview:playBackImage];
     [playBackImage mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.mas_equalTo(playBackView);
         make.centerY.mas_equalTo(playBackView);
         make.size.mas_equalTo(CGSizeMake(250 * kScreenWidthProportion, 250 * kScreenWidthProportion));
     }];
+   // playBackImage.contentMode = UIViewContentModeScaleToFill;
+    
      //播放背景图片2
     playCenterImage=[[UIImageView alloc] init];
     [playBackView addSubview:playCenterImage];
@@ -314,12 +325,16 @@
     //音频把手
     handleImage=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"group23"]];
     [mainView addSubview:handleImage];
+    //handleImage.backgroundColor = [UIColor blackColor];
+    handleImage.layer.anchorPoint = CGPointMake(1, 0);
+   //  handleImage.layer.position = CGPointMake(10, 10);
   //  handleImage.layer.position=CGPointMake(0.5, 0);
   //  handleImage.layer.anchorPoint = CGPointMake( 0, 1);
+    
     [handleImage mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.mas_equalTo(mainView);
-        make.top.mas_equalTo(mainView);
-        make.size.mas_equalTo(CGSizeMake(88*kScreenWidthProportion, 121*kScreenWidthProportion));
+        make.right.mas_equalTo(mainView).mas_offset(44 * kScreenWidthProportion);
+        make.top.mas_equalTo(mainView).mas_offset(-60 * kScreenWidthProportion);
+        make.size.mas_equalTo(CGSizeMake(88 * kScreenWidthProportion, 121 * kScreenWidthProportion));
     }];
     
     //添加vipView到界面里
@@ -342,10 +357,11 @@
 
     self.timeSlider = [[UISlider alloc] initWithFrame:CGRectMake(15 * kScreenWidthProportion, nowPlayTime.maxY + 5 * kScreenWidthProportion, 290 * kScreenWidthProportion, 15)];
     self.timeSlider.maximumValue = 1;
+    [self.timeSlider setThumbImage:[self OriginImage:[UIImage imageNamed:@"icon_round_grayness"]  scaleToSize:CGSizeMake(15*kScreenWidthProportion, 15*kScreenWidthProportion)] forState:UIControlStateNormal];
 //    self.timeSlider.value = 20.0 / 50.0;
     self.timeSlider.minimumTrackTintColor = RGB(197, 197, 197); //滑轮左边颜色，如果设置了左边的图片就不会显示
     self.timeSlider.maximumTrackTintColor = RGB(201, 201, 201); //滑轮右边颜色，如果设置了右边的图片就不会显示
-    self.timeSlider.thumbTintColor = RGB(226, 226, 226);//设置了滑轮的颜色，如果设置了滑轮的样式图片就不会显示
+  //  self.timeSlider.thumbTintColor = RGB(226, 226, 226);//设置了滑轮的颜色，如果设置了滑轮的样式图片就不会显示
     [self.timeSlider addTarget:self action:@selector(durationSliderTouch:) forControlEvents:UIControlEventValueChanged];
     [self.timeSlider addTarget:self action:@selector(durationSliderTouchEnded:) forControlEvents:UIControlEventTouchUpInside];
 
@@ -484,6 +500,21 @@
         make.bottom.mas_equalTo(introductionView.mas_bottom).offset(40 * kScreenWidthProportion);
     }];
 }
+#pragma mark -- 自定义滑块的大小    通过此方法可以更改滑块的任意大小和形状
+-(UIImage*) OriginImage:(UIImage*)image scaleToSize:(CGSize)size
+
+{
+    UIGraphicsBeginImageContext(size);//size为CGSize类型，即你所需要的图片尺寸
+    
+    [image drawInRect:CGRectMake(0,0, size.width, size.height)];
+    
+    UIImage* scaledImage =UIGraphicsGetImageFromCurrentImageContext();
+    
+    UIGraphicsEndImageContext();
+    
+    return scaledImage;
+    
+}
 
 #pragma mark - 无网络页面
 - (void) initNotNetView{
@@ -612,14 +643,20 @@
                     vipView.hidden=NO;
                 }
                 
-                vudioUrlStr = [NSString stringWithFormat:@"%@", infoDic[@"audio_path"]];
-                audioType=[NSString stringWithFormat:@"%@",infoDic[@"type"]];
-                audioIDStr=[NSString stringWithFormat:@"%@",infoDic[@"id"]];
-                NSArray *strArray = [vudioUrlStr componentsSeparatedByString:@"/"];
-                vudioNameStr = [strArray lastObject];
+                //音频的type 1 => '讲专业', 2 => '填志愿', 3 => '降学压'
+                audioType = [NSString stringWithFormat:@"%@",infoDic[@"type"]];
+                //音频status 1 => '普通', //普通可看 2 => 'vip',
+                audioStatus = [NSString stringWithFormat:@"%@",infoDic[@"status"]];
+                audioIDStr = [NSString stringWithFormat:@"%@",infoDic[@"id"]];
 //                vudioNameStr = [NSString stringWithFormat:@"%@", infoDic[@"title"]];
                 NSString *playcenterImageURL=[NSString stringWithFormat:@"%@%@",kHostURL,infoDic[@"thumb"]];
-                [playCenterImage setImageWithURL:[NSURL URLWithString:playcenterImageURL]];
+                //需要裁剪图片
+                NSData * data = [NSData dataWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",kHostURL,infoDic[@"thumb"]]]];
+                UIImage *result = [UIImage imageWithData:data];
+                //裁剪
+                [playCenterImage setImage:[self thumbnailWithImage:result size:CGSizeMake(result.size.width, result.size.width)]];
+                
+               // [playCenterImage setImageWithURL:[NSURL URLWithString:playcenterImageURL]];
                 //收藏与否
                 NSInteger is_favorite = [infoDic[@"is_favorite"] integerValue];
                 if (is_favorite == 1) {
@@ -667,6 +704,173 @@
         }
     }];
 }
+#pragma mark - 裁剪图片的大小
+- (UIImage *)thumbnailWithImage:(UIImage *)originalImage size:(CGSize)size
+
+{
+    
+    CGSize originalsize = [originalImage size];
+    
+    //原图长宽均小于标准长宽的，不作处理返回原图
+    
+    if (originalsize.width<size.width && originalsize.height<size.height)
+        
+    {
+        
+        return originalImage;
+        
+    }
+    
+    
+    
+    //原图长宽均大于标准长宽的，按比例缩小至最大适应值
+    
+    else if(originalsize.width>size.width && originalsize.height>size.height)
+        
+    {
+        
+        CGFloat rate = 1.0;
+        
+        CGFloat widthRate = originalsize.width/size.width;
+        
+        CGFloat heightRate = originalsize.height/size.height;
+        
+        
+        
+        rate = widthRate>heightRate?heightRate:widthRate;
+        
+        
+        
+        CGImageRef imageRef = nil;
+        
+        
+        
+        if (heightRate>widthRate)
+            
+        {
+            
+            imageRef = CGImageCreateWithImageInRect([originalImage CGImage], CGRectMake(0, originalsize.height/2-size.height*rate/2, originalsize.width, size.height*rate));//获取图片整体部分
+            
+        }
+        
+        else
+            
+        {
+            
+            imageRef = CGImageCreateWithImageInRect([originalImage CGImage], CGRectMake(originalsize.width/2-size.width*rate/2, 0, size.width*rate, originalsize.height));//获取图片整体部分
+            
+        }
+        
+        UIGraphicsBeginImageContext(size);//指定要绘画图片的大小
+        
+        CGContextRef con = UIGraphicsGetCurrentContext();
+        
+        
+        
+        CGContextTranslateCTM(con, 0.0, size.height);
+        
+        CGContextScaleCTM(con, 1.0, -1.0);
+        
+        
+        
+        CGContextDrawImage(con, CGRectMake(0, 0, size.width, size.height), imageRef);
+        
+        
+        
+        UIImage *standardImage = UIGraphicsGetImageFromCurrentImageContext();
+        
+        
+        
+        UIGraphicsEndImageContext();
+        
+        CGImageRelease(imageRef);
+        
+        
+        
+        return standardImage;
+        
+    }
+    
+    
+    
+    //原图长宽有一项大于标准长宽的，对大于标准的那一项进行裁剪，另一项保持不变
+    
+    else if(originalsize.height>size.height || originalsize.width>size.width)
+        
+    {
+        
+        CGImageRef imageRef = nil;
+        
+        
+        
+        if(originalsize.height>size.height)
+            
+        {
+            
+            imageRef = CGImageCreateWithImageInRect([originalImage CGImage], CGRectMake(0, originalsize.height/2-size.height/2, originalsize.width, size.height));//获取图片整体部分
+            
+        }
+        
+        else if (originalsize.width>size.width)
+            
+        {
+            
+            imageRef = CGImageCreateWithImageInRect([originalImage CGImage], CGRectMake(originalsize.width/2-size.width/2, 0, size.width, originalsize.height));//获取图片整体部分
+            
+        }
+        
+        
+        
+        UIGraphicsBeginImageContext(size);//指定要绘画图片的大小
+        
+        
+        
+        　 　　CGContextRef con = UIGraphicsGetCurrentContext();
+        
+        CGContextTranslateCTM(con, 0.0, size.height);
+        
+        CGContextScaleCTM(con, 1.0, -1.0);
+        
+        
+        
+        CGContextDrawImage(con, CGRectMake(0, 0, size.width, size.height), imageRef);
+        
+        
+        
+        UIImage *standardImage = UIGraphicsGetImageFromCurrentImageContext();
+        
+        NSLog(@"改变后图片的宽度为%f,图片的高度为%f",[standardImage size].width,[standardImage size].height);
+        
+        
+        
+        UIGraphicsEndImageContext();
+        
+        CGImageRelease(imageRef);
+        
+        
+        
+        return standardImage;
+        
+    }
+    
+    
+    
+    //原图为标准长宽的，不做处理
+    
+    else
+        
+    {
+        
+        return originalImage;
+        
+    }
+    
+    return originalImage;
+    
+}
+
+
+
 #pragma mark - 删除播放记录
 - (void)deletePlayRecording:(NSInteger )audioID {
     NSString *url = [NSString stringWithFormat:@"%@",kDeletePlayRecordingURL];
@@ -782,6 +986,7 @@
         if ([description isEqualToString:@"The stream startup watchdog activated: stream didn't start to play in 30 seconds"]) {
             NSLog(@"播放出现问题");
         }
+        playErrorCode = YES;
     };
     __weak NSString *weakVudioUrlStr = vudioUrlStr;
     _audioStream.onCompletion=^(){
@@ -850,6 +1055,18 @@
 - (void)playAction{
     //播放情况
     //先将未到时间执行前的任务取消
+    if(self.play == YES) { //准备暂停
+        handleImage.transform = CGAffineTransformIdentity;
+        [UIView animateWithDuration:2 animations:^{
+            handleImage.transform = CGAffineTransformRotate(handleImage.transform, -M_PI /8);
+        }];
+    }else if(self.play == NO){ //准备开始
+        handleImage.transform = CGAffineTransformMakeRotation(-M_PI/8);
+        [UIView animateWithDuration:2 animations:^{
+            handleImage.transform = CGAffineTransformRotate(handleImage.transform, M_PI /8);
+        }];
+    }
+
     [[self class] cancelPreviousPerformRequestsWithTarget:self selector:@selector(theplayAction)object:nil];
     
     [self performSelector:@selector(theplayAction)withObject:nil afterDelay:0.2f]; // 0.2不可改
@@ -888,6 +1105,39 @@
     }
     self.play = !self.play;
 }
+#pragma mark 获取音频信息 --需要传入id
+- (void)GetAudioPlayInfoURL{
+    NSString *url = [NSString stringWithFormat:@"%@",kGetAudioAddressURL];
+    url = [self stitchingTokenAndPlatformForURL:url];
+    url = [NSString stringWithFormat:@"%@&id=%@", url, self.idStr];
+    NSLog(@"url --> %@",url);
+    
+    [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+    [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
+    [self defaultRequestwithURL:url withParameters:nil withMethod:kGET withBlock:^(NSDictionary *dict, NSError *error) {
+        //判断有无数据
+        NSLog(@"url --> %@",url);
+
+        [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+        if ([[dict allKeys] containsObject:@"errorCode"]) {
+            
+            NSString *errorCode = [NSString stringWithFormat:@"%@",dict[@"errorCode"]];
+            
+            if([errorCode isEqualToString:@"0"] ){
+                NSDictionary *infoDic = dict[@"data"];
+                
+                vudioUrlStr = [NSString stringWithFormat:@"%@", infoDic[@"audio_path"]];
+                NSArray *strArray = [vudioUrlStr componentsSeparatedByString:@"/"];
+                vudioNameStr = [strArray lastObject];
+
+            }else if([errorCode isEqualToString:@"1"]){
+                
+            }else if([errorCode isEqualToString:@"-1"]){
+                
+            }
+        }
+    }];
+}
 
 #pragma mark 解决slider 小范围滑动不能触发的问题
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer{
@@ -898,8 +1148,24 @@
 
 #pragma mark 音频缓存和播放进度提示
 - (void)playProgressAction{
+    if (self.play == YES && !playErrorCode) {
+
+        [UIView animateWithDuration:1.5 animations:^{
+            //   CGFloat angle = M_PI/180 * 360/arr.count;
+            if(self.play == YES){
+                playBackImage.transform = CGAffineTransformRotate(playBackImage.transform, -M_PI/40);
+                playCenterImage.transform = CGAffineTransformRotate(playCenterImage.transform, -M_PI /40);
+              //  handleImage.transform = CGAffineTransformRotate(handleImage.transform, -M_PI /40);
+              //  handleImage.transform = CATransform3DMakeRotation(M_PI/40,0,0,1);
+
+            }
+        }];
+
+    }
+    
     if (playNumber) {
-        if ([playNumber doubleValue] >= kGeneralUserPlayTime && !isVip) {
+        
+            if ([playNumber doubleValue] >= kGeneralUserPlayTime && !isVip) {
             //如果不是VIP，并且播放时间 >=可播放时间，则返回头重新播放
             FSStreamPosition cur = self.audioStream.currentTimePlayed;
             self.playbackTime = 0;
@@ -931,18 +1197,31 @@
     self.playbackTime = cur.playbackTimeInSeconds/1;
 #pragma mark 这里需要判断是不是免费视屏
     //判断当前时间 如果>=普通用户播放时间，则停止播放 这里需要判断是不是免费视屏
-    if (self.playbackTime >= kGeneralUserPlayTime && !isVip&&![audioType isEqualToString:@"5"]) {
-        [self.audioStream pause];
-        [self.playerTimer setFireDate:[NSDate distantFuture]];
-        playImageView.image = [UIImage imageNamed:@"Group 147"];
-        self.play = !self.play;
-//        return;
-    } else {
+//    if (self.playbackTime >= kGeneralUserPlayTime){// && !isVip && ![audioType isEqualToString:@"5"]) {
+//      //  [self showHUDTextOnly:@"VIP音频仅可以收听前50s时间，请开通会员"];
 //        [self.audioStream pause];
-//        [self.playerTimer setFireDate:[NSDate distantPast]];
-//        playImageView.image = [UIImage imageNamed:@"Group 130"];
+//        [self.playerTimer setFireDate:[NSDate distantFuture]];
+//        playImageView.image = [UIImage imageNamed:@"Group 147"];
+//        self.play = !self.play;
+////        return;
+//    } else {
+////        [self.audioStream pause];
+////        [self.playerTimer setFireDate:[NSDate distantPast]];
+////        playImageView.image = [UIImage imageNamed:@"Group 130"];
+//    }
+    if([audioStatus isEqualToString:@"2"]){ //VIP音频
+        if(!isVip){ //不是VIP用户
+            if(self.playbackTime >= kGeneralUserPlayTime){
+                [self showHUDTextOnly:@"VIP音频仅可以收听前50s时间，请开通会员"];
+                [self.audioStream pause];
+                [self.playerTimer setFireDate:[NSDate distantFuture]];
+                playImageView.image = [UIImage imageNamed:@"Group 147"];
+                self.play = !self.play;
+                [self theplayAction];
+//              return;
+            }
+        }
     }
-    
     //判断是否已经统计过次数
     if (!isNumberAdd) {
         //判断当前时间 是否等于统计次数时间
@@ -998,6 +1277,18 @@
 
 #pragma mark - 音频下载
 - (void)downLoadBtnAction {
+    
+    NSString *token = [NSString stringWithFormat:@"%@", [[NSUserDefaults standardUserDefaults] objectForKey:@"token"]];
+    if([token isEqualToString: @""]||[token isEqualToString: @"(null)"]){
+        LoginViewController *LogVC = [[LoginViewController alloc] init];
+        [self.navigationController pushViewController:LogVC animated:YES];
+        return ;
+    }
+    //需要判断用户需不需要下载VIP视频
+    if (![audioStatus isEqualToString:@"1"] && !isVip ){
+        [self showHUDTextOnly:@"用户不是VIP,请开通会员再来下载"];
+        return ;
+    }
     if (isDownLoad) {
         [self showHUDTextOnly:@"已下载在本地，无需下载"];
         return;
@@ -1261,6 +1552,12 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
 
 #pragma mark - 收藏
 - (void)collectionButtonAction {
+    NSString *token = [NSString stringWithFormat:@"%@", [[NSUserDefaults standardUserDefaults] objectForKey:@"token"]];
+    if([token isEqualToString: @""]||[token isEqualToString: @"(null)"]){
+        LoginViewController *LogVC = [[LoginViewController alloc] init];
+        [self.navigationController pushViewController:LogVC animated:YES];
+        return ;
+    }
     if (isFavorite) {
         //喜欢 取消收藏
         NSString *url = [NSString stringWithFormat:@"%@",kDeleteFavoriteURL];

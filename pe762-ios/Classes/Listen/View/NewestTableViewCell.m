@@ -36,7 +36,7 @@
         
         // 类型
         self.classLabel = [[UILabel alloc] init];
-        self.classLabel.textColor = kBlackLabelColor;
+        self.classLabel.textColor = kWhiteColor;
         self.classLabel.font = FONT(10 * kFontProportion);
         self.classLabel.textAlignment = NSTextAlignmentCenter;
         [self.classLabel setCornerRadius:2.0f];

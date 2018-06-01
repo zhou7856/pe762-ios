@@ -179,7 +179,7 @@
     }];
     [searchView addGestureRecognizer:tap];
     
-#pragma mark - 讲专业、降学压、填志愿
+#pragma mark - 讲专业1、降学压3、填志愿2
     UIImageView *professionImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Group 117"]];
     professionImageView.userInteractionEnabled = YES;
     [mainView addSubview:professionImageView];
@@ -193,7 +193,7 @@
     [[proTap rac_gestureSignal] subscribeNext:^(id x) {
         [self showTabBarView:NO];
         ListViewController *pushVC = [[ListViewController alloc] init];
-        pushVC.typeStr = @"2";
+        pushVC.typeStr = @"1";
         [self.navigationController pushViewController:pushVC animated:YES];
     }];
     [professionImageView addGestureRecognizer:proTap];
@@ -211,7 +211,7 @@
     [[preTap rac_gestureSignal] subscribeNext:^(id x) {
         [self showTabBarView:NO];
         ListViewController *pushVC = [[ListViewController alloc] init];
-        pushVC.typeStr = @"4";
+        pushVC.typeStr = @"3";
         [self.navigationController pushViewController:pushVC animated:YES];
     }];
     [pressureImageView addGestureRecognizer:preTap];
@@ -229,7 +229,7 @@
     [[intTap rac_gestureSignal] subscribeNext:^(id x) {
         [self showTabBarView:NO];
         ListViewController *pushVC = [[ListViewController alloc] init];
-        pushVC.typeStr = @"3";
+        pushVC.typeStr = @"2";
         [self.navigationController pushViewController:pushVC animated:YES];
     }];
     [intentImageView addGestureRecognizer:intTap];
