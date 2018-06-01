@@ -299,13 +299,17 @@
     //playBackView.backgroundColor = [UIColor greenColor];
     [mainView addSubview:playBackView];
     //播放背景图片1
-    playBackImage=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"round_bg"]];
+    playBackImage=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"round_bg2"]];
+   // playBackImage.backgroundColor = [UIColor greenColor];
+  //  UIImage *image = [UIImage imageNamed:@"round_bg2"];
+    
     [playBackView addSubview:playBackImage];
     [playBackImage mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.mas_equalTo(playBackView);
         make.centerY.mas_equalTo(playBackView);
         make.size.mas_equalTo(CGSizeMake(250 * kScreenWidthProportion, 250 * kScreenWidthProportion));
     }];
+   // playBackImage.contentMode = UIViewContentModeScaleToFill;
     
      //播放背景图片2
     playCenterImage=[[UIImageView alloc] init];
@@ -321,14 +325,16 @@
     //音频把手
     handleImage=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"group23"]];
     [mainView addSubview:handleImage];
-    //handleImage.layer.anchorPoint = CGPointMake(1, 1);
+    //handleImage.backgroundColor = [UIColor blackColor];
+    handleImage.layer.anchorPoint = CGPointMake(1, 0);
    //  handleImage.layer.position = CGPointMake(10, 10);
   //  handleImage.layer.position=CGPointMake(0.5, 0);
   //  handleImage.layer.anchorPoint = CGPointMake( 0, 1);
+    
     [handleImage mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.mas_equalTo(mainView);
-        make.top.mas_equalTo(mainView);
-        make.size.mas_equalTo(CGSizeMake(88*kScreenWidthProportion, 121*kScreenWidthProportion));
+        make.right.mas_equalTo(mainView).mas_offset(44 * kScreenWidthProportion);
+        make.top.mas_equalTo(mainView).mas_offset(-60 * kScreenWidthProportion);
+        make.size.mas_equalTo(CGSizeMake(88 * kScreenWidthProportion, 121 * kScreenWidthProportion));
     }];
     
     //添加vipView到界面里
@@ -351,7 +357,7 @@
 
     self.timeSlider = [[UISlider alloc] initWithFrame:CGRectMake(15 * kScreenWidthProportion, nowPlayTime.maxY + 5 * kScreenWidthProportion, 290 * kScreenWidthProportion, 15)];
     self.timeSlider.maximumValue = 1;
-    [self.timeSlider setThumbImage:[self OriginImage:[UIImage imageNamed:@"icon_mailbox"]  scaleToSize:CGSizeMake(15*kScreenWidthProportion, 15*kScreenWidthProportion)] forState:UIControlStateNormal];
+    [self.timeSlider setThumbImage:[self OriginImage:[UIImage imageNamed:@"icon_round_grayness"]  scaleToSize:CGSizeMake(15*kScreenWidthProportion, 15*kScreenWidthProportion)] forState:UIControlStateNormal];
 //    self.timeSlider.value = 20.0 / 50.0;
     self.timeSlider.minimumTrackTintColor = RGB(197, 197, 197); //滑轮左边颜色，如果设置了左边的图片就不会显示
     self.timeSlider.maximumTrackTintColor = RGB(201, 201, 201); //滑轮右边颜色，如果设置了右边的图片就不会显示
@@ -1049,7 +1055,18 @@
 - (void)playAction{
     //播放情况
     //先将未到时间执行前的任务取消
-    
+    if(self.play == YES) { //准备暂停
+        handleImage.transform = CGAffineTransformIdentity;
+        [UIView animateWithDuration:2 animations:^{
+            handleImage.transform = CGAffineTransformRotate(handleImage.transform, -M_PI /8);
+        }];
+    }else if(self.play == NO){ //准备开始
+        handleImage.transform = CGAffineTransformMakeRotation(-M_PI/8);
+        [UIView animateWithDuration:2 animations:^{
+            handleImage.transform = CGAffineTransformRotate(handleImage.transform, M_PI /8);
+        }];
+    }
+
     [[self class] cancelPreviousPerformRequestsWithTarget:self selector:@selector(theplayAction)object:nil];
     
     [self performSelector:@selector(theplayAction)withObject:nil afterDelay:0.2f]; // 0.2不可改
@@ -1099,6 +1116,8 @@
     [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
     [self defaultRequestwithURL:url withParameters:nil withMethod:kGET withBlock:^(NSDictionary *dict, NSError *error) {
         //判断有无数据
+        NSLog(@"url --> %@",url);
+
         [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
         if ([[dict allKeys] containsObject:@"errorCode"]) {
             
@@ -1133,8 +1152,13 @@
 
         [UIView animateWithDuration:1.5 animations:^{
             //   CGFloat angle = M_PI/180 * 360/arr.count;
-            playBackImage.transform = CGAffineTransformRotate(playBackImage.transform, -M_PI/40);
-            playCenterImage.transform = CGAffineTransformRotate(playCenterImage.transform, -M_PI /40);
+            if(self.play == YES){
+                playBackImage.transform = CGAffineTransformRotate(playBackImage.transform, -M_PI/40);
+                playCenterImage.transform = CGAffineTransformRotate(playCenterImage.transform, -M_PI /40);
+              //  handleImage.transform = CGAffineTransformRotate(handleImage.transform, -M_PI /40);
+              //  handleImage.transform = CATransform3DMakeRotation(M_PI/40,0,0,1);
+
+            }
         }];
 
     }

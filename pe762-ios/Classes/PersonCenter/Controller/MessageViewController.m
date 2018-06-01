@@ -135,7 +135,10 @@
     messageTabelView.estimatedSectionFooterHeight = 0;
     [self.view addSubview:messageTabelView];
 }
-
+#pragma mark -通过id删除消息对象
+- (void) delMessageByIdURL {
+//    NSString * url = [NSString stringWithFormat:@"%@",];
+}
 #pragma mark - tableView代理
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return 1;
