@@ -107,17 +107,26 @@
         NSLog(@"删除成功");
         //首先获取所有被选择的cell对象
 //        selectCellArray
-        for(int selecti = 0; selecti < selectCellArray.count; selecti++){
+        NSString *idStr ; //idStr=1，2，3，4，5
+        if(selectCellArray.count > 0)
+        idStr = [NSString stringWithFormat:@"%@",[selectCellArray objectAtIndex:0][@"id"]];
+        for(int selecti = 1; selecti < selectCellArray.count; selecti++){
 //            NSDictionary *dataDic = dataArray[]
             NSDictionary *dict = [selectCellArray objectAtIndex:selecti];
-            for(int datai = 0; datai < dataArray.count; datai++){
-                NSDictionary *dataDic = [dataArray objectAtIndex:datai];
-                if([dataDic[@"id"] isEqualToString: dict[@"id"]]){
-                    [dataArray removeObjectAtIndex:datai];
-                    break;
-                }
-            }
+//            for(int datai = 0; datai < dataArray.count; datai++){
+//                NSDictionary *dataDic = [dataArray objectAtIndex:datai];
+//                if([dataDic[@"id"] isEqualToString: dict[@"id"]]){
+//                    [dataArray removeObjectAtIndex:datai];
+//                    break;
+//                }
+//            }
+            idStr = [NSString stringWithFormat:@"%@,%@",idStr,[selectCellArray objectAtIndex:selecti][@"id"]];
+           // [self delNoticeInfoURL:dict[@"id"]];
+            
         }
+        [self delNoticeInfoURL:idStr];
+        //更新api
+        [self initNoticeListAPI];
         //所有都删除后初始化数组
         selectCellArray = [[NSMutableArray alloc] init];
         [messageTabelView reloadData];
@@ -136,8 +145,25 @@
     [self.view addSubview:messageTabelView];
 }
 #pragma mark -通过id删除消息对象
-- (void) delMessageByIdURL {
-//    NSString * url = [NSString stringWithFormat:@"%@",];
+- (void) delNoticeInfoURL:(NSString *)idStr {
+    NSString * url = [NSString stringWithFormat:@"%@",kDelNoticeInfoURL];
+    url = [self stitchingTokenAndPlatformForURL:url];
+    url = [NSString stringWithFormat:@"%@&ids=%@",url,idStr];
+    
+    [self defaultRequestwithURL:url withParameters:nil withMethod:kGET withBlock:^(NSDictionary *dict, NSError *error) {
+        
+        //判断有无数据
+        if ([[dict allKeys] containsObject:@"errorCode"]) {
+            NSString *errorCode = [NSString stringWithFormat:@"%@",dict[@"errorCode"]];
+            
+            if ([errorCode isEqualToString:@"0"]) {
+                NSDictionary *msg = dict[@"message"];
+                
+                NSLog(@"msg -- 》%@",msg);
+                
+            }
+        }
+    }];
 }
 #pragma mark - tableView代理
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
@@ -172,18 +198,6 @@
     
     // 取消点击cell的效果
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    
-    //更改selectCell 的约束
-    if([delAndFinBtn.titleLabel.text isEqualToString: @"编辑"]){
-        cell.pageContent.minX = 0;
-        
-    }else if([delAndFinBtn.titleLabel.text isEqualToString: @"完成"]){
-        cell.pageContent.minX = 30 * kScreenWidthProportion;
-    }
-    [[cell.selectZone rac_signalForControlEvents:UIControlEventTouchUpInside] subscribeNext:^(id x) {
-        [self selectObjZone:cell];
-    }];
-    
     // 取数据
     NSDictionary *dict = dataArray[indexPath.row];
     
@@ -204,7 +218,21 @@
             [cell.selectZone setImage:[UIImage imageNamed:@"icon_no"] forState:UIControlStateNormal];
         }
     }
+    
 
+    //更改selectCell 的约束
+    if([delAndFinBtn.titleLabel.text isEqualToString: @"编辑"]){
+        cell.pageContent.minX = 0;
+        
+    }else if([delAndFinBtn.titleLabel.text isEqualToString: @"完成"]){
+        cell.pageContent.minX = 30 * kScreenWidthProportion;
+    }
+    [[cell.selectZone rac_signalForControlEvents:UIControlEventTouchDown] subscribeNext:^(id x) {
+        [self selectObjZone:cell];
+        cell.selectZone.enabled = NO;
+        
+    }];
+    
     
     cell.tag = [idStr integerValue];
     // 赋值

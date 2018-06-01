@@ -299,7 +299,7 @@
     //playBackView.backgroundColor = [UIColor greenColor];
     [mainView addSubview:playBackView];
     //播放背景图片1
-    playBackImage=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"round_bg2"]];
+    playBackImage=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bound_bg2"]];
    // playBackImage.backgroundColor = [UIColor greenColor];
   //  UIImage *image = [UIImage imageNamed:@"round_bg2"];
     

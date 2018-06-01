@@ -180,6 +180,8 @@
 //我的二维码 Future 
 #define kMyQrCodeURL kBaseURL @"user/userIndex/qrCode"
 
+
+
 /*************************代理***********************************/
 //我的团队 Future
 #define kProxyTeamURL kBaseURL @"user/proxy/team"
@@ -199,6 +201,9 @@
 
 //获取未读通知数 Future
 #define kNoticeReadNumURL kBaseURL @"user/notice/readNum"
+
+//删除通知信息
+#define kDelNoticeInfoURL kBaseURL @"user/notice/delete"
 
 /*************************充值***********************************/
 //会员充值支付页面 Future
