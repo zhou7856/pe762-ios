@@ -162,7 +162,7 @@
             
             if ([errorCode isEqualToString:@"0"]) {
                 NSDictionary *msg = dict[@"message"];
-                
+                [self showHUDTextOnly:@"删除成功"];
                 NSLog(@"msg -- 》%@",msg);
                 
             }
