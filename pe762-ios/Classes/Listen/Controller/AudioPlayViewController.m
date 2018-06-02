@@ -1498,6 +1498,13 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
 
 #pragma mark - 去vip充值页面
 - (void)gotoVipView {
+    NSString *token = [NSString stringWithFormat:@"%@", [[NSUserDefaults standardUserDefaults] objectForKey:@"token"]];
+    if([token isEqualToString: @""]||[token isEqualToString: @"(null)"]){
+        LoginViewController *LogVC = [[LoginViewController alloc] init];
+        [self.navigationController pushViewController:LogVC animated:YES];
+        return ;
+    }
+
     isVip = YES;
     //此处模拟去充值页面
     [self.navigationController pushViewController:[OpenVipViewController new] animated:YES];
@@ -1527,7 +1534,16 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
         }];
     }
 }
-
+//判断是否是否是未登录状态，未登录就跳到登录界面
+//-(void) jumpLoginOfToke{
+//    NSString *token = [NSString stringWithFormat:@"%@", [[NSUserDefaults standardUserDefaults] objectForKey:@"token"]];
+//    if([token isEqualToString: @""]||[token isEqualToString: @"(null)"]){
+//        LoginViewController *LogVC = [[LoginViewController alloc] init];
+//        [self.navigationController pushViewController:LogVC animated:YES];
+//        return ;
+//    }
+//
+//}
 #pragma mark - 增加播放记录
 - (void)getAudioAddressAPI {
     NSString *url = [NSString stringWithFormat:@"%@",kAddPlayRecordingURL];

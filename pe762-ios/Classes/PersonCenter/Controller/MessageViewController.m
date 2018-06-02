@@ -108,6 +108,10 @@
         //首先获取所有被选择的cell对象
 //        selectCellArray
         NSString *idStr ; //idStr=1，2，3，4，5
+        if(selectCellArray.count == 0){
+            [self showHUDTextOnly:@"请先选择消息"];
+            return ;
+        }
         if(selectCellArray.count > 0)
         idStr = [NSString stringWithFormat:@"%@",[selectCellArray objectAtIndex:0][@"id"]];
         for(int selecti = 1; selecti < selectCellArray.count; selecti++){
