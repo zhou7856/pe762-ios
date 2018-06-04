@@ -23,6 +23,7 @@
     UIButton *delAndFinBtn; //删除和完成按钮
     NSInteger page;
     NSInteger rows;
+    BOOL stopTouch; //防止button连续触发
 }
 @end
 
@@ -31,7 +32,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
+    stopTouch = NO;
     // 初始化分页数据
     rows = 10;
     page = 1;
@@ -215,6 +216,7 @@
             if([selectDic[@"id"] isEqualToString:idStr]){
                 cell.selectZone.tag = 1;
                 [cell.selectZone setImage:[UIImage imageNamed:@"icon_yes"] forState:UIControlStateNormal];
+                
             }
         }
         if( i == selectCellArray.count){ //没有找到这种情况
@@ -232,9 +234,12 @@
         cell.pageContent.minX = 30 * kScreenWidthProportion;
     }
     [[cell.selectZone rac_signalForControlEvents:UIControlEventTouchDown] subscribeNext:^(id x) {
-      //  cell.selectZone.enabled = NO;
-        [self selectObjZone:cell];
-        cell.selectZone.enabled = YES;
+        if(!stopTouch){
+            [self selectObjZone:cell];
+            stopTouch = YES;
+            //防止按钮重复触发
+            [self performSelector:@selector(upDataStopTouchState) withObject:self afterDelay:0.1];
+        }
 
     }];
 //    [cell.selectZone addTarget:self action:@selector(selectZoneAction:) forControlEvents:UIControlEventTouchDown];
@@ -268,6 +273,10 @@
     
     return cell;
 }
+-(void)upDataStopTouchState{
+    stopTouch = NO;
+}
+#pragma mark -选中区域事件
 -(void)selectObjZone:(MessageTableViewCell *)cell{
     if(cell.selectZone.tag == 0){  //未选中
         cell.selectZone.tag = 1;
