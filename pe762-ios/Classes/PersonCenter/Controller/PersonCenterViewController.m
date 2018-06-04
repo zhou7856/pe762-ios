@@ -243,7 +243,12 @@
         make.left.mas_equalTo(vipTimeLabel.mas_right).offset(5 * kScreenWidthProportion);
         make.width.mas_equalTo(40 * kScreenWidthProportion);
     }];
-    
+    [[renewalsBtn rac_signalForControlEvents: UIControlEventTouchDown] subscribeNext:^(id x) {
+        [self showTabBarView:NO];
+        OpenVipViewController *pushVC = [[OpenVipViewController alloc] init];
+        
+        [self.navigationController pushViewController:pushVC animated:YES];
+    }];
     reviewView = [[UIView alloc] init];
     [centerView addSubview:reviewView];
     reviewView.hidden = YES;

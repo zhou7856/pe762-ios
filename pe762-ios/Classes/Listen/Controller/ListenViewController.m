@@ -644,6 +644,7 @@
         NSString *url = [NSString stringWithFormat:@"%@",kHomeIndexURL];
         url = [self stitchingTokenAndPlatformForURL:url];
         url = [NSString stringWithFormat:@"%@&page=%ld&rows=%ld", url, page, rows];
+//        newArray = [[NSMutableArray alloc] init];
         [self requestPageHomeIndexURL:url newArrayInfo:newArray];
         [mainScrollView.mj_footer endRefreshing];
         

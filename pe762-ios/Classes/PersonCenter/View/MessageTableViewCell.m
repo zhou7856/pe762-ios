@@ -15,13 +15,14 @@
     if (self) {
         self.backgroundColor = kBackgroundWhiteColor;
         //选择按钮
-        self.tag = 0;  //cell 没有被选择
+       // self.tag = 0;  //cell 没有被选择
         _selectZone = [[UIButton alloc] init];
         [self.contentView addSubview:_selectZone];
         [_selectZone setImage:[UIImage imageNamed:@"icon_no"] forState:UIControlStateNormal];
-        _selectZone.tag = 0; //表示图片未选中
+      //  _selectZone.tag = 0; //表示图片未选中
 //        [[_selectZone rac_signalForControlEvents:UIControlEventTouchUpInside] subscribeNext:^(id x) {
 //                    }];
+        
 //        
         //内容控件
         _pageContent = [[UIView alloc] initWithFrame:CGRectMake(30 * kScreenWidthProportion, 0, self.width, self.height)];

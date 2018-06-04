@@ -232,10 +232,12 @@
         cell.pageContent.minX = 30 * kScreenWidthProportion;
     }
     [[cell.selectZone rac_signalForControlEvents:UIControlEventTouchDown] subscribeNext:^(id x) {
+      //  cell.selectZone.enabled = NO;
         [self selectObjZone:cell];
-        cell.selectZone.enabled = NO;
-        
+        cell.selectZone.enabled = YES;
+
     }];
+//    [cell.selectZone addTarget:self action:@selector(selectZoneAction:) forControlEvents:UIControlEventTouchDown];
     
     
     cell.tag = [idStr integerValue];

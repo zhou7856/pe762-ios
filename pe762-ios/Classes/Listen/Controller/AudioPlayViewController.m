@@ -1213,12 +1213,13 @@
         if(!isVip){ //不是VIP用户
             if(self.playbackTime >= kGeneralUserPlayTime){
                 [self showHUDTextOnly:@"VIP音频仅可以收听前50s时间，请开通会员"];
-                [self.audioStream pause];
+                if(self.play == YES)
+                    [self.audioStream pause];
                 [self.playerTimer setFireDate:[NSDate distantFuture]];
                 playImageView.image = [UIImage imageNamed:@"Group 147"];
                 self.play = !self.play;
-                [self theplayAction];
-//              return;
+              //  [self theplayAction];
+                //              return;
             }
         }
     }
