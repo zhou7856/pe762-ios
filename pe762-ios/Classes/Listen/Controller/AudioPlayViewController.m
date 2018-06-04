@@ -110,6 +110,7 @@
 @property (nonatomic, assign) CGFloat totalTime;
 //@property (nonatomic, strong) UIButton *lastButton;
 //@property (nonatomic, strong) UIButton *nextButton;
+@property (nonatomic, assign) BOOL playDypic; //判断是否播放动画
 
 @end
 
@@ -122,6 +123,7 @@
     [self initUI];
     [self initNotNetView];
     
+    _playDypic = YES;
     //获取播放记录
     //[self getPlayRecordingAPI];
     
@@ -1213,13 +1215,35 @@
         if(!isVip){ //不是VIP用户
             if(self.playbackTime >= kGeneralUserPlayTime){
                 [self showHUDTextOnly:@"VIP音频仅可以收听前50s时间，请开通会员"];
-                if(self.play == YES)
-                    [self.audioStream pause];
+                [self.audioStream pause];
                 [self.playerTimer setFireDate:[NSDate distantFuture]];
                 playImageView.image = [UIImage imageNamed:@"Group 147"];
                 self.play = !self.play;
-              //  [self theplayAction];
-                //              return;
+                [self theplayAction];
+                //[self playAction];
+//                [self.audioStream pause];
+//                self.playbackTime = 0;
+//                FSStreamPosition pos = {0};
+//                pos.position = self.playbackTime / self.totalTime;
+//                [self.audioStream seekToPosition:pos];
+//                self.play = !self.play;
+////
+//                [self.playerTimer setFireDate:[NSDate distantPast]];
+//                playImageView.image = [UIImage imageNamed:@"Group 130"];
+////
+                if(_playDypic){
+                    handleImage.transform = CGAffineTransformIdentity;
+                    [UIView animateWithDuration:2 animations:^{
+                        handleImage.transform = CGAffineTransformRotate(handleImage.transform, -M_PI /8);
+                    }];
+                    _playDypic = NO;
+                    [self performSelector:@selector(changeDypicState) withObject:self afterDelay:5];
+                }
+
+                [[self class] cancelPreviousPerformRequestsWithTarget:self selector:@selector(theplayAction)object:nil];
+                
+                [self performSelector:@selector(theplayAction)withObject:nil afterDelay:0.2f];
+//              return;
             }
         }
     }
@@ -1258,7 +1282,10 @@
 //        NSLog(@"------%f-----%f",prebuffer,contentlength);
     }
 }
-
+//改变动画调用时间
+-(void) changeDypicState{
+    _playDypic = YES ;
+}
 #pragma mark 清除缓存的音频，，
 - (void)playerItemDealloc{
     NSArray *arr = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:_audioStream.configuration.cacheDirectory error:nil];
